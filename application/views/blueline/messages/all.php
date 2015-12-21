@@ -24,8 +24,7 @@
                      <a class="btn btn-primary message-list-load marked-folder" role="button" href="<?=base_url()?>messages/filter/marked/0" title="<?=$this->lang->line('application_Marked');?>"><i class="fa fa-star space"></i> <span class="hidden-xs"><?=$this->lang->line('application_Marked');?></span></a>
                 </div>
             </li>
-            
-               
+                        
     </ul>
   </div>
   <div id="main-nano-wrapper" class="nano">

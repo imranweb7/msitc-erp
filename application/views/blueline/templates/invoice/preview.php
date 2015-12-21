@@ -223,7 +223,7 @@ table.tablesorter tbody tr.even td {
   </p> 
 </div>
 
-  <span class="headline"><?=$this->lang->line('application_invoice');?> <?=$invoice->reference;?></span>
+  <span class="headline"><?=$this->lang->line('application_invoice');?> <?=$core_settings->invoice_prefix;?><?=$invoice->reference;?></span>
   <p class="terms"><strong><?php echo date($core_settings->date_format, human_to_unix($invoice->issue_date.' 00:00:00'));?></strong><br/>
   <?=$this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($invoice->due_date.' 00:00:00'));?></p>
   
@@ -245,7 +245,7 @@ table.tablesorter tbody tr.even td {
     <?php foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice->invoice_has_items[$i]->item->name; }?></td>
-      <td><?=$invoice->invoice_has_items[$i]->description;?></td>
+      <td><?= str_replace("&lt;br&gt;", "<br>", $invoice->invoice_has_items[$i]->description);?></td>
       <td align="center"><?=$invoice->invoice_has_items[$i]->amount;?></td>
       <td><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->value));?></td>
       <td><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value));?></td>
@@ -292,16 +292,31 @@ table.tablesorter tbody tr.even td {
           <td align="right" style="padding-right:20px"><?=display_money($tax)?></td>
         </tr>
         <?php } ?>
+        <?php if($invoice->paid > "0"){ ?>
+        <tr>
+          <td align="left" class="margin"><?=$this->lang->line('application_payments_received');?></td>
+          <td align="right" style="padding-right:20px"><?=display_money($invoice->paid, $invoice->currency)?></td>
+        </tr>
+        <?php } ?>
+         
         </table>
     <?php } ?>
-    <div class="total-amount total-heading"><p><?=display_money($sum, $invoice->currency);?></p></div>
+    <div class="total-amount total-heading"><p><?=display_money($sum-$invoice->paid, $invoice->currency);?></p></div>
   </div>
   <div class="custom-terms">
   <?php echo $invoice->terms; ?>
   </div>
 </div>
 
-
+<script type='text/php'>
+        if ( isset($pdf) ) { 
+          $font = Font_Metrics::get_font('helvetica', 'normal');
+          $size = 9;
+          $y = $pdf->get_height() - 24;
+          $x = $pdf->get_width() - 15 - Font_Metrics::get_text_width('1/1', $font, $size);
+          $pdf->page_text($x, $y, '{PAGE_NUM}/{PAGE_COUNT}', $font, $size);
+        } 
+      </script>
 
 </body>
 </html>

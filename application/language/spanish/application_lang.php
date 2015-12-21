@@ -4069,3 +4069,23 @@ $lang['application_enter_your_details_to_create_an_account'] = "Introduzca sus d
 $lang['application_new_client_has_registered'] = "Nuevo cliente ha creado una cuenta";
 $lang['application_your_account_has_been_created'] = "Su cuenta ha sido creada";
 $lang['application_create_account_email_template'] = "Crear cuenta";
+
+$lang['application_api_login_id'] = "API Login ID";
+$lang['application_api_transaction_key'] = "Transacción API ID";
+$lang['application_authorize_active'] = "Activar Authorize.net";
+$lang['application_your_credit_card_will_be_charged_for'] = "Su tarjeta de crédito será cargada por";
+$lang['application_Canceled'] = "Cancelado";
+$lang['application_company_prefix'] = "Prefijo de Compañía";
+$lang['application_invoice_prefix'] = "Factura prefijo";
+$lang['application_project_prefix'] = "Proyecto de prefijo";
+$lang['application_quotation_prefix'] = "Cita prefijo";
+$lang['application_subscription_prefix'] = "Suscripción prefijo";
+$lang['application_copy_project'] = "Proyecto Copiar";
+$lang['application_copy_tasks'] = "Las tareas de copia";
+
+$lang['application_payment'] = "El pago";
+$lang['application_add_payment'] = "Añadir pago";
+$lang['application_cash'] = "en efectivo";
+$lang['application_PartiallyPaid'] = "parcialmente pagado";
+$lang['application_total_outstanding'] = "pago pendiente";
+$lang['application_payment_id'] = "Identificación de pago";

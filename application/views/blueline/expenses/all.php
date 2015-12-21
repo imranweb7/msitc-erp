@@ -1,9 +1,9 @@
 	<div class="col-sm-12  col-md-12 main">  
     <div class="row tile-row">
     <?php $month2 = $month != 0 ? $month : date('m'); $year =  $year ? $year : date("Y")?>
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame"><i class="ion-ios-calendar-outline"></i> </div><h1> <?php if(isset($expenses_this_month)){echo $expenses_this_month;} ?> <span class="hidden-xs"><?=$this->lang->line('application_expenses');?></span></h1><h2 class="hidden-xs"><?php echo $days_in_this_month == 12 ? $this->lang->line('application_in')." ".$year : $this->lang->line('application_in')." ".$this->lang->line('application_'.date("M", strtotime($year."-".$month2."-01"))); ?></h2></div>
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary"><i class="ion-ios-cart"></i> </div><h1> <?php if($expenses_owed_this_month[0]->owed != ""){echo display_money(sprintf("%01.2f", round($expenses_owed_this_month[0]->owed, 2)));}else{ echo "0.00";} ?> </h1><h2 class="hidden-xs"><?=$this->lang->line('application_owed_in');?> <?php echo $days_in_this_month == 12 ? $year : $this->lang->line('application_'.date("M", strtotime($year."-".$month2."-01")));?></h2></div>
-      <div class="col-md-6 col-xs-12 tile">
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame hidden-xs"><i class="ion-ios-calendar-outline"></i> </div><h1> <?php if(isset($expenses_this_month)){echo $expenses_this_month;} ?> <span><?=$this->lang->line('application_expenses');?></span></h1><h2><?php echo $days_in_this_month == 12 ? $this->lang->line('application_in')." ".$year : $this->lang->line('application_in')." ".$this->lang->line('application_'.date("M", strtotime($year."-".$month2."-01"))); ?></h2></div>
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary hidden-xs"><i class="ion-ios-cart"></i> </div><h1> <?php if($expenses_owed_this_month[0]->owed != ""){echo display_money(sprintf("%01.2f", round($expenses_owed_this_month[0]->owed, 2)));}else{ echo "0.00";} ?> </h1><h2><?=$this->lang->line('application_owed_in');?> <?php echo $days_in_this_month == 12 ? $year : $this->lang->line('application_'.date("M", strtotime($year."-".$month2."-01")));?></h2></div>
+      <div class="col-md-6 col-xs-12 tile hidden-xs">
       <div style="width:97%; height: 93px;">
       <canvas id="tileChart" class="hidden-xs" width="auto" height="50"></canvas>
       </div>
@@ -159,8 +159,6 @@ var data = {
 var options = {
 
     scaleShowVerticalLines: false,
-
-    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
 
     tooltipTemplate: "<%= value %>"
 

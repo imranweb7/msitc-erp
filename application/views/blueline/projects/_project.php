@@ -7,7 +7,11 @@ if(isset($project)){ ?>
 
 <div class="form-group">
         <label for="reference"><?=$this->lang->line('application_reference_id');?> *</label>
+        
+       <?php if(!empty($core_settings->project_prefix)){ ?>
+       <div class="input-group"> <div class="input-group-addon"><?=$core_settings->project_prefix;?></div> <?php } ?>
         <input type="text" name="reference" class="form-control" id="reference" value="<?php if(isset($project)){echo $project->reference;} else{ echo $core_settings->project_reference;} ?>" required/>
+        <?php if(!empty($core_settings->project_prefix)){ ?></div><?php } ?>
 </div>
 
 <div class="form-group">

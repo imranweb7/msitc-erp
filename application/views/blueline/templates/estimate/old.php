@@ -229,7 +229,7 @@ table.tablesorter tbody tr.even td {
     <?php foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></td>
-      <td><?=$estimate->invoice_has_items[$i]->description;?></td>
+      <td><?= str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?></td>
       <td align="center"><?=$estimate->invoice_has_items[$i]->amount;?></td>
       <td><?php echo sprintf("%01.2f",$estimate->invoice_has_items[$i]->value);?></td>
       <td><?php echo sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value);?></td>
@@ -285,7 +285,15 @@ table.tablesorter tbody tr.even td {
   </div>
 </div>
 
-
+<script type='text/php'>
+        if ( isset($pdf) ) { 
+          $font = Font_Metrics::get_font('helvetica', 'normal');
+          $size = 9;
+          $y = $pdf->get_height() - 24;
+          $x = $pdf->get_width() - 15 - Font_Metrics::get_text_width('1/1', $font, $size);
+          $pdf->page_text($x, $y, '{PAGE_NUM}/{PAGE_COUNT}', $font, $size);
+        } 
+      </script>
 
 </body>
 </html>

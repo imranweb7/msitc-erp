@@ -99,6 +99,14 @@ class Invoices extends MY_Controller {
 		$this->view_data['invoices_paid_this_month'] = Invoice::count(array('conditions' => 'paid_date <= '.$lastday_in_month.' and paid_date >= '.$firstday_in_month.' AND estimate != 1'));
 		$this->view_data['invoices_due_this_month'] = Invoice::count(array('conditions' => 'due_date <= '.$lastday_in_month.' and due_date >= '.$firstday_in_month.' AND estimate != 1'));
 
+		//statistic
+		$now = time();
+		$beginning_of_week = strtotime('last Monday', $now); // BEGINNING of the week
+		$end_of_week = strtotime('next Sunday', $now) + 86400; // END of the last day of the week
+		$this->view_data['invoices_due_this_month_graph'] = Invoice::find_by_sql('select count(id) AS "amount", DATE_FORMAT(`due_date`, "%w") AS "date_day", DATE_FORMAT(`due_date`, "%Y-%m-%d") AS "date_formatted" from invoices where UNIX_TIMESTAMP(`due_date`) >= "'.$beginning_of_week.'" AND UNIX_TIMESTAMP(`due_date`) <= "'.$end_of_week.'" AND estimate != 1');
+		$this->view_data['invoices_paid_this_month_graph'] = Invoice::find_by_sql('select count(id) AS "amount", DATE_FORMAT(`paid_date`, "%w") AS "date_day", DATE_FORMAT(`paid_date`, "%Y-%m-%d") AS "date_formatted" from invoices where UNIX_TIMESTAMP(`paid_date`) >= "'.$beginning_of_week.'" AND UNIX_TIMESTAMP(`paid_date`) <= "'.$end_of_week.'" AND estimate != 1');
+
+
 		switch ($condition) {
 			case 'open':
 				$this->view_data['invoices'] = Invoice::find('all', array('conditions' => array('status = ? and estimate != ?', 'Open', 1)));
@@ -184,7 +192,7 @@ class Invoices extends MY_Controller {
 		$this->view_data['invoice'] = Invoice::find($id);
 		$data["core_settings"] = Setting::first();
 		$invoice = $this->view_data['invoice'];
-		$this->view_data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
+		$this->view_data['items'] = $invoice->invoice_has_items;
 
 		//calculate sum
 		$i = 0; $sum = 0;
@@ -216,6 +224,18 @@ class Invoices extends MY_Controller {
 
     	$sum = sprintf("%01.2f", round($sum+$tax+$second_tax, 2));
 
+    	$payment = 0;
+    	$i = 0;
+    	$payments = $invoice->invoice_has_payments;
+    	if(isset($payments)){
+    		foreach ($payments as $value) {
+    			$payment = sprintf("%01.2f", round($payment+$payments[$i]->amount, 2));
+    			$i++;
+    		}
+    	$invoice->paid = $payment;
+    	$invoice->outstanding = sprintf("%01.2f", round($sum-$payment, 2));
+		}
+
 		$invoice->sum = $sum;
 			$invoice->save();
 		$this->content_view = 'invoices/view';
@@ -228,6 +248,98 @@ class Invoices extends MY_Controller {
 		$data["core_settings"] = Setting::first();
 		$this->view_data['invoice'] = Invoice::find($id);
 		$this->content_view = 'invoices/_banktransfer';
+	}
+	function payment($id = FALSE){
+
+		if($_POST){
+			unset($_POST['send']);
+			unset($_POST['_wysihtml5_mode']);
+			unset($_POST['files']);
+			$_POST['user_id'] = $this->user->id;
+			$invoice = Invoice::find_by_id($_POST['invoice_id']);
+			$invoiceHasPayment = InvoiceHasPayment::create($_POST);
+			
+			if($invoice->sum == $_POST['amount']){
+				$new_status = "Paid";
+				$payment_date = $_POST['date'];
+			}else{
+				$new_status = "PartiallyPaid";
+			}
+			
+			$invoice->update_attributes(array('status' => $new_status));
+			if(isset($payment_date)){ $invoice->update_attributes(array('paid_date' => $payment_date)); }
+       		if(!$invoiceHasPayment){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_payment_error'));}
+       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_payment_success'));}
+			redirect('invoices/view/'.$_POST['invoice_id']);
+		}else
+		{
+			$this->view_data['invoice'] = Invoice::find_by_id($id);
+			$this->view_data['payment_reference'] = InvoiceHasPayment::count(array('conditions' => 'invoice_id = '.$id))+1;
+	    	$this->view_data['sumRest'] = sprintf("%01.2f", round($this->view_data['invoice']->sum-$this->view_data['invoice']->paid, 2));
+	    	
+	    	
+
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_add_payment');
+			$this->view_data['form_action'] = 'invoices/payment';
+			$this->content_view = 'invoices/_payment';
+		}
+	}
+	function payment_update($id = FALSE){
+
+		if($_POST){
+			unset($_POST['send']);
+			unset($_POST['_wysihtml5_mode']);
+			unset($_POST['files']);
+
+			$payment = InvoiceHasPayment::find_by_id($_POST['id']);
+			$invoice_id = $payment->invoice_id;
+			$payment = $payment->update_attributes($_POST);
+
+
+			$invoice = Invoice::find_by_id($invoice_id);
+			$payment = 0;
+	    	$i = 0;
+	    	$payments = $invoice->invoice_has_payments;
+	    	if(isset($payments)){
+	    		foreach ($payments as $value) {
+	    			$payment = sprintf("%01.2f", round($payment+$payments[$i]->amount, 2));
+	    			$i++;
+	    		}
+
+			}
+			$paymentsum = sprintf("%01.2f", round($payment+$_POST['amount'], 2));
+			if($invoice->sum <= $paymentsum){
+				$new_status = "Paid";
+				$payment_date = $_POST['date'];
+				
+			}else{
+				$new_status = "PartiallyPaid";
+			}
+			$invoice->update_attributes(array('status' => $new_status));
+			if(isset($payment_date)){ $invoice->update_attributes(array('paid_date' => $payment_date)); }
+       		if(!$payment){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_edit_payment_error'));}
+       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_edit_payment_success'));}
+			redirect('invoices/view/'.$_POST['invoice_id']);
+
+		}else
+		{
+			$this->view_data['payment'] = InvoiceHasPayment::find_by_id($id);
+			$this->view_data['invoice'] = Invoice::find_by_id($this->view_data['payment']->invoice_id);
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_add_payment');
+			$this->view_data['form_action'] = 'invoices/payment_update';
+			$this->content_view = 'invoices/_payment';
+		}
+	}
+	function payment_delete($id = FALSE, $invoice_id = FALSE)
+	{	
+		$item = InvoiceHasPayment::find_by_id($id);
+		$item->delete();
+		$this->content_view = 'invoices/view';
+		if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_delete_payment_error'));}
+       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_delete_payment_success'));}
+			redirect('invoices/view/'.$invoice_id);
 	}
 	function stripepay($id = FALSE, $sum = FALSE){
 		$data["core_settings"] = Setting::first();
@@ -312,6 +424,10 @@ class Invoices extends MY_Controller {
 			if ($charge->paid == true) {
 				$attr= array();
 				$paid_date = date('Y-m-d', time());
+				$payment_reference = $invoice->reference.'00'.InvoiceHasPayment::count(array('conditions' => 'invoice_id = '.$invoice->id))+1;
+				$attributes = array('invoice_id' => $invoice->id, 'reference' => $payment_reference, 'amount' => $_POST['sum'], 'date' => $paid_date, 'type' => 'credit_card', 'notes' => '');
+				$invoiceHasPayment = InvoiceHasPayment::create($attributes);
+					
 				
 				$invoice->update_attributes(array('paid_date' => $paid_date, 'status' => 'Paid'));
 				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_payment_complete'));
@@ -360,6 +476,82 @@ class Invoices extends MY_Controller {
 			$this->view_data['form_action'] = 'invoices/stripepay';
 			$this->content_view = 'invoices/_stripe';
 		}
+
+	}
+	function authorizenet($id = FALSE){
+
+		if($_POST){
+				// Authorize.net lib
+				
+				$this->load->library('authorize_net');
+				$invoice = Invoice::find_by_id($_POST['invoice_id']);
+				log_message('error', 'Authorize.net: Payment process started for invoice: #'.$invoice->reference);
+				
+				$amount = sprintf("%01.2f", round($invoice->sum-$invoice->paid, 2));
+
+				$auth_net = array(
+					'x_card_num'			=> str_replace(' ', '', $_POST['x_card_num']),
+					'x_exp_date'			=> $_POST['x_card_month'].'/'.$_POST['x_card_year'],
+					'x_card_code'			=> $_POST['x_card_code'],
+					'x_description'			=> $this->lang->line('application_invoice').' #'.$invoice->reference,
+					'x_amount'				=> $amount,
+					'x_first_name'			=> $invoice->company->client->firstname,
+					'x_last_name'			=> $invoice->company->client->lastname,
+					'x_address'				=> $invoice->company->address,
+					'x_city'				=> $invoice->company->city,
+					//'x_state'				=> 'KY',
+					'x_zip'					=> $invoice->company->zipcode,
+					//'x_country'			=> 'US',
+					'x_phone'				=> $invoice->company->phone,
+					'x_email'				=> $invoice->company->client->email,
+					'x_customer_ip'			=> $this->input->ip_address(),
+					);
+				$this->authorize_net->setData($auth_net);
+				// Try to AUTH_CAPTURE
+				if( $this->authorize_net->authorizeAndCapture() )
+				{
+					
+					$this->session->set_flashdata('message', 'success: '.$this->lang->line('messages_payment_complete'));
+					
+					log_message('error', 'Authorize.net: Transaction ID: ' . $this->authorize_net->getTransactionId());
+					log_message('error', 'Authorize.net: Approval Code: ' . $this->authorize_net->getApprovalCode());
+					log_message('error', 'Authorize.net: Payment completed.');
+					$invoice->status = "Paid";
+					$invoice->paid_date = date('Y-m-d', time());
+
+					$invoice->save();
+					$attributes = array('invoice_id' => $invoice->id, 'reference' => $this->authorize_net->getTransactionId(), 'amount' => $amount, 'date' => date('Y-m-d', time()), 'type' => 'credit_card', 'notes' => $this->authorize_net->getApprovalCode());
+					$invoiceHasPayment = InvoiceHasPayment::create($attributes);
+					redirect('invoices/view/'.$invoice->id);
+				}
+				else
+				{
+					
+				log_message('error', 'Authorize.net: Payment failed.');
+				log_message('error', 'Authorize.net: '.$this->authorize_net->getError());
+
+				
+
+					$this->view_data['return_link'] = "invoices/view/".$invoice->id;
+
+					$this->view_data['message'] = $this->authorize_net->getError();
+					//$this->authorize_net->debug();
+
+
+					$this->content_view = 'error/error';
+				}
+		}else{
+
+			$this->view_data['invoices'] = Invoice::find_by_id($id);
+			$this->view_data["settings"] = Setting::first();
+
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_pay_with_credit_card');
+			$this->view_data['form_action'] = 'invoices/authorizenet';
+			$this->content_view = 'invoices/_authorizenet';
+		}
+
+
 
 	}
 	function delete($id = FALSE)

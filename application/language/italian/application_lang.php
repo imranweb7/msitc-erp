@@ -584,3 +584,23 @@ $lang['application_enter_your_details_to_create_an_account'] = "Inserisci i tuoi
 $lang['application_new_client_has_registered'] = "Nuovo cliente ha creato un account";
 $lang['application_your_account_has_been_created'] = "Il tuo account è stato creato";
 $lang['application_create_account_email_template'] = "Crea Account";
+
+$lang['application_api_login_id'] = "API Login ID";
+$lang['application_api_transaction_key'] = "API Transaction ID";
+$lang['application_authorize_active'] = "Attiva Authorize.net";
+$lang['application_your_credit_card_will_be_charged_for'] = "L'addebito sulla carta di credito";
+$lang['application_Canceled'] = "annullata";
+$lang['application_company_prefix'] = "Prefisso Aziendale";
+$lang['application_invoice_prefix'] = "Fattura Prefisso";
+$lang['application_project_prefix'] = "Progetto prefisso";
+$lang['application_quotation_prefix'] = "Citazione Prefisso";
+$lang['application_subscription_prefix'] = "L'abbonamento Prefisso";
+$lang['application_copy_project'] = "Copia progetto";
+$lang['application_copy_tasks'] = "Copia Tasks";
+
+$lang['application_payment'] = "pagamento";
+$lang['application_add_payment'] = "Aggiungi di pagamento";
+$lang['application_cash'] = "Cash";
+$lang['application_PartiallyPaid'] = "parzialmente pagato";
+$lang['application_total_outstanding'] = "eccezionale";
+$lang['application_payment_id'] = "ID di pagamento";

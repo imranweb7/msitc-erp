@@ -38,7 +38,7 @@ $public = "0";
                  foreach ($project->project_has_workers as $workers):
                     $users[$workers->user_id] = $workers->user->firstname.' '.$workers->user->lastname;
                 endforeach;
-        if(isset($task)){$user = $task->user_id;}else{$user = "";}
+        if(isset($task)){$user = $task->user_id;}else{$user = $this->user->id;}
         echo form_dropdown('user_id', $users, $user, 'style="width:100%" class="chosen-select"');?>
 </div> 
 

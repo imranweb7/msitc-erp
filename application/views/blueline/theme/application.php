@@ -14,6 +14,7 @@ if(is_numeric($act_uri_submenu)){
     $lastsec = $lastsec-1; 
     $act_uri_submenu = $this->uri->segment($lastsec);
 }
+$message_icon = false;
  ?> 
 <!DOCTYPE html>
 <html lang="en">
@@ -132,10 +133,10 @@ if(is_numeric($act_uri_submenu)){
                     $icon = $value->icon;
                     break;
                }
-               
+               if(strtolower($value->name) == "messages"){$message_icon = true;}
                ?>
                <li id="<?=strtolower($value->name);?>" class="<?php if ($act_uri == strtolower($value->name)) {echo "active";}?>"><a href="<?=site_url($value->link);?>"><span class="menu-icon"><i class="fa <?=$icon;?>"></i></span><span class="nav-text"><?php echo $this->lang->line('application_'.$value->link);?></span>
-                <?php if(strtolower($value->name) == "messages" && $messages_new[0]->amount != "0"){ ?><span class="notification-badge"><?=$messages_new[0]->amount;?></span><?php } ?>
+                <?php if(strtolower($value->name) == "messages" && $messages_new[0]->amount != "0"){ $message_icon = true; ?><span class="notification-badge"><?=$messages_new[0]->amount;?></span><?php } ?>
                 <?php if(strtolower($value->name) == "quotations" && $quotations_new[0]->amount != "0"){ ?><span class="notification-badge"><?=$quotations_new[0]->amount;?></span><?php } ?>
                 <?php if(strtolower($value->name) == "tickets" && $tickets_new[0]->amount != "0"){ ?><span class="notification-badge"><?=$tickets_new[0]->amount;?></span><?php } ?>
                </a> </li>
@@ -242,12 +243,12 @@ if(is_numeric($act_uri_submenu)){
       <img class="img-circle topbar-userpic hidden-xs" src="<?=$userimage;?>" height="21px">
       
       <span class="hidden-xs"><?php echo character_limiter($this->user->firstname." ".$this->user->lastname, 25);?> </span>
-      <span class="hidden-xs"><a href="<?=site_url("messages");?>" title="<?=$this->lang->line('application_messages');?>"><i class="fa fa-inbox"></i></a></span>
+      <?php if($message_icon){ ?><span class="hidden-xs"><a href="<?=site_url("messages");?>" title="<?=$this->lang->line('application_messages');?>"><i class="fa fa-inbox"></i></a></span><?php } ?>
       <span class="hidden-xs"><a href="<?=site_url("agent");?>" data-toggle="mainmodal" title="<?=$this->lang->line('application_profile');?>"><i class="fa fa-cog"></i></a></span>
       <span class="btn-group">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                       <?php if(!empty($core_settings->language)){$default_language = $core_settings->language; }else{ $default_language = "english"; } ?>
-                                      <img src="<?=base_url()?>assets/blueline/img/<?php if($this->input->cookie('language') != ""){echo $this->input->cookie('language');}else{echo $default_language;} ?>.png" style="margin-top:-49px" align="middle">
+                                      <img src="<?=base_url()?>assets/blueline/img/<?php if($this->input->cookie('fc2language') != ""){echo $this->input->cookie('fc2language');}else{echo $default_language;} ?>.png" style="margin-top:-49px" align="middle">
                                  
                                     </a>
                                      <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">

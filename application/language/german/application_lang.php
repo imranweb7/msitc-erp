@@ -174,18 +174,18 @@ $lang['application_yes'] = "Ja";
 $lang['application_zip_code'] = "PLZ";
 $lang['application_assets'] = "assets";
 
-$lang['application_quotations'] = "Angebote";
-$lang['application_quotation'] = "Angebot";
-$lang['application_all_qutations'] = "Alle Angebote";
+$lang['application_quotations'] = "Formulare";
+$lang['application_quotation'] = "Formular";
+$lang['application_all_qutations'] = "Alle Formulare";
 $lang['application_quotation_id'] = "ID";
 $lang['application_worker'] = "Bearbeiter";
 $lang['application_answers'] = "Antworten";
-$lang['application_quotation_details'] = "Anfragedetails";
+$lang['application_quotation_details'] = "Formulardetails";
 $lang['application_quotation_add_client'] = "Zu Kunden hinzufügen";
 $lang['application_personal_info'] = "Persönliche Informationen";
 $lang['application_edit_quotation'] = "Bearbeiten";
 $lang['application_New'] = "Neu";
-$lang['application_Reviewed'] = "Bewertet";
+$lang['application_Reviewed'] = "Bearbeitet";
 $lang['application_Accepted'] = "Akzeptiert";
 $lang['application_view_quotation_form'] = "Anfrageformular";
 
@@ -584,3 +584,23 @@ $lang['application_enter_your_details_to_create_an_account'] = "Geben Sie Ihre D
 $lang['application_new_client_has_registered'] = "Neues Kundenkonto wurde erstellt";
 $lang['application_your_account_has_been_created'] = "Ihr Konto wurde erstellt";
 $lang['application_create_account_email_template'] = "Konto erstellen";
+
+$lang['application_api_login_id'] = "API Login ID";
+$lang['application_api_transaction_key'] = "API Transaction-ID";
+$lang['application_authorize_active'] = "Authorize.net aktivieren";
+$lang['application_your_credit_card_will_be_charged_for'] = "Ihre Kreditkarte wird mit folgendem Betrag belastet ";
+$lang['application_Canceled'] = "Storniert";
+$lang['application_company_prefix'] = "Firma Präfix";
+$lang['application_invoice_prefix'] = "Rechnung Präfix";
+$lang['application_project_prefix'] = "Projekt Präfix";
+$lang['application_quotation_prefix'] = "Angebot Präfix";
+$lang['application_subscription_prefix'] = "Abonnement Präfix";
+$lang['application_copy_project'] = "Projekt kopieren";
+$lang['application_copy_tasks'] = "Aufgaben kopieren";
+
+$lang['application_payment'] = "Zahlung";
+$lang['application_add_payment'] = "Zahlung hinzufühgen";
+$lang['application_cash'] = "Bar";
+$lang['application_PartiallyPaid'] = "teilweise bezahlt";
+$lang['application_total_outstanding'] = "Ausstehend";
+$lang['application_payment_id'] = "Zahlungsnummer";

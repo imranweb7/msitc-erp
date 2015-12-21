@@ -45,7 +45,6 @@
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/colorpicker.css" />
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/refineslide.css"/>
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/jquery-slider.css" />
-    <!--<link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/checkbox-radio-switch.css" />-->
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/summernote.css" />
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/chosen.css" />
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/dataTables.bootstrap.css" />
@@ -53,10 +52,19 @@
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/xcharts.css" />
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/nprogress.css" />
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/jquery-labelauty.css" />
+    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/easy-pie-chart-style.css" />
 
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/blueline.css"/>
+    
+    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/blueline.css?ver=<?=$core_settings->version;?>"/>
+    
+    <link href="<?=base_url()?>assets/blueline/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/ionicons.min.css" />
+
+    
+    
     <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/user.css"/> 
-       <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -89,7 +97,7 @@
 	</div>
 
 </div>
-     <!-- Bootstrap core JavaScript -->
+    <!-- Bootstrap core JavaScript -->
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery-ui-1.10.3.custom.min.js"></script>
     
@@ -111,14 +119,18 @@
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.nanoscroller.min.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jqBootstrapValidation.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/chart.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/d3.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/xcharts.min.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/nprogress.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery-labelauty.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/validator.min.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/timer.jquery.min.js"></script>
+        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.easypiechart.min.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/velocity.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/blueline.js"></script>
         <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/velocity.ui.min.js"></script>
+
+
+        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/blueline.js?ver=<?=$core_settings->version;?>"></script>
+
+       
 
 
       <script type="text/javascript" charset="utf-8">

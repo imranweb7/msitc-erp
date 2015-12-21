@@ -70,7 +70,12 @@ if($this->user->admin == "1" && $update){
                   <div id="main-nano-wrapper" class="nano">
     <div class="nano-content"><ul id="jp-container" class="todo jp-container">
                          <?php $count = 0;
+                                $projectname = "";
                                 foreach ($tasks as $value):  $count = $count+1; ?>
+                                    <?php if($projectname != $value->project->name){
+                                        $projectname = $value->project->name;
+                                        echo "<h5>".$projectname."</h5>";
+                                      }?>
                                     <li class="<?=$value->status;?>">
                                       <span class="lbl-"> 
                                         <p class="truncate"><input name="form-field-checkbox" type="checkbox" class="checkbox-nolabel task-check" data-link="<?=base_url()?>projects/tasks/<?=$value->project_id;?>/check/<?=$value->id;?>" <?=$value->status;?>/>

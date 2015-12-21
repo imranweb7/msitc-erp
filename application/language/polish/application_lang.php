@@ -584,3 +584,23 @@ $lang['application_enter_your_details_to_create_an_account'] = "Wpisz swoje dane
 $lang['application_new_client_has_registered'] = "Nowy klient założył konto";
 $lang['application_your_account_has_been_created'] = "Twoje konto zostało utworzone";
 $lang['application_create_account_email_template'] = "Utwórz konto";
+
+$lang['application_api_login_id'] = "API ID logowania";
+$lang['application_api_transaction_key'] = "ID Transaction API";
+$lang['application_authorize_active'] = "Aktywuj Authorize.net";
+$lang['application_your_credit_card_will_be_charged_for'] = "Twoja karta kredytowa zostanie obciążona";
+$lang['application_Canceled'] = "Anulowano";
+$lang['application_company_prefix'] = "Prefiks firmy";
+$lang['application_invoice_prefix'] = "Faktura Przedrostek";
+$lang['application_project_prefix'] = "Projekt Przedrostek";
+$lang['application_quotation_prefix'] = "Cytat Przedrostek";
+$lang['application_subscription_prefix'] = "Subskrypcja Przedrostek";
+$lang['application_copy_project'] = "Kopiuj projekt";
+$lang['application_copy_tasks'] = "Zadania kopiowania";
+
+$lang['application_payment'] = "Płatność";
+$lang['application_add_payment'] = "Dodaj Płatność";
+$lang['application_cash'] = "Kasa";
+$lang['application_PartiallyPaid'] = "Częściowo Płatny";
+$lang['application_total_outstanding'] = "Outstanding";
+$lang['application_payment_id'] = "identyfikator płatności";

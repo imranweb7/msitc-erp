@@ -5,11 +5,11 @@
 
   <div class="row tile-row tile-view">
       <div class="col-md-1 col-xs-3">
-      <div class="percentage easyPieChart" data-percent="<?=$project->progress;?>"><span><?=$project->progress;?>%</span></div>
+      <div class="percentage easyPieChart" id="tile-pie" data-percent="<?=$project->progress;?>"><span><?=$project->progress;?>%</span></div>
         
       </div>
       <div class="col-md-11 col-xs-9 smallscreen"> 
-        <h1><span class="nobold">#<?=$project->reference;?></span> - <?=$project->name;?></h1>
+        <h1><span class="nobold">#<?=$core_settings->project_prefix;?><?=$project->reference;?></span> - <?=$project->name;?></h1>
          <p class="truncate description"><?=$project->description;?></p>
       </div>
     
@@ -37,6 +37,10 @@
             </ul>
         </li>
 
+        <li class="pull-right">
+          <a href="<?=base_url()?>projects/copy/<?=$project->id;?>" class="btn-option tt" title="<?=$this->lang->line('application_copy_project');?>" data-toggle="mainmodal"><i class="fa fa-copy"></i></a>
+               
+        </li>
         <li class="pull-right">
           <?php if($project->sticky == 0){ ?>
                 <a href="<?=base_url()?>projects/sticky/<?=$project->id;?>"><i class="fa fa-star-o"></i></a>
@@ -75,7 +79,7 @@
 
                 <div class="subcont">
                   <ul class="details col-xs-12 col-sm-12 col-md-6">
-                    <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$project->reference;?></li>
+                    <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$core_settings->project_prefix;?><?=$project->reference;?></li>
                     <li><span><?=$this->lang->line('application_category');?>:</span> <?=$project->category;?></li>
                     <li><span><?=$this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="<?=base_url()?>clients/view/<?=$project->company->id;?>"><?php echo $project->company->name;} ?></a></li>
 				            <li><span><?=$this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> <a href="<?=base_url()?>projects/assign/<?=$project->id;?>" class="label label-info tt" style="padding: 2px 5px 3px;" title="<?=$this->lang->line('application_assign_to');?>" data-toggle="mainmodal"><i class="fa fa-plus"></i></a></li>
@@ -172,7 +176,7 @@
                       </div>
                       <div class="comment-content">
                           
-                          <p><?=$this->lang->line('application_no_data_yet');?></p>
+                          <p class="nodata"><?=$this->lang->line('application_no_data_yet');?></p>
                       </div>
                       </li>
   <?php } ?>
@@ -201,7 +205,7 @@
 
 				    <li class="<?=$value->status;?> priority<?=$value->priority;?>"><a href="<?=base_url()?>projects/tasks/<?=$project->id;?>/check/<?=$value->id;?>" class="ajax-silent task-check"></a>
 				    	
-              <input name="form-field-checkbox" class="checkbox-nolabel task-check" type="checkbox" data-link="<?=base_url()?>projects/tasks/<?=$project->id;?>/check/<?=$value->id;?>" <?php if($value->status == "done"){echo "checked";}?>/>
+              <input name="form-field-checkbox" class="checkbox-nolabel task-check dynamic-reload" data-reload="tile-pie" type="checkbox" data-link="<?=base_url()?>projects/tasks/<?=$project->id;?>/check/<?=$value->id;?>" <?php if($value->status == "done"){echo "checked";}?>/>
 				    	<span class="lbl"> <p class="truncate name"><?=$value->name;?></p></span>
 				    	<span class="pull-right">
                                   <?php if ($value->user_id != 0) {  ?><img class="img-circle list-profile-img tt"  title="<?=$value->user->firstname;?> <?=$value->user->lastname;?>"  src="<?php 
@@ -317,7 +321,7 @@
     <?php foreach ($project_has_invoices as $value):?>
 
     <tr id="<?=$value->id;?>" >
-      <td class="hidden-xs" onclick=""><?=$value->reference;?></td>
+      <td class="hidden-xs" onclick=""><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
       <td onclick=""><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
       <td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
       <td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?=$unix;?></span></td>

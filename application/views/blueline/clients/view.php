@@ -14,13 +14,15 @@
 			<li><span><?=$this->lang->line('application_email');?>:</span> <?php if(isset($company->client->email)){ echo $company->client->email; }else{ echo "-"; } ?></li>
 			<li><span><?=$this->lang->line('application_website');?>:</span> <?php echo $company->website = empty($company->website) ? "-" : '<a target="_blank" href="http://'.$company->website.'">'.$company->website.'</a>' ?></li>
 			<li><span><?=$this->lang->line('application_phone');?>:</span> <?php echo $company->phone = empty($company->phone) ? "-" : $company->phone; ?></li>
-			<?php if($company->vat != ""){?>
-			<li><span><?=$this->lang->line('application_vat');?>:</span> <?php echo $company->vat; ?></li>
-			<?php } ?>
+			<li><span><?=$this->lang->line('application_mobile');?>:</span> <?php echo $company->mobile = empty($company->mobile) ? "-" : $company->mobile; ?></li>
+			
 			
 		</ul>
 		<span class="visible-xs"></span>
 		<ul class="details col-md-6">
+			<?php if($company->vat != ""){?>
+			<li><span><?=$this->lang->line('application_vat');?>:</span> <?php echo $company->vat; ?></li>
+			<?php } ?>
 			<li><span><?=$this->lang->line('application_address');?>:</span> <?php echo $company->address = empty($company->address) ? "-" : $company->address; ?></li>
 			<li><span><?=$this->lang->line('application_zip_code');?>:</span> <?php echo $company->zipcode = empty($company->zipcode) ? "-" : $company->zipcode; ?></li>
 			<li><span><?=$this->lang->line('application_city');?>:</span> <?php echo $company->city = empty($company->city) ? "-" : $company->city; ?></li>
@@ -109,7 +111,7 @@
 		<?php foreach ($company->projects as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs" style="width:70px"><?=$value->reference;?></td>
+			<td class="hidden-xs" style="width:70px"><?=$core_settings->project_prefix;?><?=$value->reference;?></td>
 			<td><?=$value->name;?></td>
             <td class="hidden-xs"><div class="progress progress-striped active progress-medium tt <?php if($value->progress== "100"){ ?>progress-success<?php } ?>" title="<?=$value->progress;?>%">
                       <div class="bar" style="width:<?=$value->progress;?>%"></div>
@@ -143,7 +145,7 @@
 		<?php foreach ($invoices as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td><?=$value->reference;?></td>
+			<td><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
 			<td><span class="label"><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo date($core_settings->date_format, $unix);?></span></td>
 			<td><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></span></td>
 			<td><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>

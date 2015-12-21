@@ -52,4 +52,54 @@
 		<?php echo form_close(); ?>
 	
 </div>
+
+
+
+
+		<div class="table-head">Authorize.net <?=$this->lang->line('application_settings');?></div>
+		<div class="table-div">
+		<?php   
+		$attributes = array('class' => '', 'id' => 'authorize');
+		echo form_open_multipart($form_action, $attributes); 
+		?>
+<div class="form-group">
+<br>
+
+            <input name="authorize_net" type="checkbox" class="checkbox" style="width:100%;" data-labelauty="<?=$this->lang->line('application_authorize_active');?>" value="1" <?php if($settings->authorize_net == "1"){ ?> checked="checked" <?php } ?>>
+
+ </div>
+<div class="form-group"><label><?=$this->lang->line('application_api_login_id');?></label>
+			<input type="text" name="authorize_api_login_id" class="form-control" value="<?=$settings->authorize_api_login_id;?>">
+</div>
+<div class="form-group"><label><?=$this->lang->line('application_api_transaction_key');?></label>
+			<input type="text" name="authorize_api_transaction_key" class="form-control" value="<?=$settings->authorize_api_transaction_key;?>">
+</div>
+<div class="form-group"><label><?=$this->lang->line('application_currency');?></label>
+
+<select id="authorize_currency" name="authorize_currency" class="chosen-select">
+												<option value="<?=$settings->authorize_currency;?>" selected=""><?=$settings->authorize_currency;?></option>
+												<option value="USD">US Dollars</option>
+                                                <option value="AUD">Australian Dollars</option>
+                                                <option value="GBP">British Pounds</option>
+                                                <option value="CAD">Canadian Dollars</option>
+                                                <option value="EUR">Euros</option>
+                                                <option value="NZD">New Zealand Dollars</option>
+</select>
+</div>
+
+
+
+<div class="form-group">
+
+			 <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
+</div>
+	 	 
+		<?php echo form_close(); ?>
+	
+</div>
+
+
+
+
+
 	</div>

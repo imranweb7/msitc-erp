@@ -30,7 +30,7 @@
 		<?php foreach ($subscriptions as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$value->reference;?></td>
+			<td class="hidden-xs"><?=$core_settings->subscription_prefix;?><?=$value->reference;?></td>
 			<td><span class="label label-info"><?php if(!isset($value->company->name)){echo $this->lang->line('application_no_client_assigned'); }else{ echo $value->company->name; }?></span></td>
 			<td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
 			<td><span class="label <?php if($value->status == "Active"){echo ' ';} if($value->end_date <= date('Y-m-d') && $value->status != "Inactive"){ $ended = true; echo ' label-success tt" title="'.$this->lang->line('application_subscription_has_ended'); } ?>"><?php $unix = human_to_unix($value->end_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>

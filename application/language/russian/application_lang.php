@@ -584,3 +584,17 @@ $lang['application_enter_your_details_to_create_an_account'] = "Введите �
 $lang['application_new_client_has_registered'] = "Новый клиент создал учетную запись";
 $lang['application_your_account_has_been_created'] = "Ваша учетная запись была создана";
 $lang['application_create_account_email_template'] = "Создать учетную запись";
+
+$lang['application_api_login_id'] = "API Войти ID";
+$lang['application_api_transaction_key'] = "ID API сделка";
+$lang['application_authorize_active'] = "Активировать Authorize.net";
+$lang['application_your_credit_card_will_be_charged_for'] = "Ваша кредитная карта будет взиматься плата за";
+$lang['application_Canceled'] = "Отменено";
+$lang['application_company_prefix'] = "Префикс Компании";
+$lang['application_invoice_prefix'] = "Счет Приставка";
+$lang['application_project_prefix'] = "Приставка проекта";
+$lang['application_quotation_prefix'] = "Приставка цитаты";
+$lang['application_subscription_prefix'] = "Приставка Подписка";
+$lang['application_copy_project'] = "Копировать проект";
+$lang['application_copy_tasks'] = "Операции копирования";
+

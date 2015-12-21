@@ -1,8 +1,8 @@
 	<div class="col-sm-12  col-md-12 main">  
     <div class="row tile-row">
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame"><i class="ion-ios-bell"></i> </div><h1> <?php if(isset($invoices_due_this_month)){echo $invoices_due_this_month;} ?> <span class="hidden-xs"><?=$this->lang->line('application_invoices');?></span></h1><h2 class="hidden-xs"><?=$this->lang->line('application_due_this_month');?></h2></div>
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary"><i class="ion-ios-analytics"></i> </div><h1> <?php if(isset($invoices_paid_this_month)){echo $invoices_paid_this_month;} ?> <span class="hidden-xs"><?=$this->lang->line('application_invoices');?></span></h1><h2 class="hidden-xs"><?=$this->lang->line('application_paid_this_month');?></h2></div>
-      <div class="col-md-6 col-xs-12 tile">
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame hidden-xs"><i class="ion-ios-bell"></i> </div><h1> <?php if(isset($invoices_due_this_month)){echo $invoices_due_this_month;} ?> <span><?=$this->lang->line('application_invoices');?></span></h1><h2><?=$this->lang->line('application_due_this_month');?></h2></div>
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary hidden-xs"><i class="ion-ios-analytics"></i> </div><h1> <?php if(isset($invoices_paid_this_month)){echo $invoices_paid_this_month;} ?> <span><?=$this->lang->line('application_invoices');?></span></h1><h2><?=$this->lang->line('application_paid_this_month');?></h2></div>
+      <div class="col-md-6 col-xs-12 tile hidden-xs">
       <div style="width:97%; height: 93px;">
       <canvas id="tileChart" class="hidden-xs" width="auto" height="50"></canvas>
       </div>
@@ -39,12 +39,12 @@
 		<?php foreach ($invoices as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$value->reference;?></td>
+			<td class="hidden-xs"><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
 			<td><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
 			<td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
 			<td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?=$unix;?></span></td>
 			<td class="hidden-xs"><?php if(isset($value->sum)){echo display_money($value->sum, $value->currency);} ?> </td>
-      <td><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>
+      <td class="<?=$value->status?>"><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>
 		
 			<td class="option" width="8%">
 				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?=base_url()?>invoices/delete/<?=$value->id;?>'><?=$this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?=$this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?=$value->id;?>'>" data-original-title="<b><?=$this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
@@ -142,8 +142,6 @@ legentvar = new Array("<?=$this->lang->line('application_paid');?>", "<?=$this->
 var options = {
 
     scaleShowVerticalLines: false,
-
-    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
 
     tooltipTemplate: "<?=$this->lang->line('application_paid');?> <%= value %>"
 

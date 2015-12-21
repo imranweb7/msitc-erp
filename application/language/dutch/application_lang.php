@@ -1089,3 +1089,23 @@ $lang['application_enter_your_details_to_create_an_account'] = "Vul uw gegevens 
 $lang['application_new_client_has_registered'] = "Nieuwe klant heeft een account aangemaakt";
 $lang['application_your_account_has_been_created'] = "Uw account is aangemaakt";
 $lang['application_create_account_email_template'] = "Account";
+
+$lang['application_api_login_id'] = "API login ID";
+$lang['application_api_transaction_key'] = "API Transactie ID";
+$lang['application_authorize_active'] = "Activeren Authorize.net";
+$lang['application_your_credit_card_will_be_charged_for'] = "Uw creditcard wordt in rekening gebracht voor";
+$lang['application_Canceled'] = "geannuleerd";
+$lang['application_company_prefix'] = "Company Prefix";
+$lang['application_invoice_prefix'] = "Factuur voorvoegsel";
+$lang['application_project_prefix'] = "Project voorvoegsel";
+$lang['application_quotation_prefix'] = "Citaat voorvoegsel";
+$lang['application_subscription_prefix'] = "Subscription voorvoegsel";
+$lang['application_copy_project'] = "Copy Project";
+$lang['application_copy_tasks'] = "Copy Taken";
+
+$lang['application_payment'] = "Betaling";
+$lang['application_add_payment'] = "Betaling toevoegen";
+$lang['application_cash'] = "Cash";
+$lang['application_PartiallyPaid'] = "deels betaald";
+$lang['application_total_outstanding'] = "Uitstekend";
+$lang['application_payment_id'] = "Payment ID";

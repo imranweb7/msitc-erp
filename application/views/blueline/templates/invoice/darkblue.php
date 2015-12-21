@@ -209,7 +209,7 @@ p{
         </tr>
         <tr>
           <td class="padding" style="vertical-align:top">
-          <span class="invoicereference"><?=$this->lang->line('application_invoice');?> <?=$invoice->reference;?></span><br/>
+          <span class="invoicereference"><?=$this->lang->line('application_invoice');?> <?=$core_settings->invoice_prefix;?><?=$invoice->reference;?></span><br/>
           <span class="over"><?php $unix = human_to_unix($invoice->issue_date.' 00:00'); echo date($core_settings->date_format, $unix);?></span>
           </td>
           <td class="padding" align="right" style="vertical-align:bottom">
@@ -235,7 +235,7 @@ p{
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td>
         <span class="item-name"><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice->invoice_has_items[$i]->item->name; }?></span><br/>
-        <span class="description"><?=$invoice->invoice_has_items[$i]->description;?><span class="item-name">
+        <span class="description"><?= str_replace("&lt;br&gt;", "<br>", $invoice->invoice_has_items[$i]->description);?><span class="item-name">
       </td>
       <td class="center"><?=$invoice->invoice_has_items[$i]->amount;?></td>
       <td class="right"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->value));?></td>
@@ -280,7 +280,9 @@ p{
           <td class="side"><span class="over"><?=$this->lang->line('application_sub_total');?></span><br/><span class="under"><?=display_money($presum, $invoice->currency);?></span></td>
           <?php if($tax_value != "0"){ ?><td class="side"><span class="over"><?=$this->lang->line('application_tax');?> (<?= $tax_value?>%)</span><br/><span class="under"><?=display_money($tax, $invoice->currency)?></span></td><?php } ?>
           <?php if($second_tax_value != "0" && $second_tax_value != ""){ ?><td class="side"><span class="over"><?=$this->lang->line('application_second_tax');?> (<?= $second_tax_value?>%)</span><br/><span class="under"><?=display_money($second_tax, $invoice->currency)?></span></td><?php } ?>
-          <td class="total-heading"><span class="over"><?=$this->lang->line('application_total');?></span><br/><span class="under"><?=display_money($sum, $invoice->currency);?></span></td>
+          <?php if($invoice->paid > "0"){ ?><td class="side"><span class="over"><?=$this->lang->line('application_payments_received');?></span><br/><span class="under"><?=display_money($invoice->paid, $invoice->currency)?></span></td><?php } ?>
+         
+          <td class="total-heading"><span class="over"><?php if($invoice->paid > "0"){ echo $this->lang->line('application_total_outstanding'); } else{ echo $this->lang->line('application_total'); }?></span><br/><span class="under"><?=display_money($sum-$invoice->paid, $invoice->currency);?></span></td>
         </tr> 
 
         </table>
@@ -289,6 +291,15 @@ p{
 
     <div class="custom-terms"><?php echo $invoice->terms; ?></div>
     <div class="footer"><b><?=$core_settings->company;?></b> | <?=$core_settings->email;?><?php if($core_settings->invoice_tel != ""){echo " | ".$core_settings->invoice_tel;};?><?php if($core_settings->vat != ""){echo " | ".$this->lang->line('application_vat').": ".$core_settings->vat;}?></div>
+    <script type='text/php'>
+        if ( isset($pdf) ) { 
+          $font = Font_Metrics::get_font('helvetica', 'normal');
+          $size = 9;
+          $y = $pdf->get_height() - 24;
+          $x = $pdf->get_width() - 15 - Font_Metrics::get_text_width('1/1', $font, $size);
+          $pdf->page_text($x, $y, '{PAGE_NUM}/{PAGE_COUNT}', $font, $size);
+        } 
+      </script>
 </div>
 
 </body>

@@ -26,7 +26,7 @@ class Projects extends MY_Controller {
 			redirect('login');
 		}
 		$this->view_data['submenu'] = array(
-				 		$this->lang->line('application_all') => 'projects',
+				 		$this->lang->line('application_all') => 'projects/filter/all',
 				 		$this->lang->line('application_open') => 'projects/filter/open',
 				 		$this->lang->line('application_closed') => 'projects/filter/closed'
 				 		);	
@@ -35,7 +35,8 @@ class Projects extends MY_Controller {
 	}	
 	function index()
 	{
-		$this->view_data['project'] = Project::all();
+		$options = array('conditions' => 'progress < 100');
+		$this->view_data['project'] = Project::all($options);
 		$this->content_view = 'projects/all';
 		$this->view_data['projects_assigned_to_me'] = ProjectHasWorker::find_by_sql('select count(distinct(projects.id)) AS "amount" FROM projects, project_has_workers WHERE projects.progress != "100" AND (projects.id = project_has_workers.project_id AND project_has_workers.user_id = "'.$this->user->id.'") ');
 		$this->view_data['tasks_assigned_to_me'] = ProjectHasTask::count(array('conditions' => 'user_id = '.$this->user->id.' and status = "open"'));
@@ -54,6 +55,9 @@ class Projects extends MY_Controller {
 				break;
 			case 'closed':
 				$options = array('conditions' => 'progress = 100');
+				break;
+			case 'all':
+				$options = array('conditions' => 'progress = 100 OR progress < 100');
 				break;
 		}
 		
@@ -83,9 +87,8 @@ class Projects extends MY_Controller {
 			$project_reference->update_attributes(array('project_reference' => $new_project_reference));
        		if(!$project){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_project_error'));}
        		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_project_success'));
-       			$project_last = Project::last();
-       			$sql = "INSERT INTO `project_has_workers` (`project_id`, `user_id`) VALUES (".$project_last->id.", ".$this->user->id.")";
-				$query = $this->db->query($sql);
+				$attributes = array('project_id' => $project->id, 'user_id' => $this->user->id);
+				ProjectHasWorker::create($attributes);
        			}
 			redirect('projects');
 		}else
@@ -121,6 +124,63 @@ class Projects extends MY_Controller {
 			$this->view_data['title'] = $this->lang->line('application_edit_project');
 			$this->view_data['form_action'] = 'projects/update';
 			$this->content_view = 'projects/_project';
+		}	
+	}	
+	function copy($id = FALSE)
+	{	
+		if($_POST){
+			unset($_POST['send']);
+			$id = $_POST['id'];
+			unset($_POST['id']);
+			$_POST['datetime'] = time();
+			$_POST = array_map('htmlspecialchars', $_POST);
+			unset($_POST['files']);
+			if(isset($_POST['tasks'])){
+				unset($_POST['tasks']);
+				$tasks = TRUE;
+			}
+
+			$project = Project::create($_POST);
+			$new_project_reference = $_POST['reference']+1;
+			$project_reference = Setting::first();
+			$project_reference->update_attributes(array('project_reference' => $new_project_reference));
+
+			if($tasks){
+			unset($_POST['tasks']);
+				$source_project	= Project::find_by_id($id);
+				foreach ($source_project->project_has_tasks as $row) {
+					$attributes = array(
+						'project_id' => $project->id, 
+						'name' => $row->name, 
+						'user_id' => '',
+						'status' => 'open', 
+						'public' => $row->public, 
+						'datetime' => $project->start,
+						'due_date' => $project->end,
+						'description' => $row->description,
+						'value' => $row->value,
+						'priority' => $row->priority,
+
+						);
+					ProjectHasTask::create($attributes);
+				}
+				
+			}
+
+       		if(!$project){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_project_error'));}
+       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_project_success'));
+				$attributes = array('project_id' => $project->id, 'user_id' => $this->user->id);
+				ProjectHasWorker::create($attributes);
+       			}
+       		redirect('projects/view/'.$id);
+		}else
+		{
+			$this->view_data['companies'] = Company::find('all',array('conditions' => array('inactive=?','0')));
+			$this->view_data['project'] = Project::find($id);
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_copy_project');
+			$this->view_data['form_action'] = 'projects/copy';
+			$this->content_view = 'projects/_copy';
 		}	
 	}	
 	function assign($id = FALSE)
@@ -274,6 +334,8 @@ class Projects extends MY_Controller {
 					unset($_POST['send']);
 					unset($_POST['files']);
 					$description = $_POST['description'];
+					$description = preg_replace('/^<\?php(.*)(\?>)?$/s', '$1', $description);
+					$description = preg_replace('/^<script(.*)(\?>)?$/s', '$1', $description);
 					$_POST = array_map('htmlspecialchars', $_POST);
 					$_POST['description'] = $description;
 					$_POST['project_id'] = $id;
@@ -298,6 +360,9 @@ class Projects extends MY_Controller {
 					unset($_POST['files']);
 					if(!isset($_POST['public'])){$_POST['public'] = 0;}
 					$description = $_POST['description'];
+					$description = preg_replace('/^<\?php(.*)(\?>)?$/s', '$1', $description);
+					$description = preg_replace('/^<script(.*)(\?>)?$/s', '$1', $description);
+
 					$_POST = array_map('htmlspecialchars', $_POST);
 					$_POST['description'] = $description;
 					$task_id = $_POST['id'];
@@ -560,7 +625,7 @@ class Projects extends MY_Controller {
 		if(file_exists($file)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename='.basename($file));
+            header('Content-Disposition: attachment; filename='.basename($media->filename));
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

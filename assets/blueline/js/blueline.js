@@ -24,6 +24,20 @@ $('[data-toggle="mainmodal"]').bind('click',function(e) {
 }); 
 }
 modalfunc();
+
+function easyPie() {
+    $('.easyPieChart').easyPieChart({
+        barColor: function (percent) {
+       return (percent < 100 ? '#11A7DB' : percent = 100 ? '#5cb85c' : '#cb3935');
+    },
+        trackColor: '#E5E9EC',
+        scaleColor: false,
+        size:55
+
+    });
+
+};
+easyPie();
 //Ajax loaded content
 $(document).on("click", '.ajax', function (e) {
   e.preventDefault();
@@ -208,7 +222,15 @@ $(document).on("click", '.section-reload #send', function (e) {
      
 });
 
-
+  $(document).on("click", '.dynamic-reload', function (e) {
+    var reload = $(this).data('reload');
+    if(reload) {
+                     $('#'+reload).load(document.URL + ' #'+reload, function(data) {
+                         easyPie();        
+                     }); 
+                     
+                 }
+  });
 
   $(document).on("click", '.dynamic-form .send', function (e) {
     e.stopPropagation();
@@ -328,7 +350,9 @@ $('#changed').velocity("transition.fadeIn");
 $(document).on("click", '#_notes .addtemplate', function (e) {
 $('#changed').velocity("transition.fadeIn");
 }); 
-
+$(document).on("click", '.expand', function (e) {
+  $('.sec').velocity("transition.fadeIn");
+}); 
 
 
 $('.to_modal').click(function(e) {
@@ -702,18 +726,7 @@ function startTimer(starttime) {
   });
 }
 
-$(function() {
-    $('.easyPieChart').easyPieChart({
-        barColor: function (percent) {
-       return (percent < 100 ? '#11A7DB' : percent = 100 ? '#5cb85c' : '#cb3935');
-    },
-        trackColor: '#E5E9EC',
-        scaleColor: false,
-        size:55
 
-    });
-
-});
 //ChartJs Config
 Chart.defaults.global = {
     // Boolean - Whether to animate the chart

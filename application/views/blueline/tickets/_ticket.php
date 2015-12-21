@@ -72,7 +72,9 @@ if(isset($ticket)){ ?>
 
  <div class="form-group">
 <ul class="accesslist">
-<li> <input type="checkbox" class="checkbox" id="r_notify" name="notify_agent" value="yes" data-labelauty="<?=$this->lang->line('application_notify_agent');?>"></li>
+<li> <input type="checkbox" class="checkbox" id="r_notify" name="notify_agent" value="yes" data-labelauty="<?=$this->lang->line('application_notify_agent');?>" checked="checked"></li>
+<li> <input type="checkbox" class="checkbox" id="c_notify" name="notify_client" value="yes" data-labelauty="<?=$this->lang->line('application_notify_client');?>" checked="checked"></li>
+
 </ul>           
 </div> 
         <div class="modal-footer">

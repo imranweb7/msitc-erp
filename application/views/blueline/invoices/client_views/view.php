@@ -9,7 +9,7 @@
 		<div class="table-head"><?=$this->lang->line('application_invoice_details');?></div>
 		<div class="subcont">
 		<ul class="details col-xs-12 col-sm-6">
-			<li><span><?=$this->lang->line('application_invoice_id');?>:</span> <?=$invoice->reference;?></li>
+			<li><span><?=$this->lang->line('application_invoice_id');?>:</span> <?=$core_settings->invoice_prefix;?><?=$invoice->reference;?></li>
 			<li class="<?=$invoice->status;?>"><span><?=$this->lang->line('application_status');?>:</span>
 			<a class="label label-default <?php $unix = human_to_unix($invoice->sent_date.' 00:00'); $unix2 = human_to_unix($invoice->paid_date.' 00:00'); if($invoice->status == "Paid"){echo 'label-success tt" title="'.date($core_settings->date_format, $unix2);}elseif($invoice->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$invoice->status);?>
 			</a>
@@ -65,7 +65,7 @@
 		
 		<?php endforeach;
 		if(empty($items)){ echo "<tr><td colspan='6'>".$this->lang->line('application_no_items_yet')."</td></tr>";}
-		if(substr($invoice->discount, -1) == "%"){ $discount = sprintf("%01.2f", round(($sum/100)*substr($invoice->discount, 0, -1), 2)); }
+		if(substr($invoice->discount, -1) == "%"){ $discountpercent = TRUE; $discount = sprintf("%01.2f", round(($sum/100)*substr($invoice->discount, 0, -1), 2)); }
 		else{$discount = $invoice->discount;}
 		$sum = $sum-$discount;
 
@@ -81,10 +81,14 @@
 	      $second_tax_value = $core_settings->second_tax;
 	    }
 
+
 		$tax = sprintf("%01.2f", round(($sum/100)*$tax_value, 2));
 		$second_tax = sprintf("%01.2f", round(($sum/100)*$second_tax_value, 2));
 
     	$sum = sprintf("%01.2f", round($sum+$tax+$second_tax, 2));
+
+    	$payments = $invoice->invoice_has_payments;
+    	$sumRest = sprintf("%01.2f", round($sum-$invoice->paid, 2));
 		?>
 		<?php if ($discount != 0): ?>
 		<tr>
@@ -100,7 +104,7 @@
 		<?php } ?>
 		<?php if ($second_tax != "0"){ ?>
 		<tr>
-			<td colspan="5" align="right"><?=$this->lang->line('application_second_tax');?> (<?= $second_tax_value?>%)</td>
+			<td colspan="4" align="right"><?=$this->lang->line('application_second_tax');?> (<?= $second_tax_value?>%)</td>
 			<td><?=display_money($second_tax);?></td>
 		</tr>
 		<?php } ?>
@@ -111,6 +115,53 @@
 		</table>
 		
 		</div>
+
+				<?php if (!empty($payments)){ ?>
+		<div class="row">
+		<div class="col-md-12">
+		<div class="table-head"><?=$this->lang->line('application_payments');?> </div>
+		<div class="table-div min-height-200">
+		<table class="table noclick" id="payments" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+			
+
+		<thead>
+			<th><?=$this->lang->line('application_payment_id');?></th>
+			<th><?=$this->lang->line('application_description');?></th>
+			<th><?=$this->lang->line('application_type');?></th>
+			<th><?=$this->lang->line('application_payment_date');?></th>
+			<th><?=$this->lang->line('application_value');?></th>
+
+		</thead>
+		
+		<?php
+			$i = 0; 
+			foreach ($payments as $value) {  ?>
+
+				<tr class="sec">
+					
+					<td>#<?=$payments[$i]->reference;?></td>
+					<td><?=$payments[$i]->notes;?></td>
+					<td><?=$this->lang->line('application_'.$payments[$i]->type);?></td>
+					<td><?php $unix = human_to_unix($payments[$i]->date.' 00:00'); echo date($core_settings->date_format, $unix);?></td>
+					
+					<td>- <?=display_money($payments[$i]->amount);?></td>
+				</tr>
+		<?php $i++; } ?>
+
+		<tr class="payments">
+			<td colspan="4" align="right"><?=$this->lang->line('application_payments_received');?></td>
+			<td>- <?=display_money($invoice->paid);?></td>
+		</tr>
+		<tr class="active">
+			<td colspan="4" align="right"><?=$this->lang->line('application_total_outstanding');?></td>
+			<td><?=display_money($sumRest, $invoice->currency);?></td>
+		</tr>
+
+		</table>
+		</div>
+		</div>
+		</div>
+		<?php } ?>
 
 		<div class="row">
 
@@ -159,9 +210,14 @@
 	    <li><a id="pay_paypal" onclick="javascript:document.forms['paypal'].submit();" href="#"><i class="fa fa-paypal" style="margin-right:5px"></i>  <?=$this->lang->line('application_paypal');?></a></li>
 	  <?php } ?>
 
-	  <?php if($core_settings->stripe == "1" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>  
+	  
+	  <?php if($core_settings->stripe == "1" && $core_settings->authorize_net == "0" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>  
 	    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?=base_url()?>cinvoices/stripepay/<?=$invoice->id;?>/<?=$sum;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?=$this->lang->line('application_credit_card');?></a></li>
+	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?=base_url()?>cinvoices/stripepay/<?=$invoice->id;?>/<?=$sumRest;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?=$this->lang->line('application_credit_card');?></a></li>
+	  <?php } ?>
+
+	  <?php if($core_settings->stripe == "0" && $core_settings->authorize_net == "1" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>  
+	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?=base_url()?>cinvoices/authorizenet/<?=$invoice->id;?>/<?=$sumRest;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?=$this->lang->line('application_credit_card');?></a></li>
 	  <?php } ?>
 	  </ul>
 	</div>

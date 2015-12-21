@@ -1,13 +1,5 @@
 	
 	<div class="col-sm-12  col-md-12 main">  
-    <?php /*   <div class="row tile-row">
-      <div class="col-md-3 col-xs-6 tile"><h1><i class="fa fa-lightbulb-o"></i> <?php if(isset($projects_assigned_to_me)){echo $projects_assigned_to_me;} ?> <span class="hidden-xs"><?=$this->lang->line('application_projects');?></span></h1><h2 class="hidden-xs"><?=$this->lang->line('application_assigned_to_me');?></h2></div>
-      <div class="col-md-3 col-xs-6 tile"> <h1><i class="fa fa-tasks"></i> <?php if(isset($tasks_assigned_to_me)){echo $tasks_assigned_to_me;} ?> <span class="hidden-xs"><?=$this->lang->line('application_tasks');?></span></h1><h2 class="hidden-xs"><?=$this->lang->line('application_assigned_to_me');?></h2></div>
-      <div class="col-md-6 col-xs-12 tile">
-      <figure style="width: auto; height: 100px;" id="project_line_chart"></figure>
-      </div>
-    
-    </div>   */ ?>
      <div class="row">
 			<a href="<?=base_url()?>subscriptions/create" class="btn btn-primary" data-toggle="mainmodal"> <?=$this->lang->line('application_create_subscription');?></a>
 			
@@ -40,7 +32,7 @@
 		<?php foreach ($subscriptions as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$value->reference;?></td>
+			<td class="hidden-xs"><?=$core_settings->subscription_prefix;?><?=$value->reference;?></td>
 			<td><span class="label label-info"><?php if(!isset($value->company->name)){echo $this->lang->line('application_no_client_assigned'); }else{ echo $value->company->name; }?></span></td>
 			<td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
 			<td><span class="label <?php if($value->status == "Active"){echo ' ';} if($value->end_date <= date('Y-m-d') && $value->status != "Inactive"){ $ended = true; echo ' label-success tt" title="'.$this->lang->line('application_subscription_has_ended'); } ?>"><?php $unix = human_to_unix($value->end_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>

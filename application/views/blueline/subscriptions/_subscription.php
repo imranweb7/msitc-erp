@@ -14,7 +14,10 @@ echo form_open($form_action, $attributes);
 
  <div class="form-group">
         <label for="reference"><?=$this->lang->line('application_reference_id');?> *</label>
+        <?php if(!empty($core_settings->subscription_prefix)){ ?>
+       <div class="input-group"> <div class="input-group-addon"><?=$core_settings->subscription_prefix;?></div> <?php } ?>
         <input id="reference" type="text" name="reference" class="form-control"  value="<?php if(isset($subscription) ){echo $subscription->reference;} else{ echo $core_settings->subscription_reference; } ?>"   readonly="readonly" />
+        <?php if(!empty($core_settings->subscription_prefix)){ ?> </div> <?php } ?>
 </div> 
 
  <div class="form-group">
@@ -84,7 +87,7 @@ echo form_open($form_action, $attributes);
  
   <div class="form-group">
         <label for="terms"><?=$this->lang->line('application_custom_tax');?></label>
-        <input class="form-control" name="tax" type="text" value="<?php if(isset($subscription)){ echo $subscription->tax;}else{echo $core_settings->tax;} ?>" required/>
+        <input class="form-control" name="tax" type="text" value="<?php if(isset($subscription)){ echo $subscription->tax;}else{echo $core_settings->tax;} ?>" />
  </div>
 
  <div class="form-group">

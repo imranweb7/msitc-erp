@@ -86,6 +86,61 @@ echo form_open_multipart($form_action, $attributes);
 		
 	</div>
 	<div class="form-group">
+		<label><?=$this->lang->line('application_company_prefix');?></label>
+		
+
+			<div class="input-group col-md-3">
+			  
+			  <input type="text"  name="company_prefix"  value="<?=$settings->company_prefix;?>" class="form-control" >
+
+			</div>
+		
+	</div>
+	<div class="form-group">
+		<label><?=$this->lang->line('application_invoice_prefix');?></label>
+		
+
+			<div class="input-group col-md-3">
+			  
+			  <input type="text"  name="invoice_prefix"  value="<?=$settings->invoice_prefix;?>" class="form-control" >
+
+			</div>
+		
+	</div>
+	<div class="form-group">
+		<label><?=$this->lang->line('application_subscription_prefix');?></label>
+		
+
+			<div class="input-group col-md-3">
+			  
+			  <input type="text"  name="subscription_prefix"  value="<?=$settings->subscription_prefix;?>" class="form-control" >
+
+			</div>
+		
+	</div>
+	<div class="form-group">
+		<label><?=$this->lang->line('application_project_prefix');?></label>
+		
+
+			<div class="input-group col-md-3">
+			  
+			  <input type="text"  name="project_prefix"  value="<?=$settings->project_prefix;?>" class="form-control">
+
+			</div>
+		
+	</div>
+	<div class="form-group">
+		<label><?=$this->lang->line('application_quotation_prefix');?></label>
+		
+
+			<div class="input-group col-md-3">
+			  
+			  <input type="text"  name="quotation_prefix"  value="<?=$settings->quotation_prefix;?>" class="form-control" >
+
+			</div>
+		
+	</div>
+	<div class="form-group">
 		<label><?=$this->lang->line('application_estimate_prefix');?></label>
 		
 

@@ -40,7 +40,7 @@ class My_Controller extends CI_Controller
 				$this->view_data['user_online'] = User::all(array('conditions' => array('last_active+(30 * 60) > ? AND status = ?', time(), "active")));
 				$this->view_data['client_online'] = Client::all(array('conditions' => array('last_active+(30 * 60) > ? AND inactive = ?', time(), "0")));
 				$this->view_data['quotations_new'] = Quote::find_by_sql("select count(id) as amount from quotations where status='New'");
-				$this->view_data['sticky'] = Project::find_by_sql("select distinct(projects.name), projects.id, projects.progress from projects, project_has_workers where projects.sticky = 1 AND projects.id = project_has_workers.project_id AND project_has_workers.user_id=".$this->user->id);
+				$this->view_data['sticky'] = Project::find_by_sql("select distinct(projects.name), projects.id, projects.tracking, projects.progress from projects, project_has_workers where projects.sticky = 1 AND projects.id = project_has_workers.project_id AND project_has_workers.user_id=".$this->user->id);
 				$this->view_data['tickets_new'] = Ticket::find_by_sql("select count(id) as amount from tickets where `status`='New'");
 			
 

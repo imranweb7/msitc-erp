@@ -85,7 +85,7 @@ class Dashboard extends MY_Controller
 					$res = Invoice::find_by_sql($sql);
 					//$res = $res->result();
 					foreach ($res as $key2 => $value2) {
-						$eventline = str_replace("{invoice_number}", '<a href="'.base_url().'invoices/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_invoice_overdue'));
+						$eventline = str_replace("{invoice_number}", '<a href="'.base_url().'invoices/view/'.$value2->id.'">#'.$this->view_data['core_settings']->invoice_prefix.$value2->reference.'</a>', $this->lang->line('event_invoice_overdue'));
 						$events[$value2->due_date.".".$value2->id] = $eventline;
 						$eventcount = $eventcount+1;
 					}
@@ -102,12 +102,12 @@ class Dashboard extends MY_Controller
 							$res = Project::find_by_sql($sql);
 							//$res = $query;
 							if($res){
-								$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
+								$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$this->view_data['core_settings']->project_prefix.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
 								$events[$value2->end.".".$value2->id] = $eventline;
 								$eventcount = $eventcount+1;
 							}
 						}else{
-							$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
+							$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$this->view_data['core_settings']->project_prefix.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
 							$events[$value2->end.".".$value2->id] = $eventline;
 							$eventcount = $eventcount+1;
 						}
@@ -118,7 +118,7 @@ class Dashboard extends MY_Controller
 					$res = Subscription::find_by_sql($sql);
 					//$res = $res->result();
 					foreach ($res as $key2 => $value2) {
-						$eventline = str_replace("{subscription_number}", '<a href="'.base_url().'subscriptions/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_subscription_new_invoice'));
+						$eventline = str_replace("{subscription_number}", '<a href="'.base_url().'subscriptions/view/'.$value2->id.'">#'.$this->view_data['core_settings']->subscription_prefix.$value2->reference.'</a>', $this->lang->line('event_subscription_new_invoice'));
 						$events[$value2->next_payment.".".$value2->id] = $eventline;
 						$eventcount = $eventcount+1;
 					}
@@ -135,7 +135,7 @@ class Dashboard extends MY_Controller
 				}
 				if ($value->link == "projects") {
 					$sql = 'SELECT * FROM project_has_tasks WHERE status != "done" AND user_id = "'.$this->user->id.'" ORDER BY project_id';
-					$taskquery = Project::find_by_sql($sql);
+					$taskquery = ProjectHasTask::find('all', array('conditions' => array('status != ? and user_id = ?', 'done', $this->user->id), 'order' => 'project_id desc'));
 					$this->view_data["tasks"] = $taskquery;
 				}
 
@@ -198,7 +198,7 @@ AND '$year-$thismonth-31' ";
 					$res = $this->db->query($sql);
 					$res = $res->result();
 					foreach ($res as $key2 => $value2) {
-						$eventline = str_replace("{invoice_number}", '<a href="'.base_url().'invoices/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_invoice_overdue'));
+						$eventline = str_replace("{invoice_number}", '<a href="'.base_url().'invoices/view/'.$value2->id.'">#'.$this->view_data['core_settings']->invoice_prefix.$value2->reference.'</a>', $this->lang->line('event_invoice_overdue'));
 						$events[$value2->due_date.".".$value2->id] = $eventline;
 						$eventcount = $eventcount+1;
 					}
@@ -215,12 +215,12 @@ AND '$year-$thismonth-31' ";
 							$query = $this->db->query($sql);
 							$res = $query->result();
 							if($res){
-								$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
+								$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$this->view_data['core_settings']->project_prefix.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
 								$events[$value2->end.".".$value2->id] = $eventline;
 								$eventcount = $eventcount+1;
 							}
 						}else{
-							$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
+							$eventline = str_replace("{project_number}", '<a href="'.base_url().'projects/view/'.$value2->id.'">#'.$this->view_data['core_settings']->project_prefix.$value2->reference.'</a>', $this->lang->line('event_project_overdue'));
 							$events[$value2->end.".".$value2->id] = $eventline;
 							$eventcount = $eventcount+1;
 						}
@@ -231,7 +231,7 @@ AND '$year-$thismonth-31' ";
 					$res = $this->db->query($sql);
 					$res = $res->result();
 					foreach ($res as $key2 => $value2) {
-						$eventline = str_replace("{subscription_number}", '<a href="'.base_url().'subscriptions/view/'.$value2->id.'">#'.$value2->reference.'</a>', $this->lang->line('event_subscription_new_invoice'));
+						$eventline = str_replace("{subscription_number}", '<a href="'.base_url().'subscriptions/view/'.$value2->id.'">#'.$this->view_data['core_settings']->subscription_prefix.$value2->reference.'</a>', $this->lang->line('event_subscription_new_invoice'));
 						$events[$value2->next_payment.".".$value2->id] = $eventline;
 						$eventcount = $eventcount+1;
 					}

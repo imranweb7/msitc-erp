@@ -31,7 +31,7 @@
 
           ?>
                 <tr id="<?=$value->id;?>">
-                  <td class="hidden-xs"><?=$value->reference;?></td>
+                  <td class="hidden-xs"><?=$core_settings->project_prefix;?><?=$value->reference;?></td>
                   <td class="hidden-xs">
 
                     <div class="circular-bar tt" title="<?=$value->progress;?>%">

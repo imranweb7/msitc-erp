@@ -43,6 +43,10 @@ echo form_open($form_action, $attributes);
               </div>
         </div>
         </div>
+
+        <div class="form-group">
+        <span class="help-block"><b><?=$this->lang->line('application_your_credit_card_will_be_charged_for');?> <?php echo display_money(sprintf("%01.2f", round($invoices->sum-$invoices->paid, 2))); ?> <?=$invoices->currency;?></b></span>
+        </div>
         
         <div class="modal-footer">
         <button type="submit" class="btn btn-primary" id="submitBtn"><?=$this->lang->line('application_send');?></button>

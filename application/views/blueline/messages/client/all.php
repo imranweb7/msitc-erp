@@ -15,13 +15,13 @@
   </header>
   <div class="action-bar">
     <ul>
-             <li><a class="btn btn-success" data-toggle="mainmodal" role="button" href="<?=base_url()?>cmessages/write" title="<?=$this->lang->line('application_write_message');?>"><i class="fa fa-envelope space"></i> <?=$this->lang->line('application_write_message');?></a></li>
+             <li><a class="btn btn-success" data-toggle="mainmodal" role="button" href="<?=base_url()?>cmessages/write" title="<?=$this->lang->line('application_write_message');?>"><i class="fa fa-envelope space"></i> <span class="hidden-xs"><?=$this->lang->line('application_write_message');?></span></a></li>
              <li>
                 <div class="btn-group">
-                     <a class="btn btn-primary message-list-load inbox-folder" id="message-trigger" role="button" href="<?=base_url()?>cmessages/messagelist" title="Inbox"><i class="fa fa-inbox space"></i> <?=$this->lang->line('application_INBOX');?></a>
-                     <a class="btn btn-primary message-list-load sent-folder" role="button" href="<?=base_url()?>cmessages/filter/sent/0" title="Sent Folder"><i class="fa fa-share space"></i> <?=$this->lang->line('application_sent');?></a>
-                     <a class="btn btn-primary message-list-load deleted-folder" role="button" href="<?=base_url()?>cmessages/filter/deleted/0" title="<?=$this->lang->line('application_messages_show_deleted');?>"><i class="fa fa-trash space"></i> <?=$this->lang->line('application_Deleted');?></a>
-                     <a class="btn btn-primary message-list-load marked-folder" role="button" href="<?=base_url()?>cmessages/filter/marked/0" title="<?=$this->lang->line('application_Marked');?>"><i class="fa fa-star space"></i> <?=$this->lang->line('application_Marked');?></a>
+                     <a class="btn btn-primary message-list-load inbox-folder" id="message-trigger" role="button" href="<?=base_url()?>cmessages/messagelist" title="Inbox"><i class="fa fa-inbox space"></i> <span class="hidden-xs"><?=$this->lang->line('application_INBOX');?></span></a>
+                     <a class="btn btn-primary message-list-load sent-folder" role="button" href="<?=base_url()?>cmessages/filter/sent/0" title="Sent Folder"><i class="fa fa-share space"></i> <span class="hidden-xs"><?=$this->lang->line('application_sent');?></span></a>
+                     <a class="btn btn-primary message-list-load deleted-folder" role="button" href="<?=base_url()?>cmessages/filter/deleted/0" title="<?=$this->lang->line('application_messages_show_deleted');?>"><i class="fa fa-trash space"></i> <span class="hidden-xs"><?=$this->lang->line('application_Deleted');?></span></a>
+                     <a class="btn btn-primary message-list-load marked-folder" role="button" href="<?=base_url()?>cmessages/filter/marked/0" title="<?=$this->lang->line('application_Marked');?>"><i class="fa fa-star space"></i> <span class="hidden-xs"><?=$this->lang->line('application_Marked');?></span></a>
                 </div>
             </li>
                

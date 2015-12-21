@@ -145,6 +145,15 @@ $lang['messages_registration_success'] = "Your account has been created!";
 $lang['messages_registration_error'] = "Your account has not been created!";
 $lang['messages_email_already_taken'] = "The email you have entered is already registered!";
 
+$lang['messages_create_payment_success'] = "Payment has been added!";
+$lang['messages_create_payment_error'] = "Payment has not been added!";
+$lang['messages_edit_payment_success'] = "Payment has been changed!";
+$lang['messages_edit_payment_error'] = "Payment has not been changed!";
+$lang['messages_delete_payment_success'] = "Payment has been deleted!";
+$lang['messages_delete_payment_error'] = "Payment has not been deleted!";
+
+
+
 
 
 

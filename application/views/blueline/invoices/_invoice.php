@@ -12,7 +12,10 @@ echo form_open($form_action, $attributes);
 <input id="status" name="status" type="hidden" value="Open"> 
  <div class="form-group">
         <label for="reference"><?=$this->lang->line('application_reference_id');?> *</label>
+        <?php if(!empty($core_settings->invoice_prefix)){ ?>
+       <div class="input-group"> <div class="input-group-addon"><?=$core_settings->invoice_prefix;?></div> <?php } ?>
         <input id="reference" type="text" name="reference" class="form-control"  value="<?php if(isset($invoice)){echo $invoice->reference;} else{ echo $core_settings->invoice_reference; } ?>" />
+        <?php if(!empty($core_settings->invoice_prefix)){ ?> </div><?php } ?>
  </div>
  <div class="form-group">
         <label for="client"><?=$this->lang->line('application_client');?></label>
@@ -48,6 +51,9 @@ echo form_open($form_action, $attributes);
                   'Open'  => $this->lang->line('application_Open'),
                   'Sent'    => $this->lang->line('application_Sent'),
                   'Paid' => $this->lang->line('application_Paid'),
+                  'PartiallyPaid' => $this->lang->line('application_PartiallyPaid'),
+                  'Canceled' => $this->lang->line('application_Canceled'),
+
                 );
                 echo form_dropdown('status', $options, $invoice->status, 'style="width:100%" class="chosen-select"'); ?>
 

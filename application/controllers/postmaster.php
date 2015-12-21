@@ -59,9 +59,12 @@ class Postmaster extends MY_Controller {
 						}
 						iconv(mb_detect_encoding($emailbody, mb_detect_order(), true), "UTF-8", $emailbody);
 
-					    $emailaddr = $email->get_from_array();  
-					    $emailaddr = $emailaddr[0]->mailbox.'@'.$emailaddr[0]->host;  
-
+						if($email->get_reply_to() != $email->get_from()){
+							$emailaddr = $email->get_reply_to();
+						}else{
+					      $emailaddr = $email->get_from_array();  
+					      $emailaddr = $emailaddr[0]->mailbox.'@'.$emailaddr[0]->host;  
+						}
 						//get next ticket number
 						$settings = Setting::first();
 						$ticket_reference = $settings->ticket_reference;
@@ -107,6 +110,9 @@ class Postmaster extends MY_Controller {
 										{
 											$savename = $email->get_fingerprint().random_string('alnum', 8).$part->get_filename();
 											$savename = str_replace(' ','_',$savename); $savename = str_replace('%20','_',$savename);
+											$savename = preg_replace("([^\w\s\d\-_~,;:\[\]\(\).])", '', $savename);
+											// Remove any runs of periods
+											$savename = preg_replace("([\.]{2,})", '', $savename);
 											$orgname = $part->get_filename();
 											$orgname = str_replace(' ','_',$orgname); $orgname = str_replace('%20','_',$orgname);
 											$part->filename = $savename;

@@ -11,8 +11,12 @@ echo form_open_multipart($form_action, $attributes);
 <?php } ?>
 
 <div class="form-group">
+
         <label for="reference"><?=$this->lang->line('application_reference_id');?> *</label>
+        <?php if(!empty($core_settings->company_prefix)){ ?>
+       <div class="input-group"> <div class="input-group-addon"><?=$core_settings->company_prefix;?></div> <?php } ?>
         <input id="reference" type="text" name="reference" class="required form-control"  value="<?php if(isset($company)){echo $company->reference;} else{ echo $core_settings->company_reference; } ?>"   readonly="readonly"  />
+        <?php if(!empty($core_settings->company_prefix)){ ?></div> <?php } ?>
 </div>
 
 <?php if(isset($company)){ ?>

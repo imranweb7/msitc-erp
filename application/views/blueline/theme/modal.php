@@ -31,7 +31,7 @@
  
 
   $('.datepicker').datepicker({"format": 'yyyy-mm-dd', "autoclose": true});
-  $('.date-picker').datepicker({"format": 'yyyy-mm-dd', "autoclose": true});
+  $('.date-picker').datepicker({"format": 'yyyy-mm-dd', "autoclose": true}); 
 });
 $.ajaxSetup ({
     cache: false

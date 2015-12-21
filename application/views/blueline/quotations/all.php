@@ -33,7 +33,7 @@
 		<?php foreach ($quotations as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$value->id;?></td>
+			<td class="hidden-xs"><?=$core_settings->quotation_prefix;?><?=$value->id;?></td>
 			<td><span class="label <?php if($value->status == "New"){echo "label-important";}elseif($value->status == "Accepted"){ echo "label-success";}elseif($value->status == "Reviewed"){ echo "label-warning";} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>
 			<td><?php $unix = human_to_unix($value->date); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format.' '.$core_settings->date_time_format, $unix); ?></td>
 			<td class="hidden-xs"><?php if(!empty($value->company)){echo $value->company;}else{echo $value->fullname;}?></td>
@@ -83,7 +83,7 @@
 		<?php foreach ($custom_quotations as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$value->id;?></td>
+			<td class="hidden-xs"><?=$core_settings->quotation_prefix;?><?=$value->id;?></td>
 			<td><span class="label <?php if($value->status == "New"){echo "label-important";}elseif($value->status == "Accepted"){ echo "label-success";}elseif($value->status == "Reviewed"){ echo "label-warning";} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>
 			<td class="hidden-xs"><?php  if(isset($value->customquote->name)){echo $value->customquote->name;}else{echo "-";}?></td>
 			<td><?php $unix = human_to_unix($value->date); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format.' '.$core_settings->date_time_format, $unix); ?></td>

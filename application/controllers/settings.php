@@ -26,7 +26,7 @@ class Settings extends MY_Controller
 				 		$this->lang->line('application_templates') => 'settings/templates',
 				 		$this->lang->line('application_pdf_templates') => 'settings/invoice_templates',
 				 		$this->lang->line('application_paypal') => 'settings/paypal',
-				 		$this->lang->line('application_stripe') => 'settings/stripe',
+				 		$this->lang->line('application_stripe')." / Authorize.net" => 'settings/stripe',
 				 		$this->lang->line('application_bank_transfer') => 'settings/bank_transfer',
 				 		$this->lang->line('application_users') => 'settings/users',
 				 		$this->lang->line('application_system_updates') => 'settings/updates',
@@ -256,6 +256,11 @@ class Settings extends MY_Controller
 		if(isset($_POST['stripe'])){
 		if($_POST['stripe'] != "1"){$_POST['stripe'] = "0";}
 		}else{$_POST['stripe'] = "0";}
+
+		if(isset($_POST['authorize_net'])){
+		if($_POST['authorize_net'] != "1"){$_POST['authorize_net'] = "0";}
+		}else{$_POST['authorize_net'] = "0";}
+
 		$settings = Setting::first();
 		$settings->update_attributes($_POST);
 		if($settings){
@@ -682,7 +687,7 @@ class Settings extends MY_Controller
 	function update_download($update = FALSE){
 
 		if($update){
-
+			$update = $update.".zip";
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,'http://fc2.luxsys-apps.com/updates/files/'.$update);
 
@@ -700,6 +705,7 @@ class Settings extends MY_Controller
 	function update_install($file = FALSE, $version = FALSE){
 		$this->load->helper('unzip');
 		$this->load->helper('file');
+		$file = $file.".zip";
 		if(!unzip("files/updates/".$file, "", true, true)){
 			$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_install_update_error'));
 		}else{

@@ -7,7 +7,7 @@
         
       </div>
       <div class="col-md-11 col-xs-9 smallscreen"> 
-        <h1><span class="nobold">#<?=$project->reference;?></span> - <?=$project->name;?></h1>
+        <h1><span class="nobold">#<?=$core_settings->project_prefix;?><?=$project->reference;?></span> - <?=$project->name;?></h1>
          <p class="truncate description"><?=$project->description;?></p>
       </div>
     
@@ -56,7 +56,7 @@
 
                 <div class="subcont">
                   <ul class="details col-xs-12 col-sm-12 col-md-6">
-                    <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$project->reference;?></li>
+                    <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$core_settings->project_prefix;?><?=$project->reference;?></li>
                     <li><span><?=$this->lang->line('application_category');?>:</span> <?=$project->category;?></li>
                     <li><span><?=$this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="#"><?php echo $project->company->name;} ?></a></li>
                     <li><span><?=$this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> </li>
@@ -242,7 +242,7 @@
  <div class="col-xs-12 col-sm-12">
  <div class="table-head"><?=$this->lang->line('application_invoices');?> <span class=" pull-right"></span></div>
 <div class="table-div">
- <table class="data table" id="invoices" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+ <table class="data table" id="cinvoices" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
     <thead>
       <th width="70px" class="hidden-xs"><?=$this->lang->line('application_invoice_id');?></th>
       <th><?=$this->lang->line('application_client');?></th>
@@ -253,7 +253,7 @@
     <?php foreach ($project_has_invoices as $value):?>
 
     <tr id="<?=$value->id;?>" >
-      <td class="hidden-xs" onclick=""><?=$value->reference;?></td>
+      <td class="hidden-xs" onclick=""><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
       <td onclick=""><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
       <td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
       <td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?=$unix;?></span></td>

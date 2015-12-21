@@ -33,7 +33,7 @@ class Forgotpass extends MY_Controller
 				$this->email->from($data["core_settings"]->email, $data["core_settings"]->company);
 				$this->email->to($user->email); 
 
-				$this->email->subject('Forgot your password');
+				$this->email->subject($data["core_settings"]->pw_reset_mail_subject);
 				$parse_data = array(
             					'link' => base_url().'forgotpass/token/'.$token,
             					'company' => $data["core_settings"]->company,
@@ -84,7 +84,7 @@ class Forgotpass extends MY_Controller
 						$this->email->to($result[0]->email); 
 						$this->load->library('parser');
 						$this->load->helper('file');
-						$this->email->subject('Reset of your password');
+						$this->email->subject($data["core_settings"]->pw_reset_link_mail_subject);
 						$parse_data = array(
 										'password' => $new_password,
 		            					'link' => base_url(),

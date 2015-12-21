@@ -46,8 +46,8 @@
 			
 			<td class="option">
 				<?php if($first){echo $this->lang->line('application_previous_update_required');}else{ ?>
-				<a <?php if(in_array($file->file, $downloaded_updates)){echo 'class="btn btn-xs disabled" disabled="disabled"';}else{ echo 'href="update_download/'.$file->file.'" class="btn btn-xs btn-success button-loader"';} ?>><?=$this->lang->line('application_download');?></a>
-				<a <?php if(in_array($file->file, $downloaded_updates) && $writable == "TRUE"){echo 'href="update_install/'.$file->file.'/'.$file->version.'" class="btn btn-xs btn-success button-loader"';}else{ echo 'class="btn btn-xs btn-option disabled" disabled="disabled"';} ?>><?=$this->lang->line('application_install');?></a>
+				<a <?php if(in_array($file->file, $downloaded_updates)){echo 'class="btn btn-xs disabled" disabled="disabled"';}else{ echo 'href="update_download/'.str_replace(".zip", "", $file->file).'" class="btn btn-xs btn-success button-loader"';} ?>><?=$this->lang->line('application_download');?></a>
+				<a <?php if(in_array($file->file, $downloaded_updates) && $writable == "TRUE"){echo 'href="update_install/'.str_replace(".zip", "", $file->file).'/'.$file->version.'" class="btn btn-xs btn-success button-loader"';}else{ echo 'class="btn btn-xs btn-option disabled" disabled="disabled"';} ?>><?=$this->lang->line('application_install');?></a>
 				<?php } ?>
 			</td>
 		</tr>

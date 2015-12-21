@@ -42,5 +42,19 @@ class Auth extends MY_Controller
 		User::logout();
 		redirect('login');
 	}
+	function language($lang = false){
+		$folder = 'application/language/';
+		$languagefiles = scandir($folder);
+		if(in_array($lang, $languagefiles)){
+		$cookie = array(
+                   'name'   => 'fc2language',
+                   'value'  => $lang,
+                   'expire' => '31536000',
+               );
+ 
+		$this->input->set_cookie($cookie);
+		}
+		redirect(''); 
+	}
 	
 }

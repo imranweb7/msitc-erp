@@ -78,7 +78,7 @@ echo form_open($form_action, $attributes);
  </div>
   <div class="form-group">
         <label for="terms"><?=$this->lang->line('application_custom_tax');?></label>
-        <input class="form-control" name="tax" type="text" value="<?php if(isset($estimate)){ echo $estimate->tax;}else{echo $core_settings->tax;} ?>" required/>
+        <input class="form-control" name="tax" type="text" value="<?php if(isset($estimate)){ echo $estimate->tax;}else{echo $core_settings->tax;} ?>"/>
  </div>
    <div class="form-group">
         <label for="terms"><?=$this->lang->line('application_second_tax');?></label>

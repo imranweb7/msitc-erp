@@ -236,7 +236,7 @@ p{
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td>
         <span class="item-name"><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></span><br/>
-        <span class="description"><?=$estimate->invoice_has_items[$i]->description;?><span class="item-name">
+        <span class="description"><?= str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?><span class="item-name">
       </td>
       <td class="center"><?=$estimate->invoice_has_items[$i]->amount;?></td>
       <td class="right"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->value));?></td>
@@ -290,6 +290,16 @@ p{
 
     <div class="custom-terms"><?php echo $estimate->terms; ?></div>
     <div class="footer"><b><?=$core_settings->company;?></b> | <?=$core_settings->email;?><?php if($core_settings->invoice_tel != ""){echo " | ".$core_settings->invoice_tel;};?><?php if($core_settings->vat != ""){echo " | ".$this->lang->line('application_vat').": ".$core_settings->vat;}?></div>
+    <script type='text/php'>
+        if ( isset($pdf) ) { 
+          $font = Font_Metrics::get_font('helvetica', 'normal');
+          $size = 9;
+          $y = $pdf->get_height() - 24;
+          $x = $pdf->get_width() - 15 - Font_Metrics::get_text_width('1/1', $font, $size);
+          $pdf->page_text($x, $y, '{PAGE_NUM}/{PAGE_COUNT}', $font, $size);
+        } 
+      </script>
+
 </div>
 
 </body>

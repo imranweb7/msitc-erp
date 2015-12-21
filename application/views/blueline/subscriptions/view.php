@@ -19,7 +19,7 @@
 		<div class="table-head"><?=$this->lang->line('application_subscription_details');?></div>
 		<div class="subcont">
 		<ul class="details col-xs-12 col-sm-6">
-			<li><span><?=$this->lang->line('application_subscription_id');?>:</span> <?=$subscription->reference;?></li>
+			<li><span><?=$this->lang->line('application_subscription_id');?>:</span> <?=$core_settings->subscription_prefix;?><?=$subscription->reference;?></li>
 			<li class="<?=$subscription->status;?>"><span><?=$this->lang->line('application_status');?>:</span>
 			<a class="label <?php if($subscription->status == 'Active'){ echo 'label-success';}else{echo 'label-important'; } ?>"><?php if($subscription->end_date <= date('Y-m-d') && $subscription->status != "Inactive"){ echo $this->lang->line('application_ended'); }else{ echo $this->lang->line('application_'.$subscription->status);}?></a>
 			<?php if($subscription->subscribed != "0"){ ?>  <a class="label label-success margin-left-5 tt" title="<?php $unix = human_to_unix($subscription->subscribed.' 00:00'); echo date($core_settings->date_format, $unix);?>" ><?=$this->lang->line('application_subscribed_via_paypal');?></a> <?php } ?>
@@ -193,7 +193,7 @@
 		<?php foreach ($subscription->invoices as $value):?>
 
 		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$value->reference;?></td>
+			<td class="hidden-xs"><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
 			<td class="hidden-xs"><span class="label label-info"><?php if(!isset($value->company->name)){echo $this->lang->line('application_no_client_assigned'); }else{ echo $value->company->name; }?></span></td>
 			<td><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo date($core_settings->date_format, $unix);?></span></td>
 			<td><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></span></td>

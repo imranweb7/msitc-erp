@@ -17,7 +17,7 @@
 		</thead>
 		<?php foreach ($companies as $value):?>
 
-		<tr  id="<?=$value->id;?>" ><td class="hidden-xs" style="width:70px"><?php if(isset($value->reference)){ echo $value->reference;} ?></td>
+		<tr  id="<?=$value->id;?>" ><td class="hidden-xs" style="width:70px"><?=$core_settings->company_prefix;?><?php if(isset($value->reference)){ echo $value->reference;} ?></td>
 						
 			<td><span class="label label-info"><?php if(isset($value->name)){echo $value->name;} else{echo $this->lang->line('application_no_company_assigned'); }?></span></td>
 			<td class="hidden-xs"><?php if(isset($value->client->firstname)){ echo $value->client->firstname.' '.$value->client->lastname;}else{ echo $this->lang->line('application_no_contact_assigned');} ?></td>

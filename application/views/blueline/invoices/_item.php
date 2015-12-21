@@ -9,6 +9,19 @@ echo form_open($form_action, $attributes);
 if(isset($invoice_has_items)){ ?>
 <input id="id" type="hidden" name="id" value="<?=$invoice_has_items->id;?>" />
 <input id="invoice_id" type="hidden" name="invoice_id" value="<?=$invoice_has_items->invoice_id;?>" />
+
+ <div class="form-group">
+        <label for="name"><?=$this->lang->line('application_name');?></label>
+        <input id="name" name="name" type="text" class="required form-control"  value="<?=$invoice_has_items->name;?>" />
+ </div>
+ <div class="form-group">
+        <label for="value"><?=$this->lang->line('application_value');?></label>
+        <input id="value" type="text" name="value" class="required form-control number"  value="<?=$invoice_has_items->value;?>" />
+ </div>
+ <div class="form-group">
+        <label for="type"><?=$this->lang->line('application_type');?></label>
+        <input id="type" type="text" name="type" class="required form-control"  value="<?=$invoice_has_items->type;?>" />
+ </div>
 <?php } else{ ?>
 <div id="item-selector">
         <label for="item_id"><?=$this->lang->line('application_item');?></label><br>

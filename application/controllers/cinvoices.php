@@ -145,6 +145,10 @@ class cInvoices extends MY_Controller {
 			if ($charge->paid == true) {
 				$attr= array();
 				$paid_date = date('Y-m-d', time());
+				$payment_reference = $invoice->reference.'00'.InvoiceHasPayment::count(array('conditions' => 'invoice_id = '.$invoice->id))+1;
+				$attributes = array('invoice_id' => $invoice->id, 'reference' => $payment_reference, 'amount' => $_POST['sum'], 'date' => $paid_date, 'type' => 'credit_card', 'notes' => '');
+				$invoiceHasPayment = InvoiceHasPayment::create($attributes);
+					
 				
 				$invoice->update_attributes(array('paid_date' => $paid_date, 'status' => 'Paid'));
 				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_payment_complete'));
@@ -198,6 +202,83 @@ class cInvoices extends MY_Controller {
 		function success($id = FALSE){
 		$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_payment_success'));
 		redirect('cinvoices/view/'.$id);
+	}
+
+	function authorizenet($id = FALSE){
+
+		if($_POST){
+				// Authorize.net lib
+				
+				$this->load->library('authorize_net');
+				$invoice = Invoice::find_by_id($_POST['invoice_id']);
+				log_message('error', 'Authorize.net: Payment process started for invoice: #'.$invoice->reference);
+				
+				$amount = sprintf("%01.2f", round($invoice->sum-$invoice->paid, 2));
+
+				$auth_net = array(
+					'x_card_num'			=> str_replace(' ', '', $_POST['x_card_num']),
+					'x_exp_date'			=> $_POST['x_card_month'].'/'.$_POST['x_card_year'],
+					'x_card_code'			=> $_POST['x_card_code'],
+					'x_description'			=> $this->lang->line('application_invoice').' #'.$invoice->reference,
+					'x_amount'				=> $amount,
+					'x_first_name'			=> $invoice->company->client->firstname,
+					'x_last_name'			=> $invoice->company->client->lastname,
+					'x_address'				=> $invoice->company->address,
+					'x_city'				=> $invoice->company->city,
+					//'x_state'				=> 'KY',
+					'x_zip'					=> $invoice->company->zipcode,
+					//'x_country'			=> 'US',
+					'x_phone'				=> $invoice->company->phone,
+					'x_email'				=> $invoice->company->client->email,
+					'x_customer_ip'			=> $this->input->ip_address(),
+					);
+				$this->authorize_net->setData($auth_net);
+				// Try to AUTH_CAPTURE
+				if( $this->authorize_net->authorizeAndCapture() )
+				{
+					
+					$this->session->set_flashdata('message', 'success: '.$this->lang->line('messages_payment_complete'));
+					
+					log_message('error', 'Authorize.net: Transaction ID: ' . $this->authorize_net->getTransactionId());
+					log_message('error', 'Authorize.net: Approval Code: ' . $this->authorize_net->getApprovalCode());
+					log_message('error', 'Authorize.net: Payment completed.');
+					$invoice->status = "Paid";
+					$invoice->paid_date = date('Y-m-d', time());
+
+					$invoice->save();
+					$attributes = array('invoice_id' => $invoice->id, 'reference' => $this->authorize_net->getTransactionId(), 'amount' => $amount, 'date' => date('Y-m-d', time()), 'type' => 'credit_card', 'notes' => $this->authorize_net->getApprovalCode());
+					$invoiceHasPayment = InvoiceHasPayment::create($attributes);
+					redirect('cinvoices/view/'.$invoice->id);
+				}
+				else
+				{
+					
+				log_message('error', 'Authorize.net: Payment failed.');
+				log_message('error', 'Authorize.net: '.$this->authorize_net->getError());
+
+				
+
+					$this->view_data['return_link'] = "invoices/view/".$invoice->id;
+
+					$this->view_data['message'] = $this->authorize_net->getError();
+					//$this->authorize_net->debug();
+
+
+					$this->content_view = 'error/error';
+				}
+		}else{
+
+			$this->view_data['invoices'] = Invoice::find_by_id($id);
+			$this->view_data["settings"] = Setting::first();
+
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_pay_with_credit_card');
+			$this->view_data['form_action'] = 'cinvoices/authorizenet';
+			$this->content_view = 'invoices/_authorizenet';
+		}
+
+
+
 	}
 
 	

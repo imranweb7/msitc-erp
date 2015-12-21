@@ -360,6 +360,17 @@ body{
 		ul.todo li.priority3{
 		    box-shadow: -4px 0 0 #ed5564;
 		}
+		.PartiallyPaid .label{ 
+			color: #3F51B5;
+    		border-color: #3F51B5;
+		}
+		tr.payments td{
+			border-color: #D8DCE3 !important;
+		}
+		thead.sec tr th{
+			border-bottom: 2px solid #43AC6E !important;
+    		padding-top: 30px !important;
+		}
 	/* Main Page Colors End */
 
 /* ----- Colors End ----- */
@@ -490,6 +501,7 @@ body{
 		.todo input.labelauty:not(:checked):not([disabled]) + label:hover, .todo input.labelauty:checked + label, .todo input.labelauty:checked:not([disabled]) + label:hover,
 		.simplecheckbox input.labelauty:not(:checked):not([disabled]) + label:hover, .simplecheckbox input.labelauty:checked + label, .simplecheckbox input.labelauty:checked:not([disabled]) + label:hover
 		{
+			background-image: none;
 			background-color: #FFFFFF;
 			color: #61C775;
 		}
@@ -968,6 +980,9 @@ body{
 			line-height: 23px;
 			border-bottom: 1px solid #EEE;
         }
+        .smallscreen p.description{
+			min-height: 15px;
+		}
 
 
 @media (max-width: 767px) {
@@ -989,6 +1004,7 @@ body{
 			position:fixed;
 			height:1500px !important;
 		}
+		
 		.smallscreen h1{
 			font-size:16px;
 		}
@@ -1683,6 +1699,17 @@ body{
 		ul.todo li{
 			line-height: 22px;
 		}
+		ul.todo h5{
+			font-size: 10px;
+		    font-weight: 600;
+		    letter-spacing: 1px;
+		    font-family: "Open sans";
+		    text-transform: uppercase;
+		    padding: 0px 0px 10px 1px;
+		    margin: 10px 16px 0px;
+		    border-bottom: 1px solid #EEEEEE;
+		    color: #11A7DB;
+		}
 		
 		.stdpad ul.todo input[type=checkbox]+.lbl, .stdpad input[type=radio]+.lbl {
             width: calc(100% - 60px);
@@ -2193,6 +2220,16 @@ transition: all 800ms cubic-bezier(0.645, 0.045, 0.355, 1) 100ms;
 		    margin-bottom:3px;
 		    font-size: 13px;
     		color: #6D7679;
+		}
+		.comment-content p.nodata{
+			margin-bottom: 3px;
+		    font-size: 10px;
+		    color: #505458;
+		    text-align: center;
+		    text-transform: uppercase;
+		    margin-left: -12px;
+		    margin-top: 14px;
+		    font-weight: 500;
 		}
 		.comment-content textarea{
 			font-size: 12px;
