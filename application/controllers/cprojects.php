@@ -44,6 +44,34 @@ class cProjects extends MY_Controller {
 		$this->view_data['project'] = Project::find('all',array('conditions' => array('company_id=?',$this->client->company->id)));
 		$this->content_view = 'projects/client_views/all';
 	}
+	function create()
+	{
+		if($_POST){
+			unset($_POST['send']);
+			$_POST['datetime'] = time();
+			$_POST = array_map('htmlspecialchars', $_POST);
+			unset($_POST['files']);
+
+			$project = Project::create($_POST);
+			$new_project_reference = $_POST['reference']+1;
+			$project_reference = Setting::first();
+			$project_reference->update_attributes(array('project_reference' => $new_project_reference));
+			if(!$project){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_project_error'));}
+			else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_project_success'));
+				$attributes = array('project_id' => $project->id, 'user_id' => $this->user->id);
+				ProjectHasWorker::create($attributes);
+			}
+			redirect('cprojects');
+		}else
+		{
+			$this->view_data['companies'] = Company::find('all',array('conditions' => array('inactive=?','0')));
+			$this->view_data['next_reference'] = Project::last();
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_create_project');
+			$this->view_data['form_action'] = 'cprojects/create';
+			$this->content_view = 'projects/_cproject';
+		}
+	}
 	function view($id = FALSE)
 	{
 		$this->view_data['submenu'] = array(

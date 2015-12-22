@@ -1,4 +1,4 @@
-<div class="col-sm-12  col-md-12 main"> 
+<div class="col-sm-12  col-md-12 main">
 		<div class="row">
 			<a href="<?=base_url()?>clients/company/create" class="btn btn-primary" data-toggle="mainmodal"><?=$this->lang->line('application_add_new_company');?></a>
 		</div>

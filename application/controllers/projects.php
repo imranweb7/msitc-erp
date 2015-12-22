@@ -74,7 +74,7 @@ class Projects extends MY_Controller {
 
 	}
 	function create()
-	{	
+	{
 		if($_POST){
 			unset($_POST['send']);
 			$_POST['datetime'] = time();

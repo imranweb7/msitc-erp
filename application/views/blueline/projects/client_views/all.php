@@ -1,5 +1,7 @@
 <div class="col-sm-13  col-md-12 main">    
      <div class="row">
+         <a href="<?=base_url()?>cprojects/create" class="btn btn-primary" data-toggle="mainmodal"><?=$this->lang->line('application_create_new_project');?></a>
+
         <div class="btn-group pull-right margin-right-3">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             <?php $last_uri = $this->uri->segment($this->uri->total_segments()); if($last_uri != "cprojects"){echo $this->lang->line('application_'.$last_uri);}else{echo $this->lang->line('application_all');} ?> <span class="caret"></span>
