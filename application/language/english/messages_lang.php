@@ -66,6 +66,13 @@ $lang['messages_install_update_success'] = "Update has been installed!";
 $lang['messages_restore_backup_error'] = "Backup restore failed!";
 $lang['messages_restore_backup_success'] = "Database backup has been restored!";
 
+$lang['messages_create_project_type_error'] = "Error while creating project type!";
+$lang['messages_create_project_type_success'] = "New project type has been created!";
+$lang['messages_delete_project_type_error'] = "Error while deleting Project Type!";
+$lang['messages_delete_project_type_success'] = "Project type has been deleted!";
+$lang['messages_save_project_type_error'] = "Error while saving project type!";
+$lang['messages_save_project_type_success'] = "Project type has been updated!";
+
 $lang['messages_save_quotation_error'] = "Error while saving quotation";
 $lang['messages_save_quotation_success'] = "Quotation has been updated";
 $lang['messages_delete_quotation_error'] = "Error while deleting quotation";

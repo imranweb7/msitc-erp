@@ -380,7 +380,16 @@ $('.to_modal').click(function(e) {
 	    	if(!$(this).hasClass('option')){window.location = site+"/view/"+id;}
 	    } 
   	});
-      $(document).on("click", 'table#media td', function (e) {
+
+    $(document).on("click", 'table#project_types td', function (e) {
+        var id = $(this).parent().attr("id");
+        if(id){
+            var site = $(this).closest('table').attr("rel");
+            if(!$(this).hasClass('option')){window.location = site+"/view/"+id;}
+        }
+    });
+
+    $(document).on("click", 'table#media td', function (e) {
 	    var id = $(this).parent().attr("id");
 	    if(id){
 	    	var site = $(this).closest('table').attr("rel");

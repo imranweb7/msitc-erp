@@ -1,7 +1,7 @@
  <div class="row">
 
 	<div class="col-md-12">
-		<h2><?=$company->name;?></h2> 
+		<h2><?=$company->name;?></h2>
 	</div>
 </div>
 		<div class="row">
@@ -34,7 +34,7 @@
 		</div>
 		</div>
 		</div>
-		
+
 <div class="row">
 	 	<div class="col-md-12">
 	 		<?php if(!isset($company->clients[0])){ ?><div class="alert alert-warning"><?=$this->lang->line('application_client_has_no_contacts');?> <a href="<?=base_url()?>clients/create/<?=$company->id;?>" data-toggle="mainmodal"><?=$this->lang->line('application_add_new_contact');?></a></div>
@@ -57,7 +57,7 @@
 
 		<tr id="<?=$value->id;?>" >
 			<td style="width:10px"><img class="minipic" src="
-               <?php 
+               <?php
                 if($value->userpic != 'no-pic.png'){
                   echo base_url()."files/media/".$value->userpic;
                 }else{
@@ -85,7 +85,7 @@
 	</div>
 </div>
 <div class="row">
-	
+
 	<div class="col-xs-12 col-sm-12">
 <?php $attributes = array('class' => 'note-form', 'id' => '_notes');
 		echo form_open(base_url()."clients/notes/".$company->id, $attributes); ?>
@@ -121,9 +121,9 @@
 		<?php endforeach;?>
 		</table>
 		<?php if(!$company->projects) { ?>
-        <div class="no-files">  
+        <div class="no-files">
             <i class="fa fa-lightbulb-o"></i><br>
-            
+
             <?=$this->lang->line('application_no_projects_yet');?>
         </div>
          <?php } ?>
@@ -153,9 +153,9 @@
 		<?php endforeach;?>
 		</table>
 		<?php if(!$company->invoices) { ?>
-        <div class="no-files">  
+        <div class="no-files">
             <i class="fa fa-file-text"></i><br>
-            
+
             <?=$this->lang->line('application_no_invoices_yet');?>
         </div>
          <?php } ?>

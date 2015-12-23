@@ -1,6 +1,6 @@
 <?php 
 $attributes = array('class' => '', 'id' => '_project');
-echo form_open($form_action, $attributes);
+echo form_open_multipart($form_action, $attributes);
 if(isset($project)){ ?>
 <input id="id" type="hidden" name="id" value="<?php echo $project->id; ?>" />
 <?php } ?>
@@ -14,6 +14,19 @@ if(isset($project)){ ?>
 
 <input type="hidden" name="progress_calc" value="<?php if(isset($project) && $project->progress_calc == "1"){ echo $project->progress_calc; } else { echo '0'; } ?>" />
 
+
+<div class="form-group">
+    <label for="project_type_id"><?=$this->lang->line('application_project_type_id_select');?></label><br>
+    <?php
+    $options = array();
+    foreach ($project_types as $value):
+        $options[$value->id] = $value->name;
+    endforeach;
+
+    if(isset($project)){$project_type_id = $project->project_type_id;}else{$project_type_id = "0";}
+    echo form_dropdown('project_type_id', $options, $project_type_id, 'style="width:100%" class="chosen-select"');?>
+
+</div>
 
 <div class="form-group">
                           <label for="name"><?=$this->lang->line('application_name');?> *</label>
@@ -68,7 +81,7 @@ if(isset($project)){ ?>
         <input id="uploadFile" type="text" name="dummy" class="form-control uploadFile" placeholder="<?php if(isset($project->reference_photo)){ echo $project->reference_photo; }else{ echo "Choose File";} ?>" disabled="disabled" />
         <div class="fileUpload btn btn-primary">
             <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?=$this->lang->line('application_select');?></span></span>
-            <input id="uploadBtn" type="file" data-switcher="attachment_description" name="reference_photo" class="upload switcher" accept="capture=camera" />
+            <input id="uploadBtn" type="file" data-switcher="attachment_description" name="userfile" class="upload switcher" accept="capture=camera" />
         </div>
     </div>
 </div>
@@ -76,12 +89,7 @@ if(isset($project)){ ?>
 <input type="hidden" name="start" id="start" value="<?php if(isset($project)){echo $project->start;} else{ echo date('Y-m-d');} ?>" required/>
 <input type="hidden" name="end" id="end" value="<?php if(isset($project)){echo $project->end;} else{ echo date('Y-m-d',strtotime('+1 year'));} ?>" required/>
 <input type="hidden" name="phases" id="phases"  value="<?php if(isset($project)){echo $project->phases;}else{echo "Planning, Developing, Testing";} ?>" required/>
-
-<div class="form-group">
-          <label for="category"><?=$this->lang->line('application_category');?></label>
-          <input type="text" name="category" class="form-control typeahead" id="category"  value="<?php if(isset($project)){echo $project->category;} ?>"/>
-</div>
-
+<input type="hidden" name="category" class="form-control typeahead" id="category"  value="<?php if(isset($project)){echo $project->category;} ?>"/>
 
         <div class="modal-footer">
         <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
