@@ -74,25 +74,36 @@
 
 <div class="row tab-pane fade in active" role="tabpanel" id="projectdetails-tab">
 
-              <div class="col-xs-12 col-sm-9">
+              <div class="col-xs-12 col-sm-12">
             <div class="table-head"><?=$this->lang->line('application_project_details');?> <span class=" pull-right option-icon"> <a href="<?=base_url()?>projects/update/<?=$project->id;?>" data-toggle="mainmodal" data-target="#mainModal"><i class="fa fa-cog"></i></a></span></div>
 
-                <div class="subcont">
-                  <ul class="details col-xs-12 col-sm-12 col-md-6">
-                    <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$core_settings->project_prefix;?><?=$project->reference;?></li>
-                    <li><span><?=$this->lang->line('application_category');?>:</span> <?=$project->category;?></li>
-                    <li><span><?=$this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="<?=base_url()?>clients/view/<?=$project->company->id;?>"><?php echo $project->company->name;} ?></a></li>
-				            <li><span><?=$this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> <a href="<?=base_url()?>projects/assign/<?=$project->id;?>" class="label label-info tt" style="padding: 2px 5px 3px;" title="<?=$this->lang->line('application_assign_to');?>" data-toggle="mainmodal"><i class="fa fa-plus"></i></a></li>
-				
-                  </ul>
-                  <ul class="details col-xs-12 col-sm-12 col-md-6"><span class="visible-xs divider"></span>
-                    <li><span><?=$this->lang->line('application_start_date');?>:</span> <?php  $unix = human_to_unix($project->start.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-            				<li><span><?=$this->lang->line('application_deadline');?>:</span> <?php  $unix = human_to_unix($project->end.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-            				<li><span><?=$this->lang->line('application_time_spent');?>:</span> <?=$time_spent;?> <a href="<?=base_url()?>projects/timer_reset/<?=$project->id;?>" class="tt" title="<?=$this->lang->line('application_reset_timer');?>"><i class="fa fa-refresh"></i></a> <a href="<?=base_url()?>projects/timer_set/<?=$project->id;?>" data-toggle="mainmodal" class="tt" title="<?=$this->lang->line('application_timer_set');?>"><i class="fa fa-clock-o"></i></a></li>
-            				<li><span><?=$this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
-            			</ul>
-                  <br clear="both">
-                </div>
+                  <div class="subcont">
+                      <ul class="details col-xs-12 col-sm-12 col-md-4">
+                          <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$core_settings->project_prefix;?><?=$project->reference;?></li>
+                          <li><span><?=$this->lang->line('application_project_type_id_select');?>:</span> <?=$project->project_type->name;?></li>
+                          <li><span><?=$this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="#"><?php echo $project->company->name;} ?></a></li>
+                          <li><span><?=$this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> </li>
+
+                      </ul>
+                      <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
+                          <li><span><?=$this->lang->line('application_start_date');?>:</span> <?php  $unix = human_to_unix($project->start.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
+                          <li><span><?=$this->lang->line('application_deadline');?>:</span> <?php  $unix = human_to_unix($project->end.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
+                          <li><span><?=$this->lang->line('application_time_spent');?>:</span> <?=$time_spent;?> </li>
+                          <li><span><?=$this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
+                      </ul>
+
+                      <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
+                          <li><span><?=$this->lang->line('application_qty');?>:</span> <?php echo $project->product_qty;?></li>
+                          <li><span><?=$this->lang->line('application_budget');?>:</span> <?php echo $core_settings->currency.$project->project_budget;?></li>
+                          <li><span><?=$this->lang->line('application_custom_logo');?>:</span> <?php if($project->custom_logo == "1") echo 'Yes'; else echo 'No'; ?></li>
+                          <li><span><?=$this->lang->line('application_custom_packaging');?>:</span> <?php if($project->custom_packaging == "1") echo 'Yes'; else echo 'No'; ?></li>
+                      </ul>
+
+
+                      <br clear="both">
+                  </div>
+
+
 <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-4">
               <div class="stdpad-small red">
@@ -133,59 +144,36 @@
             </div>
             </div>
 
+                  <div class="row">
+
+                      <div class="col-xs-12 col-sm-9">
+                          <div class="table-head"><?=$this->lang->line('application_link');?></div>
+                          <div class="subcont">
+                              <ul class="details col-xs-12 col-sm-12 col-md-12">
+                                  <li><?=$project->product_link;?></li>
+                              </ul>
+                              <br clear="both">
+                          </div>
+                      </div>
+
+
+
+                      <div class="col-xs-12 col-sm-3">
+                          <div class="table-head"><?=$this->lang->line('application_reference_photo');?></div>
+                          <div class="subcont" >
+                              <?php
+                              if(!empty($project->reference_photo)){
+                                  ?>
+                                  <img class="img-responsive" src="<?php echo base_url().'files/media/projects/references/'.$project->reference_photo;?>" />
+                                  <?php
+                              }
+                              ?>
+                          </div>
+                      </div>
+
+                  </div>
+
                </div>
-
-
-               <div class="col-xs-12 col-sm-3">
-            <div class="table-head"><?=$this->lang->line('application_activities');?></div>
-            <div class="subcont" > 
-
-<ul id="comments-ul-short" class="comments">
-<?php $i = 0; foreach ($project->project_has_activities as $value):?>
-                      <?php 
-                      $writer = FALSE;
-                      
-                      if ($value->user_id != 0) { 
-                          $writer = $value->user->firstname." ".$value->user->lastname;
-                          $image = get_user_pic($value->user->userpic, $value->user->email);
-                          }else{
-                          $writer = $value->client->firstname." ".$value->client->lastname;
-                          $image = get_user_pic($value->client->userpic, $value->client->email);
-                                
-                      }?>
-                      <li class="comment-item">
-                      <div class="comment-pic">
-                        <?php if ($writer != FALSE) {  ?>
-                        <img class="img-circle tt" title="<?=$writer?>"  src="<?=$image?>">
-                        <?php }else{?> <i class="fa fa-rocket"></i> <?php } ?>
-                      </div>
-                      <div class="comment-content">
-                          <h5><?=$value->subject;?></h5>
-                            <p><small class="text-muted"><span class="datetime"> <i class="glyphicon glyphicon-time"></i> <?php  echo time_ago($value->datetime, true);/*date($core_settings->date_format.' '.$core_settings->date_time_format, $value->datetime);*/ ?></span></small></p>
-                            <p><?=character_limiter(strip_tags($value->message), 25);?></p>
-                      </div>
-                      </li>
-  <?php $i = $i+1; 
-  if($i == 5) break;
-  endforeach;
-
-  if($i == 0){ ?>
-  <li class="comment-item">
-                      <div class="comment-pic">
-                        
-                      </div>
-                      <div class="comment-content">
-                          
-                          <p class="nodata"><?=$this->lang->line('application_no_data_yet');?></p>
-                      </div>
-                      </li>
-  <?php } ?>
-         </ul>            
-
-
-
-</div>
-</div>
 
 
 

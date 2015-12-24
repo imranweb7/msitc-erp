@@ -37,6 +37,11 @@
                       <th class="" width="19px" class="no-sort sorting"></th>
                       <th><?=$this->lang->line('application_name');?></th>
                       <th class="hidden-xs"><?=$this->lang->line('application_client');?></th>
+
+                      <th class="hidden-xs"><?=$this->lang->line('application_qty');?></th>
+                      <th class="hidden-xs"><?=$this->lang->line('application_budget');?></th>
+
+
                       <th class="hidden-xs"><?=$this->lang->line('application_deadline');?></th>
                       <th class="hidden-xs"><?=$this->lang->line('application_assign_to');?></th>
                       <th><?=$this->lang->line('application_action');?></th>
@@ -59,11 +64,16 @@
                 </td>
                   <td onclick=""><?=$value->name;?></td>
                   <td class="hidden-xs"><a class="label label-info"><?php if(!isset($value->company->name)){echo $this->lang->line('application_no_client_assigned'); }else{ echo $value->company->name; }?></a></td>
-                  <td class="hidden-xs"><span class="hidden-xs label label-success <?php if($value->end <= date('Y-m-d') && $value->progress != 100){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->end.' 00:00');echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
+
+                    <td class="hidden-xs"><span class="hidden-xs label label-chilled"><?php echo $value->product_qty; ?></span></td>
+                    <td class="hidden-xs"><span class="hidden-xs label label-important"><?php echo $core_settings->currency.$value->project_budget;?></span></td>
+
+
+                    <td class="hidden-xs"><span class="hidden-xs label label-success <?php if($value->end <= date('Y-m-d') && $value->progress != 100){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->end.' 00:00');echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
                   <td class="hidden-xs">
                     <?php 
                           $workerImages = array();
-                          foreach ($value->project_has_workers as $workers):
+                          foreach ($value->project_has_workers as $workers): if(!empty($workers->user_id)):
                             
                             if (array_key_exists($workers->user->email, $workerImages)) {
                                 $image = $workerImages[$workers->user->email];
@@ -75,7 +85,7 @@
                       ?>
                       <img class="img-circle tt" src="<?=$image;?>" title="<?php echo $workers->user->firstname.' '.$workers->user->lastname;?>" height="19px"><span class="hidden"><?php echo $workers->user->firstname.' '.$workers->user->lastname;?></span>
                     
-                    <?php endforeach;?>
+                    <?php endif; endforeach;?>
                   </td>
                   <td class="option" width="8%">
 				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?=base_url()?>projects/delete/<?=$value->id;?>'><?=$this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?=$this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?=$value->id;?>'>" data-original-title="<b><?=$this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>

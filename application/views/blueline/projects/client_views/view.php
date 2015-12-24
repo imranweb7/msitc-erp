@@ -70,10 +70,10 @@
                   </ul>
 
                     <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
-                        <li><span><?=$this->lang->line('application_start_date');?>:</span> <?php  $unix = human_to_unix($project->start.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-                        <li><span><?=$this->lang->line('application_deadline');?>:</span> <?php  $unix = human_to_unix($project->end.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-                        <li><span><?=$this->lang->line('application_time_spent');?>:</span> <?=$time_spent;?> </li>
-                        <li><span><?=$this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
+                        <li><span><?=$this->lang->line('application_qty');?>:</span> <?php echo $project->product_qty;?></li>
+                        <li><span><?=$this->lang->line('application_budget');?>:</span> <?php echo $core_settings->currency.$project->project_budget;?></li>
+                        <li><span><?=$this->lang->line('application_custom_logo');?>:</span> <?php if($project->custom_logo == "1") echo 'Yes'; else echo 'No'; ?></li>
+                        <li><span><?=$this->lang->line('application_custom_packaging');?>:</span> <?php if($project->custom_packaging == "1") echo 'Yes'; else echo 'No'; ?></li>
                     </ul>
 
 
@@ -84,7 +84,7 @@
                </div>
 
 
-    <div class="col-xs-12 col-sm-3">
+    <div class="col-xs-12 col-sm-9">
         <div class="table-head"><?=$this->lang->line('application_link');?></div>
         <div class="subcont">
             <ul class="details col-xs-12 col-sm-12 col-md-12">
@@ -95,47 +95,19 @@
     </div>
 
 
-    <div class="col-xs-6 col-sm-3">
-        <div class="stdpad-small red">
-            <div class="icon circular-bar">
-                <div style="display:inline;width:64px;height:64px;"><canvas width="64" height="64"></canvas><input type="hidden" class="dial" data-fgcolor="#FFFFFF" data-bgcolor="rgba(0,0,0,0.08)" data-width="64" data-height="64" data-linecap="round" value="100" readonly="readonly" style="display: none; width: 0px; visibility: hidden;"></div>
-            </div>
-            <div class="stats">
-                <div class="text"><?=$this->lang->line('application_qty');?></div> <div class="number"><?=$project->product_qty;?></div>
 
-            </div>
+   <div class="col-xs-12 col-sm-3">
+        <div class="table-head"><?=$this->lang->line('application_reference_photo');?></div>
+        <div class="subcont" >
+            <?php
+            if(!empty($project->reference_photo)){
+                ?>
+                <img class="img-responsive" src="<?php echo base_url().'files/media/projects/references/'.$project->reference_photo;?>" />
+                <?php
+            }
+            ?>
         </div>
     </div>
-
-
-
-       <div class="col-xs-12 col-sm-3">
-            <div class="table-head"><?=$this->lang->line('application_reference_photo');?></div>
-            <div class="subcont" >
-                <?php
-                if(!empty($project->reference_photo)){
-                    ?>
-                    <img class="img-responsive" src="<?php echo base_url().'files/media/projects/references/'.$project->reference_photo;?>" />
-                    <?php
-                }
-                ?>
-            </div>
-        </div>
-
-
-
-
-
-
-        <div class="col-xs-6 col-sm-3">
-            <div class="table-head"><?=$this->lang->line('application_budget');?></div>
-            <div class="subcont">
-                <ul class="details col-xs-12 col-sm-12 col-md-12">
-                    <li><?=$project->project_budget;?></li>
-                </ul>
-                <br clear="both">
-            </div>
-        </div>
 
 </div>
 
