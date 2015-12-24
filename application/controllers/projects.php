@@ -1,6 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Projects extends MY_Controller {
+	const UPLOAD_PATH = './files/media/projects/references/';
                
 	function __construct()
 	{
@@ -77,9 +78,27 @@ class Projects extends MY_Controller {
 	{
 		if($_POST){
 			unset($_POST['send']);
+			unset($_POST['files']);
+
+			$_POST['reference_photo'] = '';
+
+			$config['upload_path'] = self::UPLOAD_PATH;
+			$config['encrypt_name'] = TRUE;
+			$config['allowed_types'] = '*';
+
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload())
+			{
+				$data = array('upload_data' => $this->upload->data());
+				$_POST['reference_photo'] = $data['upload_data']['file_name'];
+			}
+
+			unset($_POST['userfile']);
+			unset($_POST['dummy']);
+
 			$_POST['datetime'] = time();
 			$_POST = array_map('htmlspecialchars', $_POST);
-			unset($_POST['files']);
 
 			$project = Project::create($_POST);
 			$new_project_reference = $_POST['reference']+1;
@@ -94,6 +113,7 @@ class Projects extends MY_Controller {
 		}else
 		{
 			$this->view_data['companies'] = Company::find('all',array('conditions' => array('inactive=?','0')));
+			$this->view_data['project_types'] = ProjectType::find('all',array('conditions' => array('inactive=?','0')));
 			$this->view_data['next_reference'] = Project::last();
 			$this->theme_view = 'modal';
 			$this->view_data['title'] = $this->lang->line('application_create_project');
@@ -103,15 +123,36 @@ class Projects extends MY_Controller {
 	}	
 	function update($id = FALSE)
 	{	
-		if($_POST){
+		if($_POST) {
 			unset($_POST['send']);
 			$id = $_POST['id'];
 			unset($_POST['files']);
+			$project = Project::find($id);
+
+			$_POST['reference_photo'] = $project->reference_photo;
+
+			if (!empty($_FILES['userfile']['name'])) {
+				$config['upload_path'] = self::UPLOAD_PATH;
+				$config['encrypt_name'] = TRUE;
+				$config['allowed_types'] = '*';
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload()) {
+					$data = array('upload_data' => $this->upload->data());
+					$_POST['reference_photo'] = $data['upload_data']['file_name'];
+
+					if(!empty($project->reference_photo)){
+						@unlink(self::UPLOAD_PATH.$project->reference_photo);
+					}
+				}
+			}
+
 			$_POST = array_map('htmlspecialchars', $_POST);
 			if (!isset($_POST["progress_calc"])) {
 				$_POST["progress_calc"] = 0;
 			}
-			$project = Project::find($id);
+
 			$project->update_attributes($_POST);
        		if(!$project){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_project_error'));}
        		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_save_project_success'));}
@@ -119,6 +160,7 @@ class Projects extends MY_Controller {
 		}else
 		{
 			$this->view_data['companies'] = Company::find('all',array('conditions' => array('inactive=?','0')));
+			$this->view_data['project_types'] = ProjectType::find('all',array('conditions' => array('inactive=?','0')));
 			$this->view_data['project'] = Project::find($id);
 			$this->theme_view = 'modal';
 			$this->view_data['title'] = $this->lang->line('application_edit_project');

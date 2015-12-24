@@ -50,7 +50,11 @@ if(isset($project)){ ?>
 
 <div class="form-group">
     <label for="project_budget"><?=$this->lang->line('application_budget');?> *</label>
-    <input type="text" name="project_budget" class="form-control" id="project_budget"  value="<?php if(isset($project)){echo $project->project_budget;} ?>" required/>
+
+    <div class="input-group">
+        <span class="input-group-addon"><?php echo $core_settings->currency; ?></span>
+        <input type="text" name="project_budget" class="form-control" id="project_budget"  value="<?php if(isset($project)){echo $project->project_budget;} ?>" required/>
+    </div>
 </div>
 
 <div class="form-group">

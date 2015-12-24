@@ -23,8 +23,9 @@
                       <th width="20px" class="hidden-xs"><?=$this->lang->line('application_project_id');?></th>
                       <th class="hidden-xs" width="19px" class="no-sort sorting"></th>
                       <th><?=$this->lang->line('application_name');?></th>
-                      <th class="hidden-xs"><?=$this->lang->line('application_client');?></th>
-                      <th class="hidden-xs"><?=$this->lang->line('application_deadline');?></th>
+                      <th class="hidden-xs"><?=$this->lang->line('application_qty');?></th>
+                      <th class="hidden-xs"><?=$this->lang->line('application_budget');?></th>
+                      <th class="hidden-xs"><?=$this->lang->line('application_start_date');?></th>
                       <th class="hidden-xs"><?=$this->lang->line('application_assign_to');?></th>
                   </tr></thead>
                 
@@ -43,10 +44,11 @@
        
                 </td>
                   <td onclick=""><?=$value->name;?></td>
-                  <td class="hidden-xs"><a class="label label-info"><?php if(!isset($value->company->name)){echo $this->lang->line('application_no_client_assigned'); }else{ echo $value->company->name; }?></a></td>
-                  <td class="hidden-xs"><span class="hidden-xs label label-success <?php if($value->end <= date('Y-m-d') && $value->progress != 100){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->end.' 00:00');echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
+                    <td class="hidden-xs"><span class="hidden-xs label label-chilled"><?php echo $value->product_qty; ?></span></td>
+                    <td class="hidden-xs"><span class="hidden-xs label label-important"><?php echo $core_settings->currency.$value->project_budget;?></span></td>
+                    <td class="hidden-xs"><span class="hidden-xs label label-success"><?php $unix = human_to_unix($value->start.' 00:00'); echo date($core_settings->date_format, $unix); ?></span></td>
                   <td class="hidden-xs">
-                    <?php foreach ($value->project_has_workers as $workers):?> 
+                    <?php foreach ($value->project_has_workers as $workers): if(!empty($workers->user_id)):?>
                     <?php
                      
                           $image = get_user_pic($workers->user->userpic, $workers->user->email);
@@ -55,7 +57,7 @@
                       ?>
                       <img class="img-circle tt" src="<?=$image;?>" title="<?php echo $workers->user->firstname.' '.$workers->user->lastname;?>" height="19px"><span class="hidden"><?php echo $workers->user->firstname.' '.$workers->user->lastname;?></span>
                     
-                    <?php endforeach;?>
+                    <?php endif; endforeach;?>
                   </td>
                
                 </tr>

@@ -76,8 +76,8 @@ class cProjects extends MY_Controller {
 			$project_reference->update_attributes(array('project_reference' => $new_project_reference));
 			if(!$project){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_project_error'));}
 			else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_project_success'));
-				$attributes = array('project_id' => $project->id, 'user_id' => $this->user->id);
-				ProjectHasWorker::create($attributes);
+				//$attributes = array('project_id' => $project->id, 'user_id' => $this->user->id);
+				//ProjectHasWorker::create($attributes);
 			}
 			redirect('cprojects');
 		}else

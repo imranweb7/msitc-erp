@@ -1,17 +1,26 @@
-<?php 
+<?php
 $attributes = array('class' => '', 'id' => '_project');
-echo form_open($form_action, $attributes);
+echo form_open_multipart($form_action, $attributes);
 if(isset($project)){ ?>
-<input id="id" type="hidden" name="id" value="<?php echo $project->id; ?>" />
+    <input id="id" type="hidden" name="id" value="<?php echo $project->id; ?>" />
 <?php } ?>
 
+
+<input type="hidden" name="reference" class="form-control" id="reference" value="<?php if(isset($project)){echo $project->reference;} else{ echo $core_settings->project_reference;} ?>" required/>
+
+<input type="hidden" name="company_id" value="<?php echo $this->client->company->id; ?>" />
+
 <div class="form-group">
-        <label for="reference"><?=$this->lang->line('application_reference_id');?> *</label>
-        
-       <?php if(!empty($core_settings->project_prefix)){ ?>
-       <div class="input-group"> <div class="input-group-addon"><?=$core_settings->project_prefix;?></div> <?php } ?>
-        <input type="text" name="reference" class="form-control" id="reference" value="<?php if(isset($project)){echo $project->reference;} else{ echo $core_settings->project_reference;} ?>" required/>
-        <?php if(!empty($core_settings->project_prefix)){ ?></div><?php } ?>
+    <label for="project_type_id"><?=$this->lang->line('application_project_type_id_select');?></label><br>
+    <?php
+    $options = array();
+    foreach ($project_types as $value):
+        $options[$value->id] = $value->name;
+    endforeach;
+
+    if(isset($project)){$project_type_id = $project->project_type_id;}else{$project_type_id = "0";}
+    echo form_dropdown('project_type_id', $options, $project_type_id, 'style="width:100%" class="chosen-select"');?>
+
 </div>
 
 <div class="form-group">
@@ -32,34 +41,89 @@ if(isset($project)){ ?>
                           </div>
                           <input type="hidden" class="hidden" id="progress" name="progress" value="<?php if(isset($project)){echo $project->progress;}else{echo "0";} ?>">
 </div>
-<div class="checkbox">
-                           <label>
-                            <input name="progress_calc" value="1" type="checkbox" <?php if(isset($project) && $project->progress_calc == "1"){ ?> checked="checked" <?php } ?>/>
-                            <span class="lbl"> <?=$this->lang->line('application_calculate_progress');?> </span>
-                          </label>
-                          <script>
-                          $(document).ready(function(){ 
-                              //slider config
-                                $( "#slider-range" ).slider({
-                                  range: "min",
-                                  min: 0,
-                                  max: 100,
-                                  <?php if(isset($project) && $project->progress_calc == "1"){ ?>disabled: true,<?php } ?>
-                                  value: <?php if(isset($project)){echo $project->progress;}else{echo "0";} ?>,
-                                  slide: function( event, ui ) {
-                                    $( "#progress-amount" ).html( ui.value );
-                                    $( "#progress" ).val( ui.value );
-                                  }
-                                });
-                            });
-                          </script>
-</div>
+
+<input type="hidden" name="progress_calc" value="<?php if(isset($project) && $project->progress_calc == "1"){ echo $project->progress_calc; } else { echo '0'; } ?>" />
+
+<script>
+    $(document).ready(function(){
+        //slider config
+        $( "#slider-range" ).slider({
+            range: "min",
+            min: 0,
+            max: 100,
+            <?php if(isset($project) && $project->progress_calc == "1"){ ?>disabled: true,<?php } ?>
+            value: <?php if(isset($project)){echo $project->progress;}else{echo "0";} ?>,
+            slide: function( event, ui ) {
+                $( "#progress-amount" ).html( ui.value );
+                $( "#progress" ).val( ui.value );
+            }
+        });
+    });
+</script>
 
 
 <div class="form-group">
                           <label for="name"><?=$this->lang->line('application_name');?> *</label>
                           <input type="text" name="name" class="form-control" id="name"  value="<?php if(isset($project)){echo $project->name;} ?>" required/>
 </div>
+
+<div class="form-group">
+    <label for="textfield"><?=$this->lang->line('application_description');?></label>
+    <textarea class="input-block-level form-control"  id="textfield" name="description"><?php if(isset($project)){echo $project->description;} ?></textarea>
+</div>
+
+<div class="form-group">
+    <label for="product_link"><?=$this->lang->line('application_link');?> *</label>
+    <textarea class="input-block-level form-control" id="product_link" name="product_link" required><?php if(isset($project)){echo $project->product_link;} ?></textarea>
+</div>
+
+<div class="form-group">
+    <label for="product_qty"><?=$this->lang->line('application_qty');?> *</label>
+    <input type="text" name="product_qty" class="form-control" id="product_qty"  value="<?php if(isset($project)){echo $project->product_qty;} ?>" required/>
+</div>
+
+<div class="form-group">
+    <label for="project_budget"><?=$this->lang->line('application_budget');?> *</label>
+
+    <div class="input-group">
+        <span class="input-group-addon"><?php echo $core_settings->currency; ?></span>
+        <input type="text" name="project_budget" class="form-control" id="project_budget"  value="<?php if(isset($project)){echo $project->project_budget;} ?>" required/>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="custom_logo"><?=$this->lang->line('application_custom_logo');?></label><br>
+    <?php
+    $options = array();
+    $options['1'] = 'Yes';
+    $options['0'] = 'No';
+    if(isset($project)){$custom_logo_selected = $project->custom_logo;}else{$custom_logo_selected = "1";}
+    echo form_dropdown('custom_logo', $options, $custom_logo_selected, 'style="width:100%" class="chosen-select"');?>
+
+</div>
+
+<div class="form-group">
+    <label for="custom_packaging"><?=$this->lang->line('application_custom_packaging');?></label><br>
+    <?php
+    $options = array();
+    $options['1'] = 'Yes';
+    $options['0'] = 'No';
+    if(isset($project)){$custom_packaging_selected = $project->custom_packaging;}else{$custom_packaging_selected = "1";}
+    echo form_dropdown('custom_packaging', $options, $custom_packaging_selected, 'style="width:100%" class="chosen-select"');?>
+
+</div>
+
+<div class="form-group">
+    <label for="reference_photo"><?=$this->lang->line('application_reference_photo');?></label>
+    <div>
+        <input id="uploadFile" type="text" name="dummy" class="form-control uploadFile" placeholder="<?php if(isset($project->reference_photo)){ echo $project->reference_photo; }else{ echo "Choose File";} ?>" disabled="disabled" />
+        <div class="fileUpload btn btn-primary">
+            <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?=$this->lang->line('application_select');?></span></span>
+            <input id="uploadBtn" type="file" data-switcher="attachment_description" name="userfile" class="upload switcher" accept="capture=camera" />
+        </div>
+    </div>
+</div>
+
 
 <div class="form-group">
                           <label for="start"><?=$this->lang->line('application_start_date');?> *</label>
@@ -70,20 +134,10 @@ if(isset($project)){ ?>
                           <input class="form-control datepicker" name="end" id="end" type="text" value="<?php if(isset($project)){echo $project->end;} ?>" data-date-format="yyyy-mm-dd" required/>
 </div>
 
-<div class="form-group">
-                          <label for="category"><?=$this->lang->line('application_category');?></label>
-                          <input type="text" name="category" class="form-control typeahead" id="category"  value="<?php if(isset($project)){echo $project->category;} ?>"/>
-</div>
+<input type="hidden" name="phases" id="phases"  value="<?php if(isset($project)){echo $project->phases;}else{echo "Planning, Developing, Testing";} ?>" required/>
+<input type="hidden" name="category" class="form-control typeahead" id="category"  value="<?php if(isset($project)){echo $project->category;} ?>"/>
 
-<div class="form-group">
-                          <label for="phases"><?=$this->lang->line('application_phases');?> *</label>
-                          <input type="text" name="phases" class="form-control" id="phases"  value="<?php if(isset($project)){echo $project->phases;}else{echo "Planning, Developing, Testing";} ?>" required/>
-</div>
 
- <div class="form-group">
-                        <label for="textfield"><?=$this->lang->line('application_description');?></label>
-                        <textarea class="input-block-level form-control"  id="textfield" name="description"><?php if(isset($project)){echo $project->description;} ?></textarea>
-</div>
 
         <div class="modal-footer">
         <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
