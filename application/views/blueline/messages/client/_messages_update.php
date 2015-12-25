@@ -2,10 +2,10 @@
 $attributes = array('class' => '', 'id' => '_quotation');
 echo form_open($form_action, $attributes); 
 ?>
-     <input id="id" type="hidden" name="id" value="<?=$id;?>" />
+     <input id="id" type="hidden" name="id" value="<?php echo $id;?>" />
 
 <div class="form-group">
-        <label for="status"><?=$this->lang->line('application_status');?></label><br />
+        <label for="status"><?php echo $this->lang->line('application_status');?></label><br />
         <?php   $options = array(); 
                 $options['New'] = $this->lang->line('application_New');
                 $options['Read'] = $this->lang->line('application_Read');

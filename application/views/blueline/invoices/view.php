@@ -1,45 +1,45 @@
 <div class="row">
               <div class="col-xs-12 col-sm-12">
-            <a href="<?=base_url()?>invoices/update/<?=$invoice->id;?>/view" class="btn btn-primary" data-toggle="mainmodal"><i class="fa fa-edit visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_edit_invoice');?></span></a>
-			<?php if($invoice->estimate_status != "Invoiced"){ ?><a href="<?=base_url()?>invoices/item/<?=$invoice->id;?>" class="btn btn-primary" data-toggle="mainmodal"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_add_item');?></span></a><?php } ?>
-            <a href="<?=base_url()?>invoices/payment/<?=$invoice->id;?>" class="btn btn-primary" data-toggle="mainmodal"><i class="fa fa-credit-card visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_add_payment');?></span></a>
+            <a href="<?php echo base_url()?>invoices/update/<?php echo $invoice->id;?>/view" class="btn btn-primary" data-toggle="mainmodal"><i class="fa fa-edit visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_edit_invoice');?></span></a>
+			<?php if($invoice->estimate_status != "Invoiced"){ ?><a href="<?php echo base_url()?>invoices/item/<?php echo $invoice->id;?>" class="btn btn-primary" data-toggle="mainmodal"><i class="fa fa-plus visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_add_item');?></span></a><?php } ?>
+            <a href="<?php echo base_url()?>invoices/payment/<?php echo $invoice->id;?>" class="btn btn-primary" data-toggle="mainmodal"><i class="fa fa-credit-card visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_add_payment');?></span></a>
 			
-			<a href="<?=base_url()?>invoices/preview/<?=$invoice->id;?>" class="btn btn-primary"><i class="fa fa-file visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_preview');?></span></a>
-			<!-- <a href="<?=base_url()?>invoices/previewHTML/<?=$invoice->id;?>" class="btn btn-primary" target="_blank"><i class="fa fa-file visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_HTML_Preview');?></span></a>-->
-			<?php if($invoice->status != "Paid" && isset($invoice->company->name)){ ?><a href="<?=base_url()?>invoices/sendinvoice/<?=$invoice->id;?>" class="btn btn-primary"><i class="fa fa-envelope visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_send_invoice_to_client');?></span></a><?php } ?>
+			<a href="<?php echo base_url()?>invoices/preview/<?php echo $invoice->id;?>" class="btn btn-primary"><i class="fa fa-file visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_preview');?></span></a>
+			<!-- <a href="<?php echo base_url()?>invoices/previewHTML/<?php echo $invoice->id;?>" class="btn btn-primary" target="_blank"><i class="fa fa-file visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_HTML_Preview');?></span></a>-->
+			<?php if($invoice->status != "Paid" && isset($invoice->company->name)){ ?><a href="<?php echo base_url()?>invoices/sendinvoice/<?php echo $invoice->id;?>" class="btn btn-primary"><i class="fa fa-envelope visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_send_invoice_to_client');?></span></a><?php } ?>
 
               </div>
           </div>
           <div class="row">
 
 		<div class="col-md-12">
-		<div class="table-head"><?=$this->lang->line('application_invoice_details');?></div>
+		<div class="table-head"><?php echo $this->lang->line('application_invoice_details');?></div>
 		<div class="subcont">
 		<ul class="details col-xs-12 col-sm-6">
-			<li><span><?=$this->lang->line('application_invoice_id');?>:</span> <?=$core_settings->invoice_prefix;?><?=$invoice->reference;?></li>
-			<li class="<?=$invoice->status;?>"><span><?=$this->lang->line('application_status');?>:</span>
-			<a class="label label-default <?php $unix = human_to_unix($invoice->sent_date.' 00:00'); $unix2 = human_to_unix($invoice->paid_date.' 00:00'); if($invoice->status == "Paid"){echo 'label-success tt" title="'.date($core_settings->date_format, $unix2);}elseif($invoice->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$invoice->status);?>
+			<li><span><?php echo $this->lang->line('application_invoice_id');?>:</span> <?php echo $core_settings->invoice_prefix;?><?php echo $invoice->reference;?></li>
+			<li class="<?php echo $invoice->status;?>"><span><?php echo $this->lang->line('application_status');?>:</span>
+			<a class="label label-default <?php $unix = human_to_unix($invoice->sent_date.' 00:00'); $unix2 = human_to_unix($invoice->paid_date.' 00:00'); if($invoice->status == "Paid"){echo 'label-success tt" title="'.date($core_settings->date_format, $unix2);}elseif($invoice->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?php echo $this->lang->line('application_'.$invoice->status);?>
 			</a>
 			</li>
-			<li><span><?=$this->lang->line('application_issue_date');?>:</span> <?php $unix = human_to_unix($invoice->issue_date.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-			<li><span><?=$this->lang->line('application_due_date');?>:</span> <a class="label label-default <?php if($invoice->status == "Paid"){echo 'label-success';} if($invoice->due_date <= date('Y-m-d') && $invoice->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($invoice->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></a></li>
+			<li><span><?php echo $this->lang->line('application_issue_date');?>:</span> <?php $unix = human_to_unix($invoice->issue_date.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
+			<li><span><?php echo $this->lang->line('application_due_date');?>:</span> <a class="label label-default <?php if($invoice->status == "Paid"){echo 'label-success';} if($invoice->due_date <= date('Y-m-d') && $invoice->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($invoice->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></a></li>
 			<?php if(isset($invoice->company->vat)){?> 
-			<li><span><?=$this->lang->line('application_vat');?>:</span> <?php echo $invoice->company->vat; ?></li>
+			<li><span><?php echo $this->lang->line('application_vat');?>:</span> <?php echo $invoice->company->vat; ?></li>
 			<?php } ?>
 			<?php if(isset($invoice->project->name)){?>
-			<li><span><?=$this->lang->line('application_projects');?>:</span> <?php echo $invoice->project->name; ?></li>
+			<li><span><?php echo $this->lang->line('application_projects');?>:</span> <?php echo $invoice->project->name; ?></li>
 			<?php } ?>
 			<span class="visible-xs"></span>
 		</ul>
 		<ul class="details col-xs-12 col-sm-6">
 			<?php if(isset($invoice->company->name)){ ?>
-			<li><span><?=$this->lang->line('application_company');?>:</span> <a href="<?=base_url()?>clients/view/<?=$invoice->company->id;?>" class="label label-info"><?=$invoice->company->name;?></a></li>
-			<li><span><?=$this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?=$invoice->company->client->firstname;?> <?=$invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
-			<li><span><?=$this->lang->line('application_street');?>:</span> <?=$invoice->company->address;?></li>
-			<li><span><?=$this->lang->line('application_city');?>:</span> <?=$invoice->company->zipcode;?> <?=$invoice->company->city;?></li>
-			<li><span><?=$this->lang->line('application_province');?>:</span> <?php echo $invoice->company->province = empty($invoice->company->province) ? "-" : $invoice->company->province; ?></li>
+			<li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice->company->id;?>" class="label label-info"><?php echo $invoice->company->name;?></a></li>
+			<li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
+			<li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice->company->address;?></li>
+			<li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice->company->zipcode;?> <?php echo $invoice->company->city;?></li>
+			<li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice->company->province = empty($invoice->company->province) ? "-" : $invoice->company->province; ?></li>
 			<?php }else{ ?>
-				<li><?=$this->lang->line('application_no_client_assigned');?></li>
+				<li><?php echo $this->lang->line('application_no_client_assigned');?></li>
 			<?php } ?>
 		</ul>
 		<br clear="all">
@@ -49,30 +49,30 @@
 
 		<div class="row">
 		<div class="col-md-12">
-		<div class="table-head"><?=$this->lang->line('application_invoice_items');?> <?php if($invoice->estimate_status != "Invoiced"){ ?><span class=" pull-right"><a href="<?=base_url()?>invoices/item/<?=$invoice->id;?>" class="btn btn-md btn-primary" data-toggle="mainmodal"><i class="fa fa fa-plus visible-xs"></i><span class="hidden-xs"><?=$this->lang->line('application_add_item');?></span></a></span><?php } ?></div>
+		<div class="table-head"><?php echo $this->lang->line('application_invoice_items');?> <?php if($invoice->estimate_status != "Invoiced"){ ?><span class=" pull-right"><a href="<?php echo base_url()?>invoices/item/<?php echo $invoice->id;?>" class="btn btn-md btn-primary" data-toggle="mainmodal"><i class="fa fa fa-plus visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_add_item');?></span></a></span><?php } ?></div>
 		<div class="table-div min-height-200">
-		<table class="table noclick" id="items" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="table noclick" id="items" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 		<thead>
-		<th width="4%"><?=$this->lang->line('application_action');?></th>
-			<th><?=$this->lang->line('application_name');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_description');?></th>
-			<th class="hidden-xs" width="8%"><?=$this->lang->line('application_hrs_qty');?></th>
-			<th class="hidden-xs" width="12%"><?=$this->lang->line('application_unit_price');?></th>
-			<th class="hidden-xs" width="12%"><?=$this->lang->line('application_sub_total');?></th>
+		<th width="4%"><?php echo $this->lang->line('application_action');?></th>
+			<th><?php echo $this->lang->line('application_name');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_description');?></th>
+			<th class="hidden-xs" width="8%"><?php echo $this->lang->line('application_hrs_qty');?></th>
+			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_unit_price');?></th>
+			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
 		</thead>
 		<?php $i = 0; $sum = 0;?>
 		<?php foreach ($items as $value):?>
-		<tr id="<?=$value->id;?>" >
+		<tr id="<?php echo $value->id;?>" >
 		<td class="option" style="text-align:left;" width="8%">
 		<?php if($invoice->estimate_status != "Invoiced"){ ?>
-				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="right" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?=base_url()?>invoices/item_delete/<?=$invoice->invoice_has_items[$i]->id;?>/<?=$invoice->id;?>'><?=$this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?=$this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?=$value->id;?>'>" data-original-title="<b><?=$this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
-				        <a href="<?=base_url()?>invoices/item_update/<?=$invoice->invoice_has_items[$i]->id;?>" title="<?=$this->lang->line('application_edit');?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
+				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="right" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>invoices/item_delete/<?php echo $invoice->invoice_has_items[$i]->id;?>/<?php echo $invoice->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
+				        <a href="<?php echo base_url()?>invoices/item_update/<?php echo $invoice->invoice_has_items[$i]->id;?>" title="<?php echo $this->lang->line('application_edit');?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
 						<?php } else{ echo '<i class="btn-option fa fa-lock"></i>';}?>
 			</td>
 	
 			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice->invoice_has_items[$i]->item->name; }?></td>
-			<td class="hidden-xs"><?=$invoice->invoice_has_items[$i]->description;?></td>
-			<td class="hidden-xs" align="center"><?=$invoice->invoice_has_items[$i]->amount;?></td>
+			<td class="hidden-xs"><?php echo $invoice->invoice_has_items[$i]->description;?></td>
+			<td class="hidden-xs" align="center"><?php echo $invoice->invoice_has_items[$i]->amount;?></td>
 			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->value));?></td>
 			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value));?></td>
 
@@ -110,26 +110,26 @@
 		?>
 		<?php if ($discount != 0): ?>
 		<tr>
-			<td colspan="5" align="right"><?=$this->lang->line('application_discount');?>  <?php if(isset($discountpercent)){ echo "(".$invoice->discount.")";}?></td>
-			<td>- <?=display_money($discount);?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_discount');?>  <?php if(isset($discountpercent)){ echo "(".$invoice->discount.")";}?></td>
+			<td>- <?php echo display_money($discount);?></td>
 		</tr>	
 		<?php endif ?>
 		<?php if ($tax_value != "0"){ ?>
 		<tr>
-			<td colspan="5" align="right"><?=$this->lang->line('application_tax');?> (<?= $tax_value?>%)</td>
-			<td><?=display_money($tax);?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_tax');?> (<?php echo  $tax_value?>%)</td>
+			<td><?php echo display_money($tax);?></td>
 		</tr>
 		<?php } ?>
 		<?php if ($second_tax != "0"){ ?>
 		<tr>
-			<td colspan="5" align="right"><?=$this->lang->line('application_second_tax');?> (<?= $second_tax_value?>%)</td>
-			<td><?=display_money($second_tax);?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_second_tax');?> (<?php echo  $second_tax_value?>%)</td>
+			<td><?php echo display_money($second_tax);?></td>
 		</tr>
 		<?php } ?>
 		
 		<tr class="active">
-			<td colspan="5" align="right"><?=$this->lang->line('application_total');?></td>
-			<td><?=display_money($sum, $invoice->currency);?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_total');?></td>
+			<td><?php echo display_money($sum, $invoice->currency);?></td>
 		</tr>
 		
 		</table>
@@ -138,18 +138,18 @@
 		<?php if (!empty($payments)){ ?>
 		<div class="row">
 		<div class="col-md-12">
-		<div class="table-head"><?=$this->lang->line('application_payments');?> </div>
+		<div class="table-head"><?php echo $this->lang->line('application_payments');?> </div>
 		<div class="table-div min-height-200">
-		<table class="table noclick" id="payments" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="table noclick" id="payments" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 			
 
 		<thead>
-			<th><?=$this->lang->line('application_action');?></th>
-			<th><?=$this->lang->line('application_payment_id');?></th>
-			<th><?=$this->lang->line('application_description');?></th>
-			<th><?=$this->lang->line('application_type');?></th>
-			<th><?=$this->lang->line('application_payment_date');?></th>
-			<th><?=$this->lang->line('application_value');?></th>
+			<th><?php echo $this->lang->line('application_action');?></th>
+			<th><?php echo $this->lang->line('application_payment_id');?></th>
+			<th><?php echo $this->lang->line('application_description');?></th>
+			<th><?php echo $this->lang->line('application_type');?></th>
+			<th><?php echo $this->lang->line('application_payment_date');?></th>
+			<th><?php echo $this->lang->line('application_value');?></th>
 
 		</thead>
 		
@@ -160,26 +160,26 @@
 				<tr class="sec">
 					<td class="option" style="text-align:left;" width="8%">
 						
-					        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="right" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?=base_url()?>invoices/payment_delete/<?=$payments[$i]->id;?>/<?=$invoice->id;?>'><?=$this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?=$this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?=$value->id;?>'>" data-original-title="<b><?=$this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
-					        <a href="<?=base_url()?>invoices/payment_update/<?=$payments[$i]->id;?>" title="<?=$this->lang->line('application_edit');?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
+					        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="right" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>invoices/payment_delete/<?php echo $payments[$i]->id;?>/<?php echo $invoice->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
+					        <a href="<?php echo base_url()?>invoices/payment_update/<?php echo $payments[$i]->id;?>" title="<?php echo $this->lang->line('application_edit');?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
 						
 					</td>
-					<td>#<?=$payments[$i]->reference;?></td>
-					<td><?=$payments[$i]->notes;?></td>
-					<td><?=$this->lang->line('application_'.$payments[$i]->type);?></td>
+					<td>#<?php echo $payments[$i]->reference;?></td>
+					<td><?php echo $payments[$i]->notes;?></td>
+					<td><?php echo $this->lang->line('application_'.$payments[$i]->type);?></td>
 					<td><?php $unix = human_to_unix($payments[$i]->date.' 00:00'); echo date($core_settings->date_format, $unix);?></td>
 					
-					<td>- <?=display_money($payments[$i]->amount);?></td>
+					<td>- <?php echo display_money($payments[$i]->amount);?></td>
 				</tr>
 		<?php $i++; } ?>
 
 		<tr class="payments">
-			<td colspan="5" align="right"><?=$this->lang->line('application_payments_received');?></td>
-			<td>- <?=display_money($invoice->paid);?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_payments_received');?></td>
+			<td>- <?php echo display_money($invoice->paid);?></td>
 		</tr>
 		<tr class="active">
-			<td colspan="5" align="right"><?=$this->lang->line('application_total_outstanding');?></td>
-			<td><?=display_money($sumRest, $invoice->currency);?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_total_outstanding');?></td>
+			<td><?php echo display_money($sumRest, $invoice->currency);?></td>
 		</tr>
 
 		</table>
@@ -207,43 +207,43 @@
 				?>
 						<form action="https://www.paypal.com/cgi-bin/webscr" id="paypal" method="post">
 						<input type="hidden" name="cmd" value="_xclick">
-						<input type="hidden" name="business" value="<?=$core_settings->paypal_account;?>">
-						<input type="hidden" name="item_name" value="<?=$invoice->reference;?>">
-						<input type="hidden" name="item_number" value="<?=$invoice->reference;?>">
-						<input type="hidden" name="image_url" value="<?=base_url()?><?=$core_settings->invoice_logo;?>">
-						<input type="hidden" name="amount" value="<?=$sumRest;?>">
+						<input type="hidden" name="business" value="<?php echo $core_settings->paypal_account;?>">
+						<input type="hidden" name="item_name" value="<?php echo $invoice->reference;?>">
+						<input type="hidden" name="item_number" value="<?php echo $invoice->reference;?>">
+						<input type="hidden" name="image_url" value="<?php echo base_url()?><?php echo $core_settings->invoice_logo;?>">
+						<input type="hidden" name="amount" value="<?php echo $sumRest;?>">
 						<input type="hidden" name="no_shipping" value="1">
 						<input type="hidden" name="no_note" value="1">
-						<input type="hidden" name="currency_code" value="<?=$currency;?>">
+						<input type="hidden" name="currency_code" value="<?php echo $currency;?>">
 						<input type="hidden" name="bn" value="FC-BuyNow">
-						<input type="hidden" name="return" value="<?=base_url()?>invoices/view/<?=$invoice->id;?>"> 
-						<input type="hidden" name="cancel_return" value="<?=base_url()?>invoices/view/<?=$invoice->id;?>">
+						<input type="hidden" name="return" value="<?php echo base_url()?>invoices/view/<?php echo $invoice->id;?>">
+						<input type="hidden" name="cancel_return" value="<?php echo base_url()?>invoices/view/<?php echo $invoice->id;?>">
 						<input type="hidden" name="rm" value="2">
-						<input type="hidden" name="notify_url" value="<?=base_url()?>paypalipn" /> 
-						<input type="hidden" name="custom" value="invoice-<?=$sumRest;?>">     
+						<input type="hidden" name="notify_url" value="<?php echo base_url()?>paypalipn" />
+						<input type="hidden" name="custom" value="invoice-<?php echo $sumRest;?>">
 						</form>
 						<?php } ?>
 
 	<div class="btn-group dropup">
 	  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false" <?php if($sum == "0.00" || $invoice->status == "Paid"){ echo 'disabled="disabled" title="Invoice already paid"'; } ?>>
-	    <?=$this->lang->line('application_pay_invoice');?> <span class="caret"></span>
+	    <?php echo $this->lang->line('application_pay_invoice');?> <span class="caret"></span>
 	  </button>
 	  <ul class="dropdown-menu dropdown-menu-right" role="menu">
 	  <?php if($core_settings->bank_transfer == "1" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>
-	    <li><a id="pay_bank_transfer" data-toggle="mainmodal" href="<?=base_url()?>invoices/banktransfer/<?=$invoice->id;?>/<?=$sumRest;?>"><i class="fa fa-money" style="margin-right:5px"></i>  <?=$this->lang->line('application_bank_transfer');?></a></li>
+	    <li><a id="pay_bank_transfer" data-toggle="mainmodal" href="<?php echo base_url()?>invoices/banktransfer/<?php echo $invoice->id;?>/<?php echo $sumRest;?>"><i class="fa fa-money" style="margin-right:5px"></i>  <?php echo $this->lang->line('application_bank_transfer');?></a></li>
 	  <?php } ?>
 
 	  <?php if($core_settings->paypal == "1" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>  
-	    <li><a id="pay_paypal" onclick="javascript:document.forms['paypal'].submit();" href="#"><i class="fa fa-paypal" style="margin-right:5px"></i>  <?=$this->lang->line('application_paypal');?></a></li>
+	    <li><a id="pay_paypal" onclick="javascript:document.forms['paypal'].submit();" href="#"><i class="fa fa-paypal" style="margin-right:5px"></i>  <?php echo $this->lang->line('application_paypal');?></a></li>
 	  <?php } ?>
 
 	  <?php if($core_settings->stripe == "1" && $core_settings->authorize_net == "0" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>  
 	    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?=base_url()?>invoices/stripepay/<?=$invoice->id;?>/<?=$sumRest;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?=$this->lang->line('application_credit_card');?></a></li>
+	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?php echo base_url()?>invoices/stripepay/<?php echo $invoice->id;?>/<?php echo $sumRest;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?php echo $this->lang->line('application_credit_card');?></a></li>
 	  <?php } ?>
 
 	  <?php if($core_settings->stripe == "0" && $core_settings->authorize_net == "1" && $sum != "0.00" && $invoice->status != "Paid" ){ ?>  
-	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?=base_url()?>invoices/authorizenet/<?=$invoice->id;?>/<?=$sumRest;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?=$this->lang->line('application_credit_card');?></a></li>
+	    <li><a id="pay_credit_card" data-toggle="mainmodal" href="<?php echo base_url()?>invoices/authorizenet/<?php echo $invoice->id;?>/<?php echo $sumRest;?>"><i class="fa fa-credit-card" style="margin-right:5px"></i> <?php echo $this->lang->line('application_credit_card');?></a></li>
 	  <?php } ?>
 	  </ul>
 	</div>

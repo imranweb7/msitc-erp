@@ -25,12 +25,12 @@ $message_icon = false;
     <META Http-Equiv="Cache-Control" Content="no-cache">
     <META Http-Equiv="Pragma" Content="no-cache">
     <META Http-Equiv="Expires" Content="0">
-    <link rel="SHORTCUT ICON" href="<?=base_url()?>assets/blueline/img/favicon.ico"/>
-    <title><?=$core_settings->company;?></title> 
+    <link rel="SHORTCUT ICON" href="<?php echo base_url()?>assets/blueline/img/favicon.ico"/>
+    <title><?php echo $core_settings->company;?></title>
 
     <!-- Bootstrap core CSS and JS -->
     
-  <script src="<?=base_url()?>assets/blueline/js/plugins/jquery-1.11.0.min.js"></script> 
+  <script src="<?php echo base_url()?>assets/blueline/js/plugins/jquery-1.11.0.min.js"></script>
 
   
 
@@ -49,34 +49,34 @@ $message_icon = false;
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
   })(); </script>
-  <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/bootstrap.min.css">
     <!-- Plugins -->
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/jquery-ui-1.10.3.custom.min.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/datepicker.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/bootstrap-timepicker.css"/>
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/colorpicker.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/refineslide.css"/>
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/jquery-slider.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/summernote.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/chosen.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/dataTables.bootstrap.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/jquery.mCustomScrollbar.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/xcharts.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/nprogress.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/jquery-labelauty.css" />
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/plugins/easy-pie-chart-style.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/jquery-ui-1.10.3.custom.min.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/datepicker.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/bootstrap-timepicker.css"/>
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/colorpicker.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/refineslide.css"/>
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/jquery-slider.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/summernote.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/chosen.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/dataTables.bootstrap.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/jquery.mCustomScrollbar.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/xcharts.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/nprogress.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/jquery-labelauty.css" />
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/plugins/easy-pie-chart-style.css" />
 
     
 
     
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/blueline.css"/>
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/blueline.css"/>
     
-    <link href="<?=base_url()?>assets/blueline/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/ionicons.min.css" />
+    <link href="<?php echo base_url()?>assets/blueline/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/ionicons.min.css" />
 
     
     
-    <link rel="stylesheet" href="<?=base_url()?>assets/blueline/css/user.css"/> 
+    <link rel="stylesheet" href="<?php echo base_url()?>assets/blueline/css/user.css"/>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -94,7 +94,7 @@ $message_icon = false;
         <div class="sidebar">
         <div class="navbar-header">
          
-          <a class="navbar-brand" href="#"><img src="<?=base_url()?><?=$core_settings->logo;?>" alt="<?=$core_settings->company;?>"></a>
+          <a class="navbar-brand" href="#"><img src="<?php echo base_url()?><?php echo $core_settings->logo;?>" alt="<?php echo $core_settings->company;?>"></a>
         </div>
 
           <ul class="nav nav-sidebar">
@@ -135,10 +135,10 @@ $message_icon = false;
                }
                if(strtolower($value->name) == "messages"){$message_icon = true;}
                ?>
-               <li id="<?=strtolower($value->name);?>" class="<?php if ($act_uri == strtolower($value->name)) {echo "active";}?>"><a href="<?=site_url($value->link);?>"><span class="menu-icon"><i class="fa <?=$icon;?>"></i></span><span class="nav-text"><?php echo $this->lang->line('application_'.$value->link);?></span>
-                <?php if(strtolower($value->name) == "messages" && $messages_new[0]->amount != "0"){ $message_icon = true; ?><span class="notification-badge"><?=$messages_new[0]->amount;?></span><?php } ?>
-                <?php if(strtolower($value->name) == "quotations" && $quotations_new[0]->amount != "0"){ ?><span class="notification-badge"><?=$quotations_new[0]->amount;?></span><?php } ?>
-                <?php if(strtolower($value->name) == "tickets" && $tickets_new[0]->amount != "0"){ ?><span class="notification-badge"><?=$tickets_new[0]->amount;?></span><?php } ?>
+               <li id="<?php echo strtolower($value->name);?>" class="<?php if ($act_uri == strtolower($value->name)) {echo "active";}?>"><a href="<?php echo site_url($value->link);?>"><span class="menu-icon"><i class="fa <?php echo $icon;?>"></i></span><span class="nav-text"><?php echo $this->lang->line('application_'.$value->link);?></span>
+                <?php if(strtolower($value->name) == "messages" && $messages_new[0]->amount != "0"){ $message_icon = true; ?><span class="notification-badge"><?php echo $messages_new[0]->amount;?></span><?php } ?>
+                <?php if(strtolower($value->name) == "quotations" && $quotations_new[0]->amount != "0"){ ?><span class="notification-badge"><?php echo $quotations_new[0]->amount;?></span><?php } ?>
+                <?php if(strtolower($value->name) == "tickets" && $tickets_new[0]->amount != "0"){ ?><span class="notification-badge"><?php echo $tickets_new[0]->amount;?></span><?php } ?>
                </a> </li>
               <?php } ?>
           </ul>
@@ -147,24 +147,24 @@ $message_icon = false;
           
         if($sticky && $val->link == "quickaccess"){ ?>
             <ul class="nav nav-sidebar quick-access menu-sub hidden-sm hidden-xs">
-            <h4><?=$this->lang->line('application_quick_access');?></h4>
+            <h4><?php echo $this->lang->line('application_quick_access');?></h4>
 
                 <?php foreach ($sticky as $value): ?>
                 
                     <li>
-                        <a href="<?=base_url()?>projects/view/<?=$value->id;?>">
-                          <p class="truncate"><i class="fa fa-clock-o <?php if(!empty($value->tracking)){echo "fa-spin";}?>"></i> <?=$value->name;?> </p>
+                        <a href="<?php echo base_url()?>projects/view/<?php echo $value->id;?>">
+                          <p class="truncate"><i class="fa fa-clock-o <?php if(!empty($value->tracking)){echo "fa-spin";}?>"></i> <?php echo $value->name;?> </p>
                           <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <?=$value->progress;?>%;"></div>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $value->progress;?>%;"></div>
                           </div>
                         </a>
                        <div class="submenu">
                             <ul>
                             <?php if(isset($value->company->name)){ ?>
-                            <li class="underline"><a href="<?=base_url()?>clients/view/<?=$value->company_id;?>"><b><?=$value->company->name?></b></a></li>
+                            <li class="underline"><a href="<?php echo base_url()?>clients/view/<?php echo $value->company_id;?>"><b><?php echo $value->company->name?></b></a></li>
                             <?php } ?>
-                              <li><a href="<?=base_url()?>projects/view/<?=$value->id;?>"> <?=$this->lang->line('application_go_to_project');?></li>
-                              <li><a href="<?=base_url()?>projects/tracking/<?=$value->id;?>" id="<?=$value->id;?>"><?php if(empty($value->tracking)){ echo $this->lang->line("application_start_timer");}else{echo $this->lang->line("application_stop_timer");} ?></a></li>
+                              <li><a href="<?php echo base_url()?>projects/view/<?php echo $value->id;?>"> <?php echo $this->lang->line('application_go_to_project');?></li>
+                              <li><a href="<?php echo base_url()?>projects/tracking/<?php echo $value->id;?>" id="<?php echo $value->id;?>"><?php if(empty($value->tracking)){ echo $this->lang->line("application_start_timer");}else{echo $this->lang->line("application_stop_timer");} ?></a></li>
                             </ul>
         
                         </div>
@@ -176,11 +176,11 @@ $message_icon = false;
         if($user_online && $val->link == "useronline"){ ?>    
 
             <ul class="nav nav-sidebar user-online menu-sub hidden-sm hidden-xs">
-            <h4><?=$this->lang->line('application_user_online');?></h4>
+            <h4><?php echo $this->lang->line('application_user_online');?></h4>
         <?php foreach ($user_online as $value): 
                 if($value->last_active+(15 * 60) > time()){ $status = "online";}else{ $status = "away";} ?>
                 <li>
-                    <a href="#" class="<?=$status;?>">
+                    <a href="#" class="<?php echo $status;?>">
                       <p class="truncate"><img class="img-circle" src="<?php 
                 if($value->userpic != 'no-pic.png'){
                   echo base_url()."files/media/".$value->userpic;
@@ -191,7 +191,7 @@ $message_icon = false;
                     </a>
                     <!-- <div class="submenu">
                         <ul>
-                          <li><a href="#"><span class="menu-icon"><i class="fa fa-envelope-o"></i></span> <?=$this->lang->line('application_write_a_message');?></a></li>
+                          <li><a href="#"><span class="menu-icon"><i class="fa fa-envelope-o"></i></span> <?php echo $this->lang->line('application_write_a_message');?></a></li>
                         </ul>
    
                     </div> -->
@@ -201,11 +201,11 @@ $message_icon = false;
             
             <?php if($client_online){ ?>
                 <ul class="nav nav-sidebar user-online menu-sub hidden-sm hidden-xs">
-                    <h4><?=$this->lang->line('application_client_online');?></h4>
+                    <h4><?php echo $this->lang->line('application_client_online');?></h4>
                     <?php foreach ($client_online as $value):
                         if($value->last_active+(15 * 60) > time()){ $status = "online";}else{ $status = "away";} ?>
                         <li>
-                            <a href="#" class="<?=$status;?>">
+                            <a href="#" class="<?php echo $status;?>">
                               <p class="truncate"><img class="img-circle" src="
                <?php 
                 if($value->userpic != 'no-pic.png'){
@@ -217,7 +217,7 @@ $message_icon = false;
                             </a>
                            <!-- <div class="submenu">
                                 <ul>
-                                  <li><a href="#"><span class="menu-icon"><i class="fa fa-envelope-o"></i></span> <?=$this->lang->line('application_write_a_message');?></a></li>
+                                  <li><a href="#"><span class="menu-icon"><i class="fa fa-envelope-o"></i></span> <?php echo $this->lang->line('application_write_a_message');?></a></li>
                                 </ul>
             
                             </div>-->
@@ -239,16 +239,16 @@ $message_icon = false;
                   $userimage = get_gravatar($this->user->email);
                 }
                  ?>
-      <span class="inline visible-xs"><a href="<?=site_url("agent");?>" data-toggle="mainmodal" title="<?=$this->lang->line('application_profile');?>"><img class="img-circle topbar-userpic" src="<?=$userimage;?>" height="21px"></a></span>
-      <img class="img-circle topbar-userpic hidden-xs" src="<?=$userimage;?>" height="21px">
+      <span class="inline visible-xs"><a href="<?php echo site_url("agent");?>" data-toggle="mainmodal" title="<?php echo $this->lang->line('application_profile');?>"><img class="img-circle topbar-userpic" src="<?php echo $userimage;?>" height="21px"></a></span>
+      <img class="img-circle topbar-userpic hidden-xs" src="<?php echo $userimage;?>" height="21px">
       
       <span class="hidden-xs"><?php echo character_limiter($this->user->firstname." ".$this->user->lastname, 25);?> </span>
-      <?php if($message_icon){ ?><span class="hidden-xs"><a href="<?=site_url("messages");?>" title="<?=$this->lang->line('application_messages');?>"><i class="fa fa-inbox"></i></a></span><?php } ?>
-      <span class="hidden-xs"><a href="<?=site_url("agent");?>" data-toggle="mainmodal" title="<?=$this->lang->line('application_profile');?>"><i class="fa fa-cog"></i></a></span>
+      <?php if($message_icon){ ?><span class="hidden-xs"><a href="<?php echo site_url("messages");?>" title="<?php echo $this->lang->line('application_messages');?>"><i class="fa fa-inbox"></i></a></span><?php } ?>
+      <span class="hidden-xs"><a href="<?php echo site_url("agent");?>" data-toggle="mainmodal" title="<?php echo $this->lang->line('application_profile');?>"><i class="fa fa-cog"></i></a></span>
       <span class="btn-group">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                       <?php if(!empty($core_settings->language)){$default_language = $core_settings->language; }else{ $default_language = "english"; } ?>
-                                      <img src="<?=base_url()?>assets/blueline/img/<?php if($this->input->cookie('fc2language') != ""){echo $this->input->cookie('fc2language');}else{echo $default_language;} ?>.png" style="margin-top:-49px" align="middle">
+                                      <img src="<?php echo base_url()?>assets/blueline/img/<?php if($this->input->cookie('fc2language') != ""){echo $this->input->cookie('fc2language');}else{echo $default_language;} ?>.png" style="margin-top:-49px" align="middle">
                                  
                                     </a>
                                      <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
@@ -256,7 +256,7 @@ $message_icon = false;
 
 									          while (false !== ($entry = readdir($handle))) {
 									              if ($entry != "." && $entry != "..") {
-									                ?><li><a href="<?=base_url()?>agent/language/<?=$entry;?>"><img src="<?=base_url()?>assets/blueline/img/<?=$entry;?>.png" class="language-img"> <?=ucwords($entry);?></a></li><?php
+									                ?><li><a href="<?php echo base_url()?>agent/language/<?php echo $entry;?>"><img src="<?php echo base_url()?>assets/blueline/img/<?php echo $entry;?>.png" class="language-img"> <?php echo ucwords($entry);?></a></li><?php
 									              }
 									          }
 									
@@ -266,7 +266,7 @@ $message_icon = false;
                       
                                       </ul>
             </span>
-      <span><a href="<?=site_url("logout");?>" title="<?=$this->lang->line('application_logout');?>"><i class="fa fa-sign-out"></i></a></span>
+      <span><a href="<?php echo site_url("logout");?>" title="<?php echo $this->lang->line('application_logout');?>"><i class="fa fa-sign-out"></i></a></span>
       </div>
           
         </div>
@@ -274,7 +274,7 @@ $message_icon = false;
         
         
         
-        <?=$yield?>
+        <?php echo $yield?>
       
       
             
@@ -284,7 +284,7 @@ $message_icon = false;
     </div>
     <!-- Notify -->
     <?php if($this->session->flashdata('message')) { $exp = explode(':', $this->session->flashdata('message'))?>
-        <div class="notify <?=$exp[0]?>"><?=$exp[1]?></div>
+        <div class="notify <?php echo $exp[0]?>"><?php echo $exp[1]?></div>
     <?php } ?>
 
       
@@ -294,38 +294,38 @@ $message_icon = false;
 
  
     <!-- Bootstrap core JavaScript -->
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery-ui-1.10.3.custom.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery-ui-1.10.3.custom.min.js"></script>
     
     <!-- Plugins -->
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/date-time/bootstrap-datepicker.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/date-time/bootstrap-timepicker.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/bootstrap-colorpicker.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/date-time/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/date-time/bootstrap-timepicker.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/bootstrap-colorpicker.min.js"></script>
     
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.knob.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.autosize-min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.inputlimiter.1.3.1.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.maskedinput.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.refineslide.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/summernote.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/chosen.jquery.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.dataTables.bootstrap.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.nanoscroller.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jqBootstrapValidation.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/chart.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/nprogress.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery-labelauty.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/validator.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/timer.jquery.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/jquery.easypiechart.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/velocity.min.js"></script>
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/velocity.ui.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.knob.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.autosize-min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.inputlimiter.1.3.1.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.maskedinput.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.refineslide.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/summernote.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/chosen.jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.nanoscroller.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jqBootstrapValidation.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/chart.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/nprogress.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery-labelauty.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/validator.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/timer.jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/jquery.easypiechart.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/velocity.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/velocity.ui.min.js"></script>
 
 
 
-        <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/blueline.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/blueline.js"></script>
 
        
     
@@ -373,9 +373,9 @@ $message_icon = false;
           "aaSorting": [[ 0, 'desc']],
           "oLanguage": {
           "sSearch": "",
-            "sInfo": "<?=$this->lang->line('application_showing_from_to');?>",
-            "sInfoEmpty": "<?=$this->lang->line('application_showing_from_to_empty');?>",
-            "sEmptyTable": "<?=$this->lang->line('application_no_data_yet');?>",
+            "sInfo": "<?php echo $this->lang->line('application_showing_from_to');?>",
+            "sInfoEmpty": "<?php echo $this->lang->line('application_showing_from_to_empty');?>",
+            "sEmptyTable": "<?php echo $this->lang->line('application_no_data_yet');?>",
             "oPaginate": {
               "sNext": '<i class="fa fa-arrow-right"></i>',
               "sPrevious": '<i class="fa fa-arrow-left"></i>',
@@ -391,8 +391,8 @@ $message_icon = false;
           "aaSorting": [[ 0, 'desc']],
           "oLanguage": {
           "sSearch": "",
-            "sInfo": "<?=$this->lang->line('application_showing_from_to');?>",
-            "sInfoEmpty": "<?=$this->lang->line('application_showing_from_to_empty');?>",
+            "sInfo": "<?php echo $this->lang->line('application_showing_from_to');?>",
+            "sInfoEmpty": "<?php echo $this->lang->line('application_showing_from_to_empty');?>",
             "sEmptyTable": " ",
             "oPaginate": {
               "sNext": '<i class="fa fa-arrow-right"></i>',
@@ -409,8 +409,8 @@ $message_icon = false;
           "aaSorting": [[ 1, 'desc']],
           "oLanguage": {
           "sSearch": "",
-            "sInfo": "<?=$this->lang->line('application_showing_from_to');?>",
-            "sInfoEmpty": "<?=$this->lang->line('application_showing_from_to_empty');?>",
+            "sInfo": "<?php echo $this->lang->line('application_showing_from_to');?>",
+            "sInfoEmpty": "<?php echo $this->lang->line('application_showing_from_to_empty');?>",
             "sEmptyTable": " ",
             "oPaginate": {
               "sNext": '<i class="fa fa-arrow-right"></i>',
@@ -433,9 +433,9 @@ $message_icon = false;
           "aaSorting": [[ 1, 'desc']],
           "oLanguage": {
           "sSearch": "",
-            "sInfo": "<?=$this->lang->line('application_showing_from_to');?>",
-            "sInfoEmpty": "<?=$this->lang->line('application_showing_from_to_empty');?>",
-            "sEmptyTable": "<?=$this->lang->line('application_no_data_yet');?>",
+            "sInfo": "<?php echo $this->lang->line('application_showing_from_to');?>",
+            "sInfoEmpty": "<?php echo $this->lang->line('application_showing_from_to_empty');?>",
+            "sEmptyTable": "<?php echo $this->lang->line('application_no_data_yet');?>",
             "oPaginate": {
               "sNext": '<i class="fa fa-arrow-right"></i>',
               "sPrevious": '<i class="fa fa-arrow-left"></i>',
@@ -448,9 +448,9 @@ $message_icon = false;
           "aaSorting": [[ 2, 'desc']],
           "oLanguage": {
           "sSearch": "",
-            "sInfo": "<?=$this->lang->line('application_showing_from_to');?>", 
-            "sInfoEmpty": "<?=$this->lang->line('application_showing_from_to_empty');?>",
-            "sEmptyTable": "<?=$this->lang->line('application_no_data_yet');?>",
+            "sInfo": "<?php echo $this->lang->line('application_showing_from_to');?>",
+            "sInfoEmpty": "<?php echo $this->lang->line('application_showing_from_to_empty');?>",
+            "sEmptyTable": "<?php echo $this->lang->line('application_no_data_yet');?>",
             "oPaginate": {
               "sNext": '<i class="fa fa-arrow-right"></i>',
               "sPrevious": '<i class="fa fa-arrow-left"></i>',

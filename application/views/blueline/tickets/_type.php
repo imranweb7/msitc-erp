@@ -5,7 +5,7 @@ if(isset($ticket)){ ?>
 <input id="id" type="hidden" name="id" value="<?php echo $ticket->id; ?>" />
 <?php } ?>    
 <div class="form-group">
-        <label for="type"><?=$this->lang->line('application_type');?></label>
+        <label for="type"><?php echo $this->lang->line('application_type');?></label>
         <?php $typelist = array();
                  foreach ($types as $type):
                     $typelist[$type->id] = $type->name;
@@ -14,8 +14,8 @@ if(isset($ticket)){ ?>
 </div>    
 
         <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 

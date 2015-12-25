@@ -6,7 +6,7 @@ if(isset($project)){ ?>
 <?php } ?>
 
 <div class="form-group">
-        <label for="users"><?=$this->lang->line('application_assign_to_agents');?></label>
+        <label for="users"><?php echo $this->lang->line('application_assign_to_agents');?></label>
         <?php $options = array();
                 $user = array();
                 foreach ($users as $value):  
@@ -21,8 +21,8 @@ if(isset($project)){ ?>
 
          
 <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn btn-default" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 

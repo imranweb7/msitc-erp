@@ -8,11 +8,11 @@ $public = "0";
   <input id="id" type="hidden" name="id" value="<?php echo $task->id; ?>" />
 <?php } ?>
  <div class="form-group">
-        <label for="name"><?=$this->lang->line('application_task_name');?> *</label>
+        <label for="name"><?php echo $this->lang->line('application_task_name');?> *</label>
         <input id="name" type="text" name="name" class="form-control resetvalue" value="<?php if(isset($task)){echo $task->name;} ?>"  required/>
 </div>
  <div class="form-group">
-        <label for="priority"><?=$this->lang->line('application_priority');?></label>
+        <label for="priority"><?php echo $this->lang->line('application_priority');?></label>
         <?php $prioritys = array();
                 $prioritys['0'] = '-';
                 $prioritys['1'] = $this->lang->line('application_low_priority');
@@ -22,7 +22,7 @@ $public = "0";
         echo form_dropdown('priority', $prioritys, $priority, 'style="width:100%" class="chosen-select"');?>
 </div> 
  <div class="form-group">
-        <label for="status"><?=$this->lang->line('application_status');?></label>
+        <label for="status"><?php echo $this->lang->line('application_status');?></label>
         <?php $options = array(
                   'open'  => $this->lang->line('application_open'),
                   'done'    => $this->lang->line('application_done'),
@@ -32,7 +32,7 @@ $public = "0";
                 echo form_dropdown('status', $options, $status, 'style="width:100%" class="chosen-select"'); ?>
 </div>  
  <div class="form-group">
-        <label for="user"><?=$this->lang->line('application_assign_to');?></label>
+        <label for="user"><?php echo $this->lang->line('application_assign_to');?></label>
         <?php $users = array();
                 $users['0'] = '-';
                  foreach ($project->project_has_workers as $workers):
@@ -43,16 +43,16 @@ $public = "0";
 </div> 
 
  <div class="form-group">
-        <label for="value"><?=$this->lang->line('application_value');?></label>
+        <label for="value"><?php echo $this->lang->line('application_value');?></label>
         <input id="value" type="text" name="value" class="form-control" value="<?php if(isset($task)){echo $task->value;} ?>" />
 </div>
 <div class="form-group">
-                          <label for="due_date"><?=$this->lang->line('application_due_date');?></label>
+                          <label for="due_date"><?php echo $this->lang->line('application_due_date');?></label>
                           <input class="form-control date-picker" name="due_date" id="due_date" type="text" value="<?php if(isset($task)){echo $task->due_date;} ?>" data-date-format="yyyy-mm-dd"/>
 </div>
 
  <div class="form-group">
-                        <label for="textfield"><?=$this->lang->line('application_description');?></label>
+                        <label for="textfield"><?php echo $this->lang->line('application_description');?></label>
                         <textarea class="input-block-level summernote-modal"  id="textfield" name="description"><?php if(isset($task)){echo $task->description;} ?></textarea>
 </div>
 
@@ -60,19 +60,19 @@ $public = "0";
 <ul class="accesslist">
 
                         <li>
-                        <input name="public" class="checkbox" data-labelauty="<?=$this->lang->line('application_task_public');?>" value="1" type="checkbox" <?php if($public == "1"){ ?> checked="checked" <?php } ?> />
+                        <input name="public" class="checkbox" data-labelauty="<?php echo $this->lang->line('application_task_public');?>" value="1" type="checkbox" <?php if($public == "1"){ ?> checked="checked" <?php } ?> />
                         </li>
 </ul>
 </div>
 
         <div class="modal-footer">
           <?php if(isset($task)){ ?>
-            <a href="<?=base_url()?>projects/tasks/<?=$task->project_id;?>/delete/<?=$task->id;?>" class="btn btn-danger pull-left button-loader" ><?=$this->lang->line('application_delete');?></a>
+            <a href="<?php echo base_url()?>projects/tasks/<?php echo $task->project_id;?>/delete/<?php echo $task->id;?>" class="btn btn-danger pull-left button-loader" ><?php echo $this->lang->line('application_delete');?></a>
           <?php }else{  ?>
-         <a class="btn btn-default pull-left" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+         <a class="btn btn-default pull-left" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         <i class="fa fa-spinner fa-spin" id="showloader" style="display:none"></i> 
-        <button id="send" name="send" data-keepModal="true" class="btn btn-primary send button-loader"><?=$this->lang->line('application_save_and_add');?></button>
+        <button id="send" name="send" data-keepModal="true" class="btn btn-primary send button-loader"><?php echo $this->lang->line('application_save_and_add');?></button>
         <?php } ?>
-        <button name="send" class="btn btn-primary send button-loader"><?=$this->lang->line('application_save');?></button>
+        <button name="send" class="btn btn-primary send button-loader"><?php echo $this->lang->line('application_save');?></button>
         </div>
 <?php echo form_close(); ?>

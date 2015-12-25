@@ -7,7 +7,7 @@
 				$active = "";
 				if($value == "settings/updates"){ $badge = '<span class="badge badge-success">'.$update_count.'</span>';}
 				if($name == $breadcrumb){ $active = 'active';}?>
-	               <a class="list-group-item <?=$active;?>" id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?=site_url($value);?>"><?=$badge?> <?=$name?></a>
+	               <a class="list-group-item <?php echo $active;?>" id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?php echo site_url($value);?>"><?php echo $badge?> <?php echo $name?></a>
 	            <?php endforeach;?>
 			</div>
 		</div>
@@ -37,9 +37,9 @@ background: #FFF;
     }
 </style>
 
-<div class="table-head"><?=$this->lang->line('application_customize');?> CSS <span class="pull-right"><button class="btn btn-primary btn-primary" id="saveeditor"><?=$this->lang->line('application_save');?></button></span></div>
+<div class="table-head"><?php echo $this->lang->line('application_customize');?> CSS <span class="pull-right"><button class="btn btn-primary btn-primary" id="saveeditor"><?php echo $this->lang->line('application_save');?></button></span></div>
 
-<div id="editor"><?=$css;?></div>
+<div id="editor"><?php echo $css;?></div>
 
 <script src="https://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
        

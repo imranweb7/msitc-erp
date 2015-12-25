@@ -11,11 +11,11 @@ echo form_open($form_action, $attributes);
 		padding:15px;
 	}
 </style>
-<div class="table-head"><?=$quotation->name;?></div>
+<div class="table-head"><?php echo $quotation->name;?></div>
 	<div class="table-div">	
-		<?=$fields;?>
+		<?php echo $fields;?>
 	<div class="bottom">
-		<input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('quotation_save');?>"/>
+		<input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('quotation_save');?>"/>
 	</div>
 <input type="hidden" id="tfields" name="tfields" value=""/>
 <?php echo form_close(); ?>

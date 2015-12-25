@@ -16,21 +16,21 @@
     <div class="nano-content">
        <div class="header">
  <div class="message-content-menu">
-              <a class="message-reply-button btn btn-success" role="button"><i class="fa fa-reply"></i> <?=$this->lang->line('application_reply');?></a>
-              <a class="btn btn-primary ajax-silent" href="<?=base_url()?>messages/mark/<?=$value->id?>" role="button">
+              <a class="message-reply-button btn btn-success" role="button"><i class="fa fa-reply"></i> <?php echo $this->lang->line('application_reply');?></a>
+              <a class="btn btn-primary ajax-silent" href="<?php echo base_url()?>messages/mark/<?php echo $value->id?>" role="button">
               <?php if($value->status == 'Marked'){ ?>
-              <i class="fa fa-star-o"></i> <?=$this->lang->line('application_unmark');?>
+              <i class="fa fa-star-o"></i> <?php echo $this->lang->line('application_unmark');?>
               <?php }else{ ?>
-              <i class="fa fa-star"></i> <?=$this->lang->line('application_mark');?>
+              <i class="fa fa-star"></i> <?php echo $this->lang->line('application_mark');?>
               <?php } ?>
               </a>
               <?php if($value->status != "deleted"){ ?>
-              <a class="btn btn-danger" href="<?=base_url()?>messages/delete/<?=$value->conversation?>" role="button"><i class="fa fa-trash-o"></i> <?=$this->lang->line('application_delete');?></a>
+              <a class="btn btn-danger" href="<?php echo base_url()?>messages/delete/<?php echo $value->conversation?>" role="button"><i class="fa fa-trash-o"></i> <?php echo $this->lang->line('application_delete');?></a>
               <?php } ?>
               
             </div>  
-    <h1 class="page-title"><a class="icon glyphicon glyphicon-chevron-right trigger-message-close"></a><br><span class="dot"></span><?=$value->subject;?><span class="grey">(<?=$count;?>)</span></h1>
-    <p class="subtitle"><?=$this->lang->line('application_from');?> <a href="#"><?php if(isset($value->sender_u) && $filter != "Deleted"){echo $value->sender_u;}else{ echo $value->sender_c; } ?></a> <?=$this->lang->line('application_to');?> <a href="#"><?php if(isset($recipient)){ echo $recipient; }else{ if(isset($value->recipient_u)){echo $value->recipient_u;}else{ echo $value->recipient_c; } }?></a>, <?=$this->lang->line('application_started_on');?> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $unix); ?></p>
+    <h1 class="page-title"><a class="icon glyphicon glyphicon-chevron-right trigger-message-close"></a><br><span class="dot"></span><?php echo $value->subject;?><span class="grey">(<?php echo $count;?>)</span></h1>
+    <p class="subtitle"><?php echo $this->lang->line('application_from');?> <a href="#"><?php if(isset($value->sender_u) && $filter != "Deleted"){echo $value->sender_u;}else{ echo $value->sender_c; } ?></a> <?php echo $this->lang->line('application_to');?> <a href="#"><?php if(isset($recipient)){ echo $recipient; }else{ if(isset($value->recipient_u)){echo $value->recipient_u;}else{ echo $value->recipient_c; } }?></a>, <?php echo $this->lang->line('application_started_on');?> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $unix); ?></p>
   </div>
     
       <ul class="message-container">
@@ -42,16 +42,16 @@
                 $attributes = array('class' => 'ajaxform', 'id' => 'replyform');
                 echo form_open_multipart('messages/write/reply', $attributes); 
                 ?>
-                <input type="hidden" name="recipient" value="<?=$value->sender;?>">
-                <input type="hidden" name="subject" value="<?=$value->subject;?>">
-                <input type="hidden" name="conversation" value="<?=$value->conversation;?>">
-                <input type="hidden" name="previousmessage" value="<?=$value->id;?>">
+                <input type="hidden" name="recipient" value="<?php echo $value->sender;?>">
+                <input type="hidden" name="subject" value="<?php echo $value->subject;?>">
+                <input type="hidden" name="conversation" value="<?php echo $value->conversation;?>">
+                <input type="hidden" name="previousmessage" value="<?php echo $value->id;?>">
               <div class="form-group">
                   <textarea class="input-block-level summernote-ajax" id="reply" name="message"></textarea>
               
             
               <div class="textarea-footer">
-              <button id="send" name="send" class="btn btn-primary button-loader"><?=$this->lang->line('application_send');?></button>
+              <button id="send" name="send" class="btn btn-primary button-loader"><?php echo $this->lang->line('application_send');?></button>
               
               <div class="pull-right small-upload"><input id="uploadFile" class="form-control uploadFile" placeholder="" disabled="disabled" />
                           <div class="fileUpload btn btn-primary">
@@ -70,7 +70,7 @@
     
 
 
-        <li class="item sent <?=$own;?>">
+        <li class="item sent <?php echo $own;?>">
           <div class="details">
             <div class="left">
             <img class="userpic img-rounded pull-left" src="
@@ -96,10 +96,10 @@
             <div class="right"><?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $unix); ?></div>
           </div>
           <div class="message">
-            <?=$value->message;?> 
+            <?php echo $value->message;?>
           <?php if(isset($value->attachment)){ ?>
           <div class="attachments">
-            <a class="label label-info" href="<?=base_url()?>messages/attachment/<?php echo $value->id; ?>"><?php echo $value->attachment; ?></a>
+            <a class="label label-info" href="<?php echo base_url()?>messages/attachment/<?php echo $value->id; ?>"><?php echo $value->attachment; ?></a>
           </div>
             <?php } ?>
             </div>

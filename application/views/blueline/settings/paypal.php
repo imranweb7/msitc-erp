@@ -7,14 +7,14 @@
 				$active = "";
 				if($value == "settings/updates"){ $badge = '<span class="badge badge-success">'.$update_count.'</span>';}
 				if($name == $breadcrumb){ $active = 'active';}?>
-	               <a class="list-group-item <?=$active;?>" id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?=site_url($value);?>"><?=$badge?> <?=$name?></a>
+	               <a class="list-group-item <?php echo $active;?>" id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?php echo site_url($value);?>"><?php echo $badge?> <?php echo $name?></a>
 	            <?php endforeach;?>
 			</div>
 		</div>
 
 
 <div class="col-md-9">
-		<div class="table-head"><?=$this->lang->line('application_paypal');?> <?=$this->lang->line('application_settings');?></div>
+		<div class="table-head"><?php echo $this->lang->line('application_paypal');?> <?php echo $this->lang->line('application_settings');?></div>
 		<div class="table-div">
 		<?php   
 		$attributes = array('class' => '', 'id' => 'paypal');
@@ -23,17 +23,17 @@
 <div class="form-group">
 <br>
 
-            <input name="paypal" type="checkbox" class="checkbox" style="width:100%;" data-labelauty="<?=$this->lang->line('application_paypal_active');?>" value="1" <?php if($settings->paypal == "1"){ ?> checked="checked" <?php } ?>>
+            <input name="paypal" type="checkbox" class="checkbox" style="width:100%;" data-labelauty="<?php echo $this->lang->line('application_paypal_active');?>" value="1" <?php if($settings->paypal == "1"){ ?> checked="checked" <?php } ?>>
 
  </div>
-<div class="form-group"><label><?=$this->lang->line('application_paypal_account');?></label>
-			<input type="text" name="paypal_account" class="form-control" value="<?=$settings->paypal_account;?>">
+<div class="form-group"><label><?php echo $this->lang->line('application_paypal_account');?></label>
+			<input type="text" name="paypal_account" class="form-control" value="<?php echo $settings->paypal_account;?>">
 </div>
 <div class="form-group">
-			<label><?=$this->lang->line('application_paypal_currency');?></label>
+			<label><?php echo $this->lang->line('application_paypal_currency');?></label>
 
 				<select name="paypal_currency" class="formcontrol chosen-select ">
-					<?php if($settings->paypal_currency != ""){ ?><option value="<?=$settings->paypal_currency;?>" selected=""><?=$settings->paypal_currency;?></option><?php } ?>
+					<?php if($settings->paypal_currency != ""){ ?><option value="<?php echo $settings->paypal_currency;?>" selected=""><?php echo $settings->paypal_currency;?></option><?php } ?>
 					<option value="USD" title="$">USD</option>
 					<option value="AUD" title="$">AUD</option>
 					<option value="BRL" title="R$">BRL</option>
@@ -61,12 +61,12 @@
 					</select>
 </div>
 <div class="form-group">
-	<label><?=$this->lang->line('application_paypal_ipn_address');?> <a class="cursor po " data-toggle="popover" data-placement="right" data-content="<?=$this->lang->line('application_paypal_ipn_help');?>" data-original-title="<?=$this->lang->line('application_paypal_ipn_address');?>"><i class="fa fa-information"></i></a></label>
-			<br><i><?=base_url()?>paypalipn</i>
+	<label><?php echo $this->lang->line('application_paypal_ipn_address');?> <a class="cursor po " data-toggle="popover" data-placement="right" data-content="<?php echo $this->lang->line('application_paypal_ipn_help');?>" data-original-title="<?php echo $this->lang->line('application_paypal_ipn_address');?>"><i class="fa fa-information"></i></a></label>
+			<br><i><?php echo base_url()?>paypalipn</i>
 </div>
 <div class="form-group">
 
-			 <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
+			 <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
 </div>
 	 	 
 		<?php echo form_close(); ?>

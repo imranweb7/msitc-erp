@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?=base_url()?>assets/blueline/js/ajax.js"></script>
+<script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/ajax.js"></script>
 <script>$(document).ready(function(){ 
 
 $(".checkbox").labelauty(); 
@@ -10,4 +10,4 @@ $.ajaxSetup ({
     cache: false
 });
 </script>
-<?=$yield?>
+<?php echo $yield?>

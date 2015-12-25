@@ -12,7 +12,7 @@ if (!isset($language))
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <meta name="Author" content="<?= $core_settings->company?>"/> 
+  <meta name="Author" content="<?php echo  $core_settings->company?>"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="invoice.css" type="text/css" charset="utf-8" />
     <style type="text/css">
@@ -84,19 +84,19 @@ body{
 }
 
 .Open {
-  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?=$language;?>/status-open.png);
+  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?php echo $language;?>/status-open.png);
 }
 
 .Sent {
-  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?=$language;?>/status-sent.png);
+  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?php echo $language;?>/status-sent.png);
 }
 
 .Paid {
-  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?=$language;?>/status-paid.png);
+  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?php echo $language;?>/status-paid.png);
 }
 
 .Overdue {
-  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?=$language;?>/status-overdue.png);
+  background-image: url(<?php echo base_url(); ?>assets/blackline/img/<?php echo $language;?>/status-overdue.png);
 }
 
 hr {
@@ -194,38 +194,38 @@ table.tablesorter tbody tr.even td {
 </head>
 
 <body>
-<div><img src="<?php echo base_url(); ?><?=$core_settings->invoice_logo;?>" class="company-logo" /><div>
+<div><img src="<?php echo base_url(); ?><?php echo $core_settings->invoice_logo;?>" class="company-logo" /><div>
 <div id="page">
   <div class="status <?php if($invoice->due_date <= date('Y-m-d') && $invoice->status != "Paid"){ echo "Overdue"; }else{ echo $invoice->status;} ?>">
   </div>
   <div>  
   <p class="recipient-address">
-  <strong><?=$invoice->company->name;?></strong><br />
-<?php if(isset($invoice->company->client->firstname)){ ?> <?=$invoice->company->client->firstname;?> <?=$invoice->company->client->lastname;?> <br><?php } ?>
-<?=$invoice->company->address;?><br>
-<?=$invoice->company->city;?><br>
-<?=$invoice->company->zipcode;?>
+  <strong><?php echo $invoice->company->name;?></strong><br />
+<?php if(isset($invoice->company->client->firstname)){ ?> <?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <br><?php } ?>
+<?php echo $invoice->company->address;?><br>
+<?php echo $invoice->company->city;?><br>
+<?php echo $invoice->company->zipcode;?>
 <?php if($invoice->company->province != ""){?>
-<br><?=$invoice->company->province;?>
+<br><?php echo $invoice->company->province;?>
 <?php } ?>
 <?php if($invoice->company->vat != ""){?>
-<br><?=$this->lang->line('application_vat');?>: <?php echo $invoice->company->vat; ?>
+<br><?php echo $this->lang->line('application_vat');?>: <?php echo $invoice->company->vat; ?>
       <?php } ?>
 </p>
 
 
    <p class="company-address">
-    <?=$core_settings->company;?><br>
-    <?=$core_settings->invoice_contact;?><br>
-    <?=$core_settings->invoice_address;?><br>
-    <?=$core_settings->invoice_city;?><br>
-    <?=$core_settings->invoice_tel;?><br>
+    <?php echo $core_settings->company;?><br>
+    <?php echo $core_settings->invoice_contact;?><br>
+    <?php echo $core_settings->invoice_address;?><br>
+    <?php echo $core_settings->invoice_city;?><br>
+    <?php echo $core_settings->invoice_tel;?><br>
   </p> 
 </div>
 
-  <span class="headline"><?=$this->lang->line('application_invoice');?> <?=$invoice->reference;?></span>
+  <span class="headline"><?php echo $this->lang->line('application_invoice');?> <?php echo $invoice->reference;?></span>
   <p class="terms"><strong><?php echo date($core_settings->date_format, human_to_unix($invoice->issue_date.' 00:00:00'));?></strong><br/>
-  <?=$this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($invoice->due_date.' 00:00:00'));?></p>
+  <?php echo $this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($invoice->due_date.' 00:00:00'));?></p>
   
 
 
@@ -233,11 +233,11 @@ table.tablesorter tbody tr.even td {
     <table id="table" class="tablesorter" cellspacing="0"> 
   <thead> 
   <tr class="header"> 
-    <th><?=$this->lang->line('application_item');?></th>
-    <th><?=$this->lang->line('application_description');?></th>
-    <th width="8%"><?=$this->lang->line('application_hrs_qty');?></th>
-    <th width="12%"><?=$this->lang->line('application_unit_price');?></th>
-    <th width="12%"><?=$this->lang->line('application_sub_total');?></th>
+    <th><?php echo $this->lang->line('application_item');?></th>
+    <th><?php echo $this->lang->line('application_description');?></th>
+    <th width="8%"><?php echo $this->lang->line('application_hrs_qty');?></th>
+    <th width="12%"><?php echo $this->lang->line('application_unit_price');?></th>
+    <th width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
   </tr> 
   </thead> 
   <tbody> 
@@ -245,8 +245,8 @@ table.tablesorter tbody tr.even td {
     <?php foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice->invoice_has_items[$i]->item->name; }?></td>
-      <td><?=$invoice->invoice_has_items[$i]->description;?></td>
-      <td align="center"><?=$invoice->invoice_has_items[$i]->amount;?></td>
+      <td><?php echo $invoice->invoice_has_items[$i]->description;?></td>
+      <td align="center"><?php echo $invoice->invoice_has_items[$i]->amount;?></td>
       <td><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->value));?></td>
       <td><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value));?></td>
     </tr>
@@ -278,23 +278,23 @@ table.tablesorter tbody tr.even td {
         <table width="100%">
           <?php if ($invoice->discount != 0): ?>
         <tr >
-          <td align="left" class="margin"><?=$this->lang->line('application_discount');?></td>
-          <td align="right" style="padding-right:20px">- <?=display_money($invoice->discount);?></td>
+          <td align="left" class="margin"><?php echo $this->lang->line('application_discount');?></td>
+          <td align="right" style="padding-right:20px">- <?php echo display_money($invoice->discount);?></td>
         </tr> 
         <?php endif ?>
         <tr >
-          <td align="left" class="margin"><?=$this->lang->line('application_total');?></td>
-          <td align="right" style="padding-right:20px"><?=display_money($presum);?></td>
+          <td align="left" class="margin"><?php echo $this->lang->line('application_total');?></td>
+          <td align="right" style="padding-right:20px"><?php echo display_money($presum);?></td>
         </tr> 
        <?php if($tax_value != "0"){ ?>
         <tr>
-          <td align="left" class="margin"><?=$this->lang->line('application_tax');?> (<?= $tax_value?>%)</td>
-          <td align="right" style="padding-right:20px"><?=display_money($tax)?></td>
+          <td align="left" class="margin"><?php echo $this->lang->line('application_tax');?> (<?php echo  $tax_value?>%)</td>
+          <td align="right" style="padding-right:20px"><?php echo display_money($tax)?></td>
         </tr>
         <?php } ?>
         </table>
     <?php } ?>
-    <div class="total-amount total-heading"><p><?=display_money($sum, $invoice->currency);?></p></div>
+    <div class="total-amount total-heading"><p><?php echo display_money($sum, $invoice->currency);?></p></div>
   </div>
   <div class="custom-terms">
   <?php echo $invoice->terms; ?>

@@ -1,7 +1,7 @@
 	<div class="col-sm-12  col-md-12 main">  
     <div class="row tile-row">
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame hidden-xs"><i class="ion-ios-bell"></i> </div><h1> <?php if(isset($invoices_due_this_month)){echo $invoices_due_this_month;} ?> <span><?=$this->lang->line('application_invoices');?></span></h1><h2><?=$this->lang->line('application_due_this_month');?></h2></div>
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary hidden-xs"><i class="ion-ios-analytics"></i> </div><h1> <?php if(isset($invoices_paid_this_month)){echo $invoices_paid_this_month;} ?> <span><?=$this->lang->line('application_invoices');?></span></h1><h2><?=$this->lang->line('application_paid_this_month');?></h2></div>
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame hidden-xs"><i class="ion-ios-bell"></i> </div><h1> <?php if(isset($invoices_due_this_month)){echo $invoices_due_this_month;} ?> <span><?php echo $this->lang->line('application_invoices');?></span></h1><h2><?php echo $this->lang->line('application_due_this_month');?></h2></div>
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary hidden-xs"><i class="ion-ios-analytics"></i> </div><h1> <?php if(isset($invoices_paid_this_month)){echo $invoices_paid_this_month;} ?> <span><?php echo $this->lang->line('application_invoices');?></span></h1><h2><?php echo $this->lang->line('application_paid_this_month');?></h2></div>
       <div class="col-md-6 col-xs-12 tile hidden-xs">
       <div style="width:97%; height: 93px;">
       <canvas id="tileChart" class="hidden-xs" width="auto" height="50"></canvas>
@@ -10,45 +10,45 @@
     
     </div>   
      <div class="row">
-      <a href="<?=base_url()?>invoices/create" class="btn btn-primary" data-toggle="mainmodal"><?=$this->lang->line('application_create_invoice');?></a>
+      <a href="<?php echo base_url()?>invoices/create" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_create_invoice');?></a>
       <div class="btn-group pull-right-responsive margin-right-3">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             <?php $last_uri = $this->uri->segment($this->uri->total_segments()); if($last_uri != "invoices"){echo $this->lang->line('application_'.$last_uri);}else{echo $this->lang->line('application_all');} ?> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu pull-right" role="menu">
             <?php foreach ($submenu as $name=>$value):?>
-	                <li><a id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?=site_url($value);?>"><?=$name?></a></li>
+	                <li><a id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?php echo site_url($value);?>"><?php echo $name?></a></li>
 	            <?php endforeach;?>
           </ul>
       </div>
     </div>  
       <div class="row">
 
-         <div class="table-head"><?=$this->lang->line('application_invoices');?></div>
+         <div class="table-head"><?php echo $this->lang->line('application_invoices');?></div>
          <div class="table-div">
-		<table class="data table" id="invoices" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="data table" id="invoices" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 		<thead>
-			<th width="70px" class="hidden-xs"><?=$this->lang->line('application_invoice_id');?></th>
-			<th ><?=$this->lang->line('application_client');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_issue_date');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_due_date');?></th>
-      <th class="hidden-xs"><?=$this->lang->line('application_value');?></th>
-			<th><?=$this->lang->line('application_status');?></th>
-			<th><?=$this->lang->line('application_action');?></th>
+			<th width="70px" class="hidden-xs"><?php echo $this->lang->line('application_invoice_id');?></th>
+			<th ><?php echo $this->lang->line('application_client');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_issue_date');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_due_date');?></th>
+      <th class="hidden-xs"><?php echo $this->lang->line('application_value');?></th>
+			<th><?php echo $this->lang->line('application_status');?></th>
+			<th><?php echo $this->lang->line('application_action');?></th>
 		</thead>
 		<?php foreach ($invoices as $value):?>
 
-		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
+		<tr id="<?php echo $value->id;?>" >
+			<td class="hidden-xs"><?php echo $core_settings->invoice_prefix;?><?php echo $value->reference;?></td>
 			<td><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
 			<td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
-			<td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?=$unix;?></span></td>
+			<td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?php echo $unix;?></span></td>
 			<td class="hidden-xs"><?php if(isset($value->sum)){echo display_money($value->sum, $value->currency);} ?> </td>
-      <td class="<?=$value->status?>"><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>
+      <td class="<?php echo $value->status?>"><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?php echo $this->lang->line('application_'.$value->status);?></span></td>
 		
 			<td class="option" width="8%">
-				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?=base_url()?>invoices/delete/<?=$value->id;?>'><?=$this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?=$this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?=$value->id;?>'>" data-original-title="<b><?=$this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
-				        <a href="<?=base_url()?>invoices/update/<?=$value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
+				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>invoices/delete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
+				        <a href="<?php echo base_url()?>invoices/update/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
 			</td>
 		</tr>
 
@@ -113,7 +113,7 @@ var ctx = $("#tileChart").get(0).getContext("2d");
                                      ?>
 
 var data = {
-    labels: [<?=$labels?>],
+    labels: [<?php echo $labels?>],
     datasets: [
         {
             label: "First dataset",
@@ -123,7 +123,7 @@ var data = {
             pointStrokeColor: "#fff",
             pointHighlightFill: "rgba(50, 211, 218,0.6)",
             pointHighlightStroke: "rgba(50, 211, 218,1)",
-            data: [<?=$data;?>]
+            data: [<?php echo $data;?>]
         },
         {
             label: "Second dataset",
@@ -133,17 +133,17 @@ var data = {
             pointStrokeColor: "#fff",
             pointHighlightFill: "rgba(237,85,100,1)",
             pointHighlightStroke: "rgba(237,85,100,0.9)",
-            data: [<?=$data2;?>]
+            data: [<?php echo $data2;?>]
         }
         
     ]
 };
-legentvar = new Array("<?=$this->lang->line('application_paid');?>", "<?=$this->lang->line('application_due');?>");
+legentvar = new Array("<?php echo $this->lang->line('application_paid');?>", "<?php echo $this->lang->line('application_due');?>");
 var options = {
 
     scaleShowVerticalLines: false,
 
-    tooltipTemplate: "<?=$this->lang->line('application_paid');?> <%= value %>"
+    tooltipTemplate: "<?php echo $this->lang->line('application_paid');?> <%= value %>"
 
 };
  var tileChart = new Chart(ctx).Line(data, options);

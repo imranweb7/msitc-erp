@@ -1,10 +1,10 @@
 
 <ul class="details">
-<li><span><?=$this->lang->line('application_username');?>:</span> <?=$client->email;?></li>
- <li><span><?=$this->lang->line('application_password');?>:</span> <?=$new_password;?></li>
+<li><span><?php echo $this->lang->line('application_username');?>:</span> <?php echo $client->email;?></li>
+ <li><span><?php echo $this->lang->line('application_password');?>:</span> <?php echo $new_password;?></li>
  </ul>
 
     <div class="modal-footer">
-    <a href="<?=base_url()?>clients/credentials/<?=$client->id;?>/email/<?=$new_password;?>" id="submit" class="btn btn-primary"><?=$this->lang->line('application_email_login_details');?></a>
-	<a class="btn" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+    <a href="<?php echo base_url()?>clients/credentials/<?php echo $client->id;?>/email/<?php echo $new_password;?>" id="submit" class="btn btn-primary"><?php echo $this->lang->line('application_email_login_details');?></a>
+	<a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
     </div>

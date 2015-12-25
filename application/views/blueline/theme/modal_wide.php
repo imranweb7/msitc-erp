@@ -3,7 +3,7 @@
       
       <div class="modal-body">
                     
-        <?=$yield?>         
+        <?php echo $yield?>
 
      
     </div>

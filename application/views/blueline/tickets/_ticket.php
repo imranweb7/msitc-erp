@@ -6,7 +6,7 @@ if(isset($ticket)){ ?>
 <?php } ?>
 
  <div class="form-group">
-        <label for="type"><?=$this->lang->line('application_type');?></label>
+        <label for="type"><?php echo $this->lang->line('application_type');?></label>
         <?php $options = array();
                 foreach ($types as $value):  
                 $options[$value->id] = $value->name;
@@ -16,7 +16,7 @@ if(isset($ticket)){ ?>
 </div> 
 
  <div class="form-group">
-        <label for="queue"><?=$this->lang->line('application_queue');?></label>
+        <label for="queue"><?php echo $this->lang->line('application_queue');?></label>
         <?php $options = array();
                 foreach ($queues as $value):  
                 $options[$value->id] = $value->name;
@@ -26,7 +26,7 @@ if(isset($ticket)){ ?>
 </div> 
 
  <div class="form-group">
-        <label for="client"><?=$this->lang->line('application_client');?></label>
+        <label for="client"><?php echo $this->lang->line('application_client');?></label>
         <?php $options = array();
                 $options['0'] = '-';
                 foreach ($clients as $value):  
@@ -37,7 +37,7 @@ if(isset($ticket)){ ?>
 </div> 
 
  <div class="form-group">
-        <label for="user"><?=$this->lang->line('application_assign_to');?></label>
+        <label for="user"><?php echo $this->lang->line('application_assign_to');?></label>
         <?php $options = array();
                 $options['0'] = '-';
                 foreach ($users as $value):  
@@ -48,20 +48,20 @@ if(isset($ticket)){ ?>
 </div> 
 
  <div class="form-group">
-        <label for="subject"><?=$this->lang->line('application_subject');?> *</label>
+        <label for="subject"><?php echo $this->lang->line('application_subject');?> *</label>
         <input id="subject" type="text" name="subject" class="form-control" value="<?php if(isset($ticket)){echo $ticket->subject;} ?>"  required/>
 </div> 
 
  <div class="form-group">
-        <label for="text"><?=$this->lang->line('application_message');?> *</label>
+        <label for="text"><?php echo $this->lang->line('application_message');?> *</label>
         <textarea id="text" name="text" rows="9" class="form-control summernote-modal"></textarea>
 </div> 
 
 <div class="form-group">
-                <label for="userfile"><?=$this->lang->line('application_attachment');?></label><div>
+                <label for="userfile"><?php echo $this->lang->line('application_attachment');?></label><div>
                 <input id="uploadFile" class="form-control uploadFile" placeholder="Choose File" disabled="disabled" />
                           <div class="fileUpload btn btn-primary">
-                              <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?=$this->lang->line('application_select');?></span></span>
+                              <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?php echo $this->lang->line('application_select');?></span></span>
                               <input id="uploadBtn" type="file" name="userfile" class="upload" />
                           </div>
                   </div>
@@ -72,14 +72,14 @@ if(isset($ticket)){ ?>
 
  <div class="form-group">
 <ul class="accesslist">
-<li> <input type="checkbox" class="checkbox" id="r_notify" name="notify_agent" value="yes" data-labelauty="<?=$this->lang->line('application_notify_agent');?>" checked="checked"></li>
-<li> <input type="checkbox" class="checkbox" id="c_notify" name="notify_client" value="yes" data-labelauty="<?=$this->lang->line('application_notify_client');?>" checked="checked"></li>
+<li> <input type="checkbox" class="checkbox" id="r_notify" name="notify_agent" value="yes" data-labelauty="<?php echo $this->lang->line('application_notify_agent');?>" checked="checked"></li>
+<li> <input type="checkbox" class="checkbox" id="c_notify" name="notify_client" value="yes" data-labelauty="<?php echo $this->lang->line('application_notify_client');?>" checked="checked"></li>
 
 </ul>           
 </div> 
         <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 

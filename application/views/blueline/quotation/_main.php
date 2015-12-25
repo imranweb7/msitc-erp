@@ -8,18 +8,18 @@ font-size: 12px;
 text-transform: initial;
 }
 </style>
-<div class="table-head"><?=$this->lang->line('quotation_website_quotation');?>
+<div class="table-head"><?php echo $this->lang->line('quotation_website_quotation');?>
 <?php if(!empty($core_settings->language)){$default_language = $core_settings->language; }else{ $default_language = "english"; } ?>
 <div class="btn-group pull-right-responsive" style="margin-top: 9px;">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            <img src="<?=base_url()?>assets/blueline/img/<?php if($this->input->cookie('language') != ""){echo $this->input->cookie('language');}else{echo $default_language;} ?>.png" style="margin-top:-1px" align="middle"> <span class="caret"></span>
+            <img src="<?php echo base_url()?>assets/blueline/img/<?php if($this->input->cookie('language') != ""){echo $this->input->cookie('language');}else{echo $default_language;} ?>.png" style="margin-top:-1px" align="middle"> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu pull-right" role="menu">
           <?php if ($handle = opendir('application/language/')) {
 
 									          while (false !== ($entry = readdir($handle))) {
 									              if ($entry != "." && $entry != "..") {
-									                ?><li><a href="<?=base_url()?>quotation/language/<?=$entry;?>"><img src="<?=base_url()?>assets/blueline/img/<?=$entry;?>.png" class="language-img"><?=ucwords($entry);?></a></li>
+									                ?><li><a href="<?php echo base_url()?>quotation/language/<?php echo $entry;?>"><img src="<?php echo base_url()?>assets/blueline/img/<?php echo $entry;?>.png" class="language-img"><?php echo ucwords($entry);?></a></li>
                                   <?php } }
       									           closedir($handle);
       									          } ?>
@@ -35,97 +35,97 @@ text-transform: initial;
 
 		<br>
 <div class="form-group">
-<label class="control-label"><?=$this->lang->line('quotation_question_1');?></label>
+<label class="control-label"><?php echo $this->lang->line('quotation_question_1');?></label>
 			
-			<input type="radio" id="q1_aw1" name="q1" value="1" checked="checked" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_1_aw_1');?>" />
-			<input type="radio" id="q1_aw2" name="q1" value="2" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_1_aw_2');?>">
-			<input type="radio" id="q1_aw4" name="q1" value="4" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_1_aw_4');?>">
-			<input type="radio" id="q1_aw5" name="q1" value="5" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_1_aw_5');?>">
+			<input type="radio" id="q1_aw1" name="q1" value="1" checked="checked" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_1_aw_1');?>" />
+			<input type="radio" id="q1_aw2" name="q1" value="2" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_1_aw_2');?>">
+			<input type="radio" id="q1_aw4" name="q1" value="4" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_1_aw_4');?>">
+			<input type="radio" id="q1_aw5" name="q1" value="5" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_1_aw_5');?>">
 </div>
 <div class="form-group">
-		<label class="control-label"><?=$this->lang->line('quotation_question_2');?></label>
+		<label class="control-label"><?php echo $this->lang->line('quotation_question_2');?></label>
 
-			<input type="radio" id="q2_aw1" name="q2" value="1" checked="checked" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_2_aw_1');?>" />
-			<input type="radio" id="q2_aw2" name="q2" value="2" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_2_aw_2');?>">
-			<input type="radio" id="q2_aw3" name="q2" value="3" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_2_aw_3');?>">
-			<input type="radio" id="q2_aw4" name="q2" value="4" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_2_aw_4');?>">
+			<input type="radio" id="q2_aw1" name="q2" value="1" checked="checked" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_2_aw_1');?>" />
+			<input type="radio" id="q2_aw2" name="q2" value="2" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_2_aw_2');?>">
+			<input type="radio" id="q2_aw3" name="q2" value="3" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_2_aw_3');?>">
+			<input type="radio" id="q2_aw4" name="q2" value="4" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_2_aw_4');?>">
  
 </div>
 <div class="form-group">
 
-		<label class="control-label"><?=$this->lang->line('quotation_question_3');?></label>
+		<label class="control-label"><?php echo $this->lang->line('quotation_question_3');?></label>
 			
-			<input type="radio" id="q3_aw1" name="q3" value="1" checked="checked" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_3_aw_1');?>">
-			<input type="radio" id="q3_aw2" name="q3" value="2" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_3_aw_2');?>">
+			<input type="radio" id="q3_aw1" name="q3" value="1" checked="checked" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_3_aw_1');?>">
+			<input type="radio" id="q3_aw2" name="q3" value="2" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_3_aw_2');?>">
 </div>
 <div class="form-group">
 
-		<label class="control-label"><?=$this->lang->line('quotation_question_4');?></label>
+		<label class="control-label"><?php echo $this->lang->line('quotation_question_4');?></label>
 			<input type="text" class="removehttp form-control" name="q4" maxlength="100" value="">
 </div>
 <div class="form-group">
 
-		<label class="control-label"><?=$this->lang->line('quotation_question_5');?> *</label>			
+		<label class="control-label"><?php echo $this->lang->line('quotation_question_5');?> *</label>
 			<textarea class="required form-control" rows="6" name="q5"  maxlength="400" required></textarea>
 
 </div>
 <div class="form-group">
 
-		<label class="control-label"><?=$this->lang->line('quotation_question_6');?> (<?=$core_settings->currency;?>)</label>
+		<label class="control-label"><?php echo $this->lang->line('quotation_question_6');?> (<?php echo $core_settings->currency;?>)</label>
 
-			<input type="radio" id="q6_aw1" name="q6" value="1"  checked="checked" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_6_aw_1');?>"/>
-			<input type="radio" id="q6_aw2" name="q6" value="2" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_6_aw_2');?>">
-			<input type="radio" id="q6_aw3" name="q6" value="3" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_6_aw_3');?>">
-			<input type="radio" id="q6_aw4" name="q6" value="4" class="checkbox" data-labelauty="<?=$this->lang->line('quotation_question_6_aw_4');?>">
+			<input type="radio" id="q6_aw1" name="q6" value="1"  checked="checked" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_6_aw_1');?>"/>
+			<input type="radio" id="q6_aw2" name="q6" value="2" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_6_aw_2');?>">
+			<input type="radio" id="q6_aw3" name="q6" value="3" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_6_aw_3');?>">
+			<input type="radio" id="q6_aw4" name="q6" value="4" class="checkbox" data-labelauty="<?php echo $this->lang->line('quotation_question_6_aw_4');?>">
 </div>
 <div class="form-group">
 
-			<label class="control-label"><?=$this->lang->line('quotation_question_7');?></label>	
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_7');?></label>
 			<input class="form-control" name="company" type="text" maxlength="100" value="">
 </div>
 <div class="form-group">
 
- 			<label class="control-label"><?=$this->lang->line('quotation_question_8');?> *</label>	
+ 			<label class="control-label"><?php echo $this->lang->line('quotation_question_8');?> *</label>
 			<input class="required form-control" type="text" name="fullname" maxlength="100" value="" required>
 </div>
 <div class="form-group">
 
-			<label class="control-label"><?=$this->lang->line('quotation_question_9');?> *</label>
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_9');?> *</label>
 			<input class="required form-control" type="email" name="email" maxlength="100" value="" required>
 </div>
 <div class="form-group">
 
-			<label class="control-label"><?=$this->lang->line('quotation_question_10');?> *</label>
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_10');?> *</label>
 			<input class="required form-control" type="text" name="phone" maxlength="100" value="" required>
 </div>
 <div class="form-group">
  		
-			<label class="control-label"><?=$this->lang->line('quotation_question_11');?> *</label>
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_11');?> *</label>
 			<input class="required form-control" type="text" name="address" maxlength="100" value="" required>
 </div>
 <div class="form-group">
  		
-			<label class="control-label"><?=$this->lang->line('quotation_question_12');?> *</label>
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_12');?> *</label>
 			<input class="required form-control" type="text" name="city" maxlength="100" value="" required>
 </div>
 <div class="form-group">
  		
- 			<label class="control-label"><?=$this->lang->line('quotation_question_13');?> *</label>
+ 			<label class="control-label"><?php echo $this->lang->line('quotation_question_13');?> *</label>
 			<input class="required form-control" type="text" name="zip" maxlength="100" value="" required>
 </div>
 <div class="form-group">
 
-			<label class="control-label"><?=$this->lang->line('quotation_question_14');?> *</label>
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_14');?> *</label>
 			<input class="required form-control" type="text" name="country" maxlength="100" value="" required>
 </div>
 <div class="form-group">
 
-			<label class="control-label"><?=$this->lang->line('quotation_question_15');?></label>		
+			<label class="control-label"><?php echo $this->lang->line('quotation_question_15');?></label>
 			<textarea name="comment" class="form-control" rows="6" maxlength="400"></textarea>
 </div>
 
 	<div class="bottom">
-		<input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('quotation_save');?>"/>
+		<input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('quotation_save');?>"/>
 	</div>
 <?php echo form_close(); ?>
 <br>

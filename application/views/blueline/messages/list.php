@@ -2,20 +2,20 @@
  if($message){
           foreach ($message as $value):
           $unix = human_to_unix($value->time); ?>
-<li class="<?php if($filter){echo $filter;}else{echo $value->status."-dot";}?> hidden" data-link="<?=base_url()?>messages/view/<?=$value->id;?><?php if(isset($filter)){echo "/".$filter;} ?><?php if(isset($filter)){ if($filter == "Sent"){echo "/".$value->recipient;} } ?>">
+<li class="<?php if($filter){echo $filter;}else{echo $value->status."-dot";}?> hidden" data-link="<?php echo base_url()?>messages/view/<?php echo $value->id;?><?php if(isset($filter)){echo "/".$filter;} ?><?php if(isset($filter)){ if($filter == "Sent"){echo "/".$value->recipient;} } ?>">
           <div class="col col-1"><span class="dot"></span>
             
             <p class="title"><?php if(isset($value->sender_u)){echo $value->sender_u;}else{ echo $value->sender_c; } ?></p><span class="star-toggle fa fa-star<?php if($value->status != "Marked"){ echo "-o";}?>"></span>
           </div>
           <div class="col col-2">
-            <div class="subject"><?php if($value->attachment != ""){ echo '<i class="fa fa-paperclip"></i>';}  ?> <?=$value->subject;?></div>
+            <div class="subject"><?php if($value->attachment != ""){ echo '<i class="fa fa-paperclip"></i>';}  ?> <?php echo $value->subject;?></div>
             <div class="date"><?php echo time_ago($unix, true);?></div>
           </div>
         </li>
  <?php endforeach;?>
           
   		<?php } else{ ?>
-        <li style="padding-left:21px"><?=$this->lang->line('application_no_messages');?></li>
+        <li style="padding-left:21px"><?php echo $this->lang->line('application_no_messages');?></li>
         <?php } ?> 
 
 <script>

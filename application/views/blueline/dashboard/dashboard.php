@@ -2,7 +2,7 @@
 if(isset($update)){
 if($this->user->admin == "1" && $update){
  ?>
-<div class="newsbox"><a href="<?=base_url()?>settings/updates"><?=$this->lang->line('application_update_available');?> <?=$update?> <i class="fa fa-download"></i> </a></div>
+<div class="newsbox"><a href="<?php echo base_url()?>settings/updates"><?php echo $this->lang->line('application_update_available');?> <?php echo $update?> <i class="fa fa-download"></i> </a></div>
 <?php } }?>
 <?php if($this->user->admin == "1"){ ?> 
 <div class="row">
@@ -10,7 +10,7 @@ if($this->user->admin == "1" && $update){
               <div class="stdpad-small red">
                     <div class="icon"><i class="ion-ios-lightbulb-outline"></i></div>
                     <div class="stats"> 
-                    <div class="number"><?=$projects_open;?><small> / <?=$projects_all;?></small></div> <div class="text"><?=$this->lang->line('application_open_projects');?></div>
+                    <div class="number"><?php echo $projects_open;?><small> / <?php echo $projects_all;?></small></div> <div class="text"><?php echo $this->lang->line('application_open_projects');?></div>
                     
                     </div>
              </div>
@@ -22,7 +22,7 @@ if($this->user->admin == "1" && $update){
               <div class="stdpad-small orange">
                   <div class="icon"><i class="ion-ios-paper-outline"></i></div>
                     <div class="stats"> 
-                     <div class="number"><?=$invoices_open;?><small> / <?=$invoices_all;?></small></div> <div class="text"><?=$this->lang->line('application_open_invoices');?></div>
+                     <div class="number"><?php echo $invoices_open;?><small> / <?php echo $invoices_all;?></small></div> <div class="text"><?php echo $this->lang->line('application_open_invoices');?></div>
                     
                     </div>
                   
@@ -35,8 +35,8 @@ if($this->user->admin == "1" && $update){
                     
                     <div class="icon"><i class="ion-ios-analytics-outline"></i></div>
                     <div class="stats two"> 
-                    <div class="number"><?php if(empty($payments[0]->summary)){echo display_money(0, $core_settings->currency, 0);}else{echo display_money($payments[0]->summary, $core_settings->currency, 0); }?></div> <div class="text"><?=$this->lang->line('application_'.$month);?> <?=$this->lang->line('application_payments');?></div> 
-                    <div class="number"><?php if(empty($paymentsoutstanding[0]->summary)){echo display_money(0, $core_settings->currency, 0);}else{echo display_money($paymentsoutstanding[0]->summary, $core_settings->currency, 0); } ?></div> <div class="text"><?=$this->lang->line('application_outstanding_payments');?></div>
+                    <div class="number"><?php if(empty($payments[0]->summary)){echo display_money(0, $core_settings->currency, 0);}else{echo display_money($payments[0]->summary, $core_settings->currency, 0); }?></div> <div class="text"><?php echo $this->lang->line('application_'.$month);?> <?php echo $this->lang->line('application_payments');?></div>
+                    <div class="number"><?php if(empty($paymentsoutstanding[0]->summary)){echo display_money(0, $core_settings->currency, 0);}else{echo display_money($paymentsoutstanding[0]->summary, $core_settings->currency, 0); } ?></div> <div class="text"><?php echo $this->lang->line('application_outstanding_payments');?></div>
                     
                     </div>
                        </div>
@@ -47,16 +47,16 @@ if($this->user->admin == "1" && $update){
 <?php } ?>
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-4">
-              <div class="stdpad"><div class="table-head"><?=$this->lang->line('application_events');?><small> (<?=$eventcount;?>)</small></div>
+              <div class="stdpad"><div class="table-head"><?php echo $this->lang->line('application_events');?><small> (<?php echo $eventcount;?>)</small></div>
                     <ul class="eventlist">
                             <?php $count = 0;
                             foreach ($events as $value):  $count = $count+1; ?>            
                                     <li>
-                                       <p class="truncate"><?=$value;?></p>  
+                                       <p class="truncate"><?php echo $value;?></p>
                                     </li>
                             <?php endforeach;?>
                             <?php if($count == 0) { ?>
-                                    <li> <p class="truncate"><?=$this->lang->line('application_no_events_yet');?></p></li>
+                                    <li> <p class="truncate"><?php echo $this->lang->line('application_no_events_yet');?></p></li>
                             <?php } ?>
                     </ul>
              </div>
@@ -66,7 +66,7 @@ if($this->user->admin == "1" && $update){
             <div class="col-xs-12 col-sm-12 col-md-4">
             <?php if(isset($tasks)){ ?> 
               <div class="stdpad">
-                  <div class="table-head"><?=$this->lang->line('application_my_open_tasks');?></div>
+                  <div class="table-head"><?php echo $this->lang->line('application_my_open_tasks');?></div>
                   <div id="main-nano-wrapper" class="nano">
     <div class="nano-content"><ul id="jp-container" class="todo jp-container">
                          <?php $count = 0;
@@ -76,10 +76,10 @@ if($this->user->admin == "1" && $update){
                                         $projectname = $value->project->name;
                                         echo "<h5>".$projectname."</h5>";
                                       }?>
-                                    <li class="<?=$value->status;?>">
+                                    <li class="<?php echo $value->status;?>">
                                       <span class="lbl-"> 
-                                        <p class="truncate"><input name="form-field-checkbox" type="checkbox" class="checkbox-nolabel task-check" data-link="<?=base_url()?>projects/tasks/<?=$value->project_id;?>/check/<?=$value->id;?>" <?=$value->status;?>/>
-                                   <a href="<?=base_url()?>projects/view/<?=$value->project_id;?>"><?=$value->name;?></a></p></span> 
+                                        <p class="truncate"><input name="form-field-checkbox" type="checkbox" class="checkbox-nolabel task-check" data-link="<?php echo base_url()?>projects/tasks/<?php echo $value->project_id;?>/check/<?php echo $value->id;?>" <?php echo $value->status;?>/>
+                                   <a href="<?php echo base_url()?>projects/view/<?php echo $value->project_id;?>"><?php echo $value->name;?></a></p></span>
                                              <span class="pull-right"><img class="img-circle list-profile-img" width="21px" height="21px" src="<?php 
                                                 if($this->user->userpic != 'no-pic.png'){
                                                   echo base_url()."files/media/".$this->user->userpic;
@@ -93,7 +93,7 @@ if($this->user->admin == "1" && $update){
                                 <?php endforeach;?>
                                 
                                 <?php if($count == 0) { ?>
-                                    <li class="notask"><?=$this->lang->line('application_no_tasks_yet');?></li>
+                                    <li class="notask"><?php echo $this->lang->line('application_no_tasks_yet');?></li>
                                     
                                 <?php } ?>
 
@@ -105,12 +105,12 @@ if($this->user->admin == "1" && $update){
             <div class="col-xs-12 col-sm-12 col-md-4">
             <?php if(isset($message)){ ?> 
                 <div class="stdpad">
-                    <div class="table-head"><?=$this->lang->line('application_recent_messages');?></div>
+                    <div class="table-head"><?php echo $this->lang->line('application_recent_messages');?></div>
 
                         <ul class="dash-messages">
                             <?php foreach ($message as $value):?>          
                                 <li style="display: list-item;">
-                                    <a href="<?=base_url()?>messages">
+                                    <a href="<?php echo base_url()?>messages">
                                       <img class="userpic img-circle" src="
                                         <?php 
                                           if($value->userpic_u){
@@ -130,12 +130,12 @@ if($this->user->admin == "1" && $update){
                                           ?>
                                         ">
                                     <h5><?php if(isset($value->sender_u)){echo $value->sender_u;}else{ echo $value->sender_c; } ?> <small><?php echo time_ago($value->time); ?></small></h5>
-                                    <p class="truncate" style="width:80%"><span> <?php if($value->status == "New"){ echo '<span class="new"><i class="fa fa-circle-o"></i></span>';}?> <?=$value->subject;?></span></p>
+                                    <p class="truncate" style="width:80%"><span> <?php if($value->status == "New"){ echo '<span class="new"><i class="fa fa-circle-o"></i></span>';}?> <?php echo $value->subject;?></span></p>
                                     </a>
                                 </li>
                             <?php endforeach;?>
                             <?php if(empty($message)) { ?>
-                                <li style="padding: 10px 0 0 0; height: 24px;"><?=$this->lang->line('application_no_messages');?></li>
+                                <li style="padding: 10px 0 0 0; height: 24px;"><?php echo $this->lang->line('application_no_messages');?></li>
                             <?php } ?>
                         </ul><br/>
                        </div>
@@ -149,20 +149,20 @@ if($this->user->admin == "1" && $update){
           <div class="col-xs-12 col-sm-12 ">
 
           <div class="dashboard-chart">
-            <div class="table-head"><?=$this->lang->line('application_statistics');?> 
+            <div class="table-head"><?php echo $this->lang->line('application_statistics');?>
             
             <div class="btn-group pull-right">
                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <?=$year;?> <span class="caret"></span>
+                    <?php echo $year;?> <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="<?=base_url()?>dashboard/filter/<?=date("Y");?>"><?=date("Y");?></a></li>
+                    <li><a href="<?php echo base_url()?>dashboard/filter/<?php echo date("Y");?>"><?php echo date("Y");?></a></li>
 
-                    <li><a href="<?=base_url()?>dashboard/filter/<?=date("Y")-1;?>"><?=date("Y")-1;?></a></li>
-                    <li><a href="<?=base_url()?>dashboard/filter/<?=date("Y")-2;?>"><?=date("Y")-2;?></a></li>
-                    <li><a href="<?=base_url()?>dashboard/filter/<?=date("Y")-3;?>"><?=date("Y")-3;?></a></li>
-                    <li><a href="<?=base_url()?>dashboard/filter/<?=date("Y")-4;?>"><?=date("Y")-4;?></a></li>
-                    <li><a href="<?=base_url()?>dashboard/filter/<?=date("Y")-5;?>"><?=date("Y")-5;?></a></li>
+                    <li><a href="<?php echo base_url()?>dashboard/filter/<?php echo date("Y")-1;?>"><?php echo date("Y")-1;?></a></li>
+                    <li><a href="<?php echo base_url()?>dashboard/filter/<?php echo date("Y")-2;?>"><?php echo date("Y")-2;?></a></li>
+                    <li><a href="<?php echo base_url()?>dashboard/filter/<?php echo date("Y")-3;?>"><?php echo date("Y")-3;?></a></li>
+                    <li><a href="<?php echo base_url()?>dashboard/filter/<?php echo date("Y")-4;?>"><?php echo date("Y")-4;?></a></li>
+                    <li><a href="<?php echo base_url()?>dashboard/filter/<?php echo date("Y")-5;?>"><?php echo date("Y")-5;?></a></li>
                   </ul>
             </div>
             </div>
@@ -216,7 +216,7 @@ var ctx = $("#tileChart").get(0).getContext("2d");
                                ?>
 
 var data = {
-    labels: [<?=$labels?>],
+    labels: [<?php echo $labels?>],
     datasets: [
         {
             label: "First dataset",
@@ -226,7 +226,7 @@ var data = {
             pointStrokeColor: "rgba(50, 211, 218,1)",
             pointHighlightFill: "rgba(50, 211, 218,0.9)",
             pointHighlightStroke: "rgba(50, 211, 218,1)",
-            data: [<?=$line1?>]
+            data: [<?php echo $line1?>]
         }
         
     ]
@@ -236,7 +236,7 @@ var options = {
 
     scaleShowVerticalLines: false,
 
-    tooltipTemplate: '<?=$this->lang->line("application_received");?>: <%=value%> '
+    tooltipTemplate: '<?php echo $this->lang->line("application_received");?>: <%=value%> '
 
 };
  var tileChart = new Chart(ctx).Line(data, options);
