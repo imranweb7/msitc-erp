@@ -1,8 +1,8 @@
 	<div class="col-sm-13  col-md-12 main">  
     
     <div class="row tile-row">
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame hidden-xs"><i class="ion-ios-pricetags"></i> </div><h1><?php if(isset($tickets_assigned_to_me)){echo $tickets_assigned_to_me;} ?> <span><?=$this->lang->line('application_tickets');?></span></h1><h2><?=$this->lang->line('application_assigned_to_me');?></h2></div>
-      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary hidden-xs"><i class="ion-ios-albums"></i> </div><h1><?php if(isset($tickets_in_my_queue)){echo $tickets_in_my_queue;} ?> <span><?=$this->lang->line('application_tickets');?></span></h1><h2><?=$this->lang->line('application_in_my_queue');?></h2></div>
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame hidden-xs"><i class="ion-ios-pricetags"></i> </div><h1><?php if(isset($tickets_assigned_to_me)){echo $tickets_assigned_to_me;} ?> <span><?php echo $this->lang->line('application_tickets');?></span></h1><h2><?php echo $this->lang->line('application_assigned_to_me');?></h2></div>
+      <div class="col-md-3 col-xs-6 tile"><div class="icon-frame secondary hidden-xs"><i class="ion-ios-albums"></i> </div><h1><?php if(isset($tickets_in_my_queue)){echo $tickets_in_my_queue;} ?> <span><?php echo $this->lang->line('application_tickets');?></span></h1><h2><?php echo $this->lang->line('application_in_my_queue');?></h2></div>
       <div class="col-md-6 col-xs-12 tile hidden-xs">
       <div style="width:97%; height: 93px;">
       <canvas id="tileChart" class="hidden-xs" width="auto" height="50"></canvas>
@@ -11,14 +11,14 @@
     
     </div>  
     <div class="row"> 
-			<a href="<?=base_url()?>tickets/create" class="btn btn-primary" data-toggle="mainmodal"><?=$this->lang->line('application_create_new_ticket');?></a>
+			<a href="<?php echo base_url()?>tickets/create" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_create_new_ticket');?></a>
 			<div class="btn-group pull-right-responsive margin-right-3">
 	          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-	            <?=$this->lang->line('application_queue');?> <span class="caret"></span>
+	            <?php echo $this->lang->line('application_queue');?> <span class="caret"></span>
 	          </button>
 			<ul class="dropdown-menu pull-right" role="menu">
 				<?php foreach ($queues as $value):?>
-	                <li><a id="" href="<?=base_url()?>tickets/queues/<?=$value->id?>"><?=$value->name?></a></li>
+	                <li><a id="" href="<?php echo base_url()?>tickets/queues/<?php echo $value->id?>"><?php echo $value->name?></a></li>
 	            <?php endforeach;?>
 	            
 			</ul>
@@ -29,50 +29,50 @@
 	          </button>
 			<ul class="dropdown-menu pull-right" role="menu">
 				<?php foreach ($submenu as $name=>$value):?>
-	                <li><a id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?=site_url($value);?>"><?=$name?></a></li>
+	                <li><a id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?php echo site_url($value);?>"><?php echo $name?></a></li>
 	            <?php endforeach;?>
 	            
 			</ul>
 			</div>
 			<div class="btn-group pull-right-responsive margin-right-3 hidden-xs">
 	          <button id="bulk-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" >
-	             <?=$this->lang->line('application_bulk_actions');?> <span class="caret"></span>
+	             <?php echo $this->lang->line('application_bulk_actions');?> <span class="caret"></span>
 	          </button>
 			<ul class="dropdown-menu pull-right bulk-dropdown" role="menu">
 				
-	                <li data-action="close"><a id="" href="#"><?=$this->lang->line('application_close');?></a></li>
+	                <li data-action="close"><a id="" href="#"><?php echo $this->lang->line('application_close');?></a></li>
 
 	            
 			</ul>
-			<form action="<?=base_url()?>tickets/bulk/" method="POST" id="bulk-form">
+			<form action="<?php echo base_url()?>tickets/bulk/" method="POST" id="bulk-form">
 			  <input type="hidden" name="list" id="list-data"/>
 			</form>
 			</div>
 		</div>
 	<div class="row">
-		<div class="table-head"><?=$this->lang->line('application_tickets');?></div>
+		<div class="table-head"><?php echo $this->lang->line('application_tickets');?></div>
 		<div class="table-div">
-		<table class="data-sorting table" id="tickets" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="data-sorting table" id="tickets" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 		<thead>
 			<th class="hidden-xs no_sort simplecheckbox" style="width:16px"><input class="checkbox-nolabel" type="checkbox" id="checkAll" name="selectall" value=""></th>
-			<th class="hidden-xs" style="width:70px"><?=$this->lang->line('application_ticket_id');?></th>
-			<th style="width:50px"><?=$this->lang->line('application_status');?></th>
+			<th class="hidden-xs" style="width:70px"><?php echo $this->lang->line('application_ticket_id');?></th>
+			<th style="width:50px"><?php echo $this->lang->line('application_status');?></th>
 			<th class="hidden-xs no_sort" style="width:5px; padding-right: 5px;"><i class="fa fa-star-o"></i></th>
-			<th><?=$this->lang->line('application_subject');?></th>
+			<th><?php echo $this->lang->line('application_subject');?></th>
 			
-			<th class="hidden-xs"><?=$this->lang->line('application_queue');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_client');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_owner');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_queue');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_client');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_owner');?></th>
 		</thead>
 		<?php foreach ($ticket as $value):?>
 			<?php $lable = FALSE; if($value->status == "new"){ $lable = "label-important"; }elseif($value->status == "open"){$lable = "label-warning";}elseif($value->status == "closed" || $value->status == "inprogress"){$lable = "label-success";}elseif($value->status == "reopened"){$lable = "label-warning";} ?>
-		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs noclick simplecheckbox" style="width:16px"> <input class="checkbox-nolabel bulk-box" type="checkbox" name="bulk[]" value="<?=$value->id?>"></td>
-			<td  class="hidden-xs" style="width:70px"><?=$value->reference;?></td>
-			<td style="width:50px"><span class="label <?php echo $lable; ?>"><?=$this->lang->line('application_ticket_status_'.$value->status);?></span></td>
+		<tr id="<?php echo $value->id;?>" >
+			<td class="hidden-xs noclick simplecheckbox" style="width:16px"> <input class="checkbox-nolabel bulk-box" type="checkbox" name="bulk[]" value="<?php echo $value->id?>"></td>
+			<td  class="hidden-xs" style="width:70px"><?php echo $value->reference;?></td>
+			<td style="width:50px"><span class="label <?php echo $lable; ?>"><?php echo $this->lang->line('application_ticket_status_'.$value->status);?></span></td>
 			<?php if(isset($value->user->id)){$user_id = $value->user->id; }else{ $user_id = FALSE; }?>
 			<td  class="hidden-xs" style="width:15px"><?php if($value->updated == "1" && $user_id == $this->user->id){?><i class="fa fa-star"></i><?php }else{?> <i class="fa fa-star-o" style="opacity: 0.2;"></i><?php } ?></td>
-			<td><?=$value->subject;?></td>
+			<td><?php echo $value->subject;?></td>
 			<td class="hidden-xs"><span><?php if(isset($value->queue->name)){ echo $value->queue->name;}?></span></td>
 			<td class="hidden-xs"><?php if(!isset($value->company->name)){echo '<span class="label">'.$this->lang->line('application_no_client_assigned').'</span>'; }else{ echo '<span class="label label-info">'.$value->company->name.'</span>'; }?></td>
 			<td class="hidden-xs"><?php if(!isset($value->user->firstname)){echo '<span class="label">'.$this->lang->line('application_not_assigned').'</span>'; }else{ echo '<span class="label label-info">'.$value->user->firstname.' '.$value->user->lastname.'</span>'; }?></td>
@@ -124,7 +124,7 @@ var ctx = $("#tileChart").get(0).getContext("2d");
                                      } ?>
 
 var data = {
-    labels: [<?=$labels?>],
+    labels: [<?php echo $labels?>],
     datasets: [
         {
             label: "First dataset",
@@ -134,7 +134,7 @@ var data = {
             pointStrokeColor: "rgba(50, 211, 218,1)",
             pointHighlightFill: "rgba(50, 211, 218,0.9)",
             pointHighlightStroke: "rgba(50, 211, 218,1)",
-            data: [<?=$data;?>]
+            data: [<?php echo $data;?>]
         }
         
     ]

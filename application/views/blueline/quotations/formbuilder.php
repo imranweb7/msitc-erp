@@ -1,5 +1,5 @@
 
-  <link rel="stylesheet" type="text/css" href="<?=base_url()?>assets/blueline/css/plugins/formbuilder.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>assets/blueline/css/plugins/formbuilder.css" />
   <style>
   * {
     box-sizing: border-box;
@@ -22,21 +22,21 @@
   </style>
 <div class="col-sm-12  col-md-12 main">  
   <div lass="row">
-<form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?=base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> 
-  <div class="table-head"><?=$this->lang->line('application_create_quotation');?><span class="pull-right">
-    <span class="label label-warning changes"><?=$this->lang->line('application_unsaved');?></span>
-  <input type="submit" class="btn btn-primary save button-loader" value="<?=$this->lang->line('application_save');?>" disabled="disabled"/></span></div>
+<form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post"> <form id="saveform" action="<?php echo base_url()?>quotations/build<?php if(isset($quotation)){echo "/".$quotation->id;} ?>" method="post">
+  <div class="table-head"><?php echo $this->lang->line('application_create_quotation');?><span class="pull-right">
+    <span class="label label-warning changes"><?php echo $this->lang->line('application_unsaved');?></span>
+  <input type="submit" class="btn btn-primary save button-loader" value="<?php echo $this->lang->line('application_save');?>" disabled="disabled"/></span></div>
   <div class="table-div">
       <br><div class="form-group">
-      <input type="text" class="form-control" name="name" placeholder="<?=$this->lang->line('application_type_form_name_here');?>" id="form-title" value="<?php if(isset($quotation)){echo $quotation->name;} ?>" required/>
+      <input type="text" class="form-control" name="name" placeholder="<?php echo $this->lang->line('application_type_form_name_here');?>" id="form-title" value="<?php if(isset($quotation)){echo $quotation->name;} ?>" required/>
       </div>
 			<textarea id="formcontent" class="hidden" name="formcontent"></textarea>
       
 </form>
   <div class='fb-main2'></div>
 
-  <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/formbuilder-vendor.js"></script>
-  <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/formbuilder.js"></script>
+  <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/formbuilder-vendor.js"></script>
+  <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/formbuilder.js"></script>
 
   <?php
   if(isset($quotation)){ 

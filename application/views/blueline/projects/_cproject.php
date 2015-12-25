@@ -16,7 +16,7 @@ if(isset($project)){ ?>
 
 
 <div class="form-group">
-    <label for="project_type_id"><?=$this->lang->line('application_project_type_id_select');?></label><br>
+    <label for="project_type_id"><?php echo $this->lang->line('application_project_type_id_select');?></label><br>
     <?php
     $options = array();
     foreach ($project_types as $value):
@@ -29,27 +29,27 @@ if(isset($project)){ ?>
 </div>
 
 <div class="form-group">
-                          <label for="name"><?=$this->lang->line('application_name');?> *</label>
+                          <label for="name"><?php echo $this->lang->line('application_name');?> *</label>
                           <input type="text" name="name" class="form-control" id="name"  value="<?php if(isset($project)){echo $project->name;} ?>" required/>
 </div>
 
 <div class="form-group">
-    <label for="textfield"><?=$this->lang->line('application_description');?> *</label>
+    <label for="textfield"><?php echo $this->lang->line('application_description');?> *</label>
     <textarea class="input-block-level form-control"  id="textfield" name="description" required><?php if(isset($project)){echo $project->description;} ?></textarea>
 </div>
 
 <div class="form-group">
-    <label for="product_link"><?=$this->lang->line('application_link');?> *</label>
+    <label for="product_link"><?php echo $this->lang->line('application_link');?> *</label>
     <textarea class="input-block-level form-control" id="product_link" name="product_link" required><?php if(isset($project)){echo $project->product_link;} ?></textarea>
 </div>
 
 <div class="form-group">
-    <label for="product_qty"><?=$this->lang->line('application_qty');?> *</label>
+    <label for="product_qty"><?php echo $this->lang->line('application_qty');?> *</label>
     <input type="text" name="product_qty" class="form-control" id="product_qty"  value="<?php if(isset($project)){echo $project->product_qty;} ?>" required/>
 </div>
 
 <div class="form-group">
-    <label for="project_budget"><?=$this->lang->line('application_budget');?> *</label>
+    <label for="project_budget"><?php echo $this->lang->line('application_budget');?> *</label>
 
     <div class="input-group">
         <span class="input-group-addon"><?php echo $core_settings->currency; ?></span>
@@ -58,7 +58,7 @@ if(isset($project)){ ?>
 </div>
 
 <div class="form-group">
-    <label for="custom_logo"><?=$this->lang->line('application_custom_logo');?></label><br>
+    <label for="custom_logo"><?php echo $this->lang->line('application_custom_logo');?></label><br>
     <?php
     $options = array();
     $options['1'] = 'Yes';
@@ -69,7 +69,7 @@ if(isset($project)){ ?>
 </div>
 
 <div class="form-group">
-    <label for="custom_packaging"><?=$this->lang->line('application_custom_packaging');?></label><br>
+    <label for="custom_packaging"><?php echo $this->lang->line('application_custom_packaging');?></label><br>
     <?php
     $options = array();
     $options['1'] = 'Yes';
@@ -80,11 +80,11 @@ if(isset($project)){ ?>
 </div>
 
 <div class="form-group">
-    <label for="reference_photo"><?=$this->lang->line('application_reference_photo');?></label>
+    <label for="reference_photo"><?php echo $this->lang->line('application_reference_photo');?></label>
     <div>
         <input id="uploadFile" type="text" name="dummy" class="form-control uploadFile" placeholder="<?php if(isset($project->reference_photo)){ echo $project->reference_photo; }else{ echo "Choose File";} ?>" disabled="disabled" />
         <div class="fileUpload btn btn-primary">
-            <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?=$this->lang->line('application_select');?></span></span>
+            <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?php echo $this->lang->line('application_select');?></span></span>
             <input id="uploadBtn" type="file" data-switcher="attachment_description" name="userfile" class="upload switcher" accept="capture=camera" />
         </div>
     </div>
@@ -96,8 +96,8 @@ if(isset($project)){ ?>
 <input type="hidden" name="category" class="form-control typeahead" id="category"  value="<?php if(isset($project)){echo $project->category;} ?>"/>
 
         <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn btn-default" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 <?php echo form_close(); ?>

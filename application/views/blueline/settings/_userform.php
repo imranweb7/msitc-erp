@@ -4,36 +4,36 @@ echo form_open_multipart($form_action, $attributes);
 ?>
 
 <div class="form-group">
-        <label for="username"><?=$this->lang->line('application_username');?> *</label>
+        <label for="username"><?php echo $this->lang->line('application_username');?> *</label>
         <input id="username" type="text" name="username" class="required form-control"  value="<?php if(isset($user)){echo $user->username;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="firstname"><?=$this->lang->line('application_firstname');?> *</label>
+        <label for="firstname"><?php echo $this->lang->line('application_firstname');?> *</label>
         <input id="firstname" type="text" name="firstname" class="required form-control"  value="<?php if(isset($user)){echo $user->firstname;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="lastname"><?=$this->lang->line('application_lastname');?> *</label>
+        <label for="lastname"><?php echo $this->lang->line('application_lastname');?> *</label>
         <input id="lastname" type="text" name="lastname" class="required form-control"  value="<?php if(isset($user)){echo $user->lastname;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="email"><?=$this->lang->line('application_email');?> *</label>
+        <label for="email"><?php echo $this->lang->line('application_email');?> *</label>
         <input id="email" type="email" name="email" class="required email form-control" value="<?php if(isset($user)){echo $user->email;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="password"><?=$this->lang->line('application_password');?> <?php if(!isset($user)){echo '*';} ?></label>
+        <label for="password"><?php echo $this->lang->line('application_password');?> <?php if(!isset($user)){echo '*';} ?></label>
         <input id="password" type="password" name="password" class="form-control "  minlength="6" <?php if(!isset($user)){echo 'required';} ?>/>
 </div>
 <div class="form-group">
-        <label for="password"><?=$this->lang->line('application_confirm_password');?> <?php if(!isset($user)){echo '*';} ?></label>
+        <label for="password"><?php echo $this->lang->line('application_confirm_password');?> <?php if(!isset($user)){echo '*';} ?></label>
         <input id="confirm_password" type="password" name="confirm_password" class="form-control" data-match="#password" />
 </div>
 
 <div class="form-group">
-                <label for="userfile"><?=$this->lang->line('application_profile_picture');?></label>
+                <label for="userfile"><?php echo $this->lang->line('application_profile_picture');?></label>
                 <div>
                     <input id="uploadFile" type="text" name="dummy" class="form-control uploadFile" placeholder="Choose File" disabled="disabled" />
                           <div class="fileUpload btn btn-primary">
-                              <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?=$this->lang->line('application_select');?></span></span>
+                              <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?php echo $this->lang->line('application_select');?></span></span>
                               <input id="uploadBtn" type="file" name="userfile" class="upload" />
                           </div>
                   </div>
@@ -41,11 +41,11 @@ echo form_open_multipart($form_action, $attributes);
 
 <?php if(!isset($agent)){ ?>
 <div class="form-group">
-        <label for="title"><?=$this->lang->line('application_title');?> *</label>
+        <label for="title"><?php echo $this->lang->line('application_title');?> *</label>
         <input id="title" type="text" name="title" class="required form-control"  value="<?php if(isset($user)){echo $user->title;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="status"><?=$this->lang->line('application_status');?></label>   
+        <label for="status"><?php echo $this->lang->line('application_status');?></label>
         <?php $options = array(
                                 'active'  => $this->lang->line('application_active'),
                                 'inactive'    => $this->lang->line('application_inactive')
@@ -56,7 +56,7 @@ echo form_open_multipart($form_action, $attributes);
         echo form_dropdown('status', $options, $status, 'style="width:100%" class="chosen-select"');?>
 </div>
 <div class="form-group">
-        <label for="admin"><?=$this->lang->line('application_admin');?></label>        
+        <label for="admin"><?php echo $this->lang->line('application_admin');?></label>
         <?php $options = array(
                                 '1'  => $this->lang->line('application_yes'),
                                 '0'    => $this->lang->line('application_no')
@@ -71,7 +71,7 @@ echo form_open_multipart($form_action, $attributes);
 $access = array();
 if(isset($user)){ $access = explode(",", $user->access); }
 ?>
-<?=$this->lang->line('application_module_access');?>
+<?php echo $this->lang->line('application_module_access');?>
 
 <div class="form-group">
 <ul class="accesslist">
@@ -80,7 +80,7 @@ if(isset($user)){ $access = explode(",", $user->access); }
      <label>Widgets</label>
     <?php $wi = TRUE; } ?>
 
-<li> <input type="checkbox" class="checkbox" id="r_<?=$value->link;?>" name="access[]" data-labelauty="<?=$this->lang->line('application_'.$value->link);?>" value="<?=$value->id;?>" <?php if(in_array($value->id, $access)){ echo 'checked="checked"';}?>>  </li>
+<li> <input type="checkbox" class="checkbox" id="r_<?php echo $value->link;?>" name="access[]" data-labelauty="<?php echo $this->lang->line('application_'.$value->link);?>" value="<?php echo $value->id;?>" <?php if(in_array($value->id, $access)){ echo 'checked="checked"';}?>>  </li>
 <?php } ?>
 </ul>
 </div>
@@ -88,8 +88,8 @@ if(isset($user)){ $access = explode(",", $user->access); }
 
 
         <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 <?php echo form_close(); ?>

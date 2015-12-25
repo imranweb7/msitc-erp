@@ -12,7 +12,7 @@ if (!isset($language))
 
 <html xml:lang="en" lang="en">
 <head>
-  <meta name="Author" content="<?= $core_settings->company?>"/> 
+  <meta name="Author" content="<?php echo  $core_settings->company?>"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="invoice.css" type="text/css" charset="utf-8" />
     <style type="text/css">
@@ -179,37 +179,37 @@ table.tablesorter tbody tr.even td {
 </head>
 
 <body>
-<div><img src="<?php echo base_url(); ?><?=$core_settings->invoice_logo;?>" class="company-logo" /><div>
+<div><img src="<?php echo base_url(); ?><?php echo $core_settings->invoice_logo;?>" class="company-logo" /><div>
 <div id="page">
 
   <div>  
   <p class="recipient-address">
-  <strong><?=$estimate->company->name;?></strong><br />
-<?php if(isset($estimate->company->client->firstname)){ ?> <?=$estimate->company->client->firstname;?> <?=$estimate->company->client->lastname;?> <br><?php } ?>
-<?=$estimate->company->address;?><br>
-<?=$estimate->company->city;?><br>
-<?=$estimate->company->zipcode;?>
+  <strong><?php echo $estimate->company->name;?></strong><br />
+<?php if(isset($estimate->company->client->firstname)){ ?> <?php echo $estimate->company->client->firstname;?> <?php echo $estimate->company->client->lastname;?> <br><?php } ?>
+<?php echo $estimate->company->address;?><br>
+<?php echo $estimate->company->city;?><br>
+<?php echo $estimate->company->zipcode;?>
 <?php if($estimate->company->province != ""){?>
-<br><?=$estimate->company->province;?>
+<br><?php echo $estimate->company->province;?>
 <?php } ?>
 <?php if($estimate->company->vat != ""){?>
-<br><?=$this->lang->line('application_vat');?>: <?php echo $estimate->company->vat; ?>
+<br><?php echo $this->lang->line('application_vat');?>: <?php echo $estimate->company->vat; ?>
       <?php } ?>
 </p>
 
 
    <p class="company-address">
-    <?=$core_settings->company;?><br>
-    <?=$core_settings->invoice_contact;?><br>
-    <?=$core_settings->invoice_address;?><br>
-    <?=$core_settings->invoice_city;?><br>
-    <?=$core_settings->invoice_tel;?><br>
+    <?php echo $core_settings->company;?><br>
+    <?php echo $core_settings->invoice_contact;?><br>
+    <?php echo $core_settings->invoice_address;?><br>
+    <?php echo $core_settings->invoice_city;?><br>
+    <?php echo $core_settings->invoice_tel;?><br>
   </p> 
 </div>
 
-  <span class="headline"><?=$this->lang->line('application_estimate');?> <?=$core_settings->estimate_prefix;?><?=$estimate->reference;?></span>
+  <span class="headline"><?php echo $this->lang->line('application_estimate');?> <?php echo $core_settings->estimate_prefix;?><?php echo $estimate->reference;?></span>
   <p class="terms"><strong><?php echo date($core_settings->date_format, human_to_unix($estimate->issue_date.' 00:00:00'));?></strong><br/>
-  <?=$this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($estimate->due_date.' 00:00:00'));?></p>
+  <?php echo $this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($estimate->due_date.' 00:00:00'));?></p>
   
 
 
@@ -217,11 +217,11 @@ table.tablesorter tbody tr.even td {
     <table id="table" class="tablesorter" cellspacing="0"> 
   <thead> 
   <tr class="header"> 
-    <th><?=$this->lang->line('application_item');?></th>
-    <th><?=$this->lang->line('application_description');?></th>
-    <th width="8%"><?=$this->lang->line('application_hrs_qty');?></th>
-    <th width="12%"><?=$this->lang->line('application_unit_price');?></th>
-    <th width="12%"><?=$this->lang->line('application_sub_total');?></th>
+    <th><?php echo $this->lang->line('application_item');?></th>
+    <th><?php echo $this->lang->line('application_description');?></th>
+    <th width="8%"><?php echo $this->lang->line('application_hrs_qty');?></th>
+    <th width="12%"><?php echo $this->lang->line('application_unit_price');?></th>
+    <th width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
   </tr> 
   </thead> 
   <tbody> 
@@ -229,8 +229,8 @@ table.tablesorter tbody tr.even td {
     <?php foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></td>
-      <td><?= str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?></td>
-      <td align="center"><?=$estimate->invoice_has_items[$i]->amount;?></td>
+      <td><?php echo  str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?></td>
+      <td align="center"><?php echo $estimate->invoice_has_items[$i]->amount;?></td>
       <td><?php echo sprintf("%01.2f",$estimate->invoice_has_items[$i]->value);?></td>
       <td><?php echo sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value);?></td>
     </tr>
@@ -262,23 +262,23 @@ table.tablesorter tbody tr.even td {
         <table width="100%">
           <?php if ($estimate->discount != 0): ?>
         <tr >
-          <td align="left" class="margin"><?=$this->lang->line('application_discount');?></td>
-          <td align="right" style="padding-right:20px">- <?=$estimate->discount;?></td>
+          <td align="left" class="margin"><?php echo $this->lang->line('application_discount');?></td>
+          <td align="right" style="padding-right:20px">- <?php echo $estimate->discount;?></td>
         </tr> 
         <?php endif ?>
         <tr >
-          <td align="left" class="margin"><?=$this->lang->line('application_total');?></td>
-          <td align="right" style="padding-right:20px"><?=$presum;?></td>
+          <td align="left" class="margin"><?php echo $this->lang->line('application_total');?></td>
+          <td align="right" style="padding-right:20px"><?php echo $presum;?></td>
         </tr> 
        <?php if($tax_value != "0"){ ?>
         <tr>
-          <td align="left" class="margin"><?=$this->lang->line('application_tax');?> (<?= $tax_value?>%)</td>
-          <td align="right" style="padding-right:20px"><?=$tax?></td>
+          <td align="left" class="margin"><?php echo $this->lang->line('application_tax');?> (<?php echo  $tax_value?>%)</td>
+          <td align="right" style="padding-right:20px"><?php echo $tax?></td>
         </tr>
         <?php } ?>
         </table>
     <?php } ?>
-    <div class="total-amount total-heading"><p><?=$estimate->currency?> <?=$sum;?></p></div>
+    <div class="total-amount total-heading"><p><?php echo $estimate->currency?> <?php echo $sum;?></p></div>
   </div>
   <div class="custom-terms">
   <?php echo $estimate->terms; ?>

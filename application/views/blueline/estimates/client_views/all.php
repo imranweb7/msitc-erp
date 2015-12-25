@@ -7,22 +7,22 @@
           </button>
           <ul class="dropdown-menu pull-right" role="menu">
             <?php foreach ($submenu as $name=>$value):?>
-	                <li><a id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?=site_url($value);?>"><?=$name?></a></li>
+	                <li><a id="<?php $val_id = explode("/", $value); if(!is_numeric(end($val_id))){echo end($val_id);}else{$num = count($val_id)-2; echo $val_id[$num];} ?>" href="<?php echo site_url($value);?>"><?php echo $name?></a></li>
 	            <?php endforeach;?>
           </ul>
       </div>
     </div>  
       <div class="row">
 
-         <div class="table-head"><?=$this->lang->line('application_estimates');?></div>
+         <div class="table-head"><?php echo $this->lang->line('application_estimates');?></div>
          <div class="table-div">
-		<table class="data table" id="cestimates" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="data table" id="cestimates" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 		<thead>
-			<th width="70px" class="hidden-xs"><?=$this->lang->line('application_estimate_id');?></th>
-			<th ><?=$this->lang->line('application_client');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_issue_date');?></th>
-			<th class="hidden-xs"><?=$this->lang->line('application_total');?></th>
-			<th><?=$this->lang->line('application_status');?></th>
+			<th width="70px" class="hidden-xs"><?php echo $this->lang->line('application_estimate_id');?></th>
+			<th ><?php echo $this->lang->line('application_client');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_issue_date');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('application_total');?></th>
+			<th><?php echo $this->lang->line('application_status');?></th>
 		</thead>
 		<?php foreach ($estimates as $value):
         $change_date = "";
@@ -37,12 +37,12 @@
 
           default: $label = "label-default"; break;
         } ?>
-		<tr id="<?=$value->id;?>" >
-			<td class="hidden-xs"><?=$core_settings->estimate_prefix;?><?=$value->reference;?></td>
+		<tr id="<?php echo $value->id;?>" >
+			<td class="hidden-xs"><?php echo $core_settings->estimate_prefix;?><?php echo $value->reference;?></td>
 			<td><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
 			<td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
-			<td class="hidden-xs"><?=display_money(sprintf("%01.2f", round($value->sum, 2)));?></td>
-			<td><span class="label  <?=$label?> tt" <?=$change_date;?>><?=$this->lang->line('application_'.$custom_status);?></span></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f", round($value->sum, 2)));?></td>
+			<td><span class="label  <?php echo $label?> tt" <?php echo $change_date;?>><?php echo $this->lang->line('application_'.$custom_status);?></span></td>
 		
 		</tr>
 

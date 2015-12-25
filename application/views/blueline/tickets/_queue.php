@@ -6,7 +6,7 @@ if(isset($ticket)){ ?>
 <?php } ?>
   
 <div class="form-group">
-        <label for="queue"><?=$this->lang->line('application_queue');?></label>
+        <label for="queue"><?php echo $this->lang->line('application_queue');?></label>
         <?php $queuelist = array();
                  foreach ($queues as $queue):
                     $queuelist[$queue->id] = $queue->name;
@@ -15,8 +15,8 @@ if(isset($ticket)){ ?>
 </div>    
 
         <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 

@@ -3,35 +3,35 @@
 
   <div class="row tile-row tile-view">
       <div class="col-md-1 col-xs-3">
-      <div class="percentage easyPieChart" data-percent="<?=$project->progress;?>"><span><?=$project->progress;?>%</span></div>
+      <div class="percentage easyPieChart" data-percent="<?php echo $project->progress;?>"><span><?php echo $project->progress;?>%</span></div>
         
       </div>
       <div class="col-md-11 col-xs-9 smallscreen"> 
-        <h1><span class="nobold">#<?=$core_settings->project_prefix;?><?=$project->reference;?></span> - <?=$project->name;?></h1>
-         <p class="truncate description"><?=$project->description;?></p>
+        <h1><span class="nobold">#<?php echo $core_settings->project_prefix;?><?php echo $project->reference;?></span> - <?php echo $project->name;?></h1>
+         <p class="truncate description"><?php echo $project->description;?></p>
       </div>
     
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_project_details');?></a></li>
-        <li role="presentation" class="hidden-xs"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_tasks');?></a></li>
-        <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_media');?></a></li>
-        <li role="presentation" class="hidden-xs"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_notes');?></a></li>
+        <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
+        <li role="presentation" class="hidden-xs"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
+        <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
+        <li role="presentation" class="hidden-xs"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_notes');?></a></li>
        <?php if($invoice_access) { ?>
-        <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_invoices');?></a></li>
+        <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
        <?php } ?>
-        <li role="presentation" class="hidden-xs"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_activities');?></a></li>
+        <li role="presentation" class="hidden-xs"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
         
         <li role="presentation" class="dropdown visible-xs">
-            <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><?=$this->lang->line('application_overview');?> <span class="caret"></span></a>
+            <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><?php echo $this->lang->line('application_overview');?> <span class="caret"></span></a>
             <ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
-              <li role="presentation" class="active"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_project_details');?></a></li>
-              <li role="presentation"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_tasks');?></a></li>
-              <li role="presentation"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_media');?></a></li>
-              <li role="presentation"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_notes');?></a></li>
+              <li role="presentation" class="active"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
+              <li role="presentation"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
+              <li role="presentation"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
+              <li role="presentation"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_notes');?></a></li>
              <?php if($invoice_access) { ?>
-              <li role="presentation"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_invoices');?></a></li>
+              <li role="presentation"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
              <?php } ?>
-              <li role="presentation"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?=$this->lang->line('application_activities');?></a></li>
+              <li role="presentation"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
             </ul>
         </li>
 
@@ -52,28 +52,28 @@
 <div class="row tab-pane fade in active" role="tabpanel" id="projectdetails-tab">
 
        <div class="col-xs-12 col-sm-12">
-            <div class="table-head"><?=$this->lang->line('application_project_details');?></div>
+            <div class="table-head"><?php echo $this->lang->line('application_project_details');?></div>
 
                 <div class="subcont">
                   <ul class="details col-xs-12 col-sm-12 col-md-4">
-                    <li><span><?=$this->lang->line('application_project_id');?>:</span> <?=$core_settings->project_prefix;?><?=$project->reference;?></li>
-                    <li><span><?=$this->lang->line('application_project_type_id_select');?>:</span> <?=$project->project_type->name;?></li>
-                    <li><span><?=$this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="#"><?php echo $project->company->name;} ?></a></li>
-                    <li><span><?=$this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> </li>
+                    <li><span><?php echo $this->lang->line('application_project_id');?>:</span> <?php echo $core_settings->project_prefix;?><?php echo $project->reference;?></li>
+                    <li><span><?php echo $this->lang->line('application_project_type_id_select');?>:</span> <?php echo $project->project_type->name;?></li>
+                    <li><span><?php echo $this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="#"><?php echo $project->company->name;} ?></a></li>
+                    <li><span><?php echo $this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> </li>
         
                   </ul>
                   <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
-                    <li><span><?=$this->lang->line('application_start_date');?>:</span> <?php  $unix = human_to_unix($project->start.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-                    <li><span><?=$this->lang->line('application_deadline');?>:</span> <?php  $unix = human_to_unix($project->end.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-                    <li><span><?=$this->lang->line('application_time_spent');?>:</span> <?=$time_spent;?> </li>
-                    <li><span><?=$this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
+                    <li><span><?php echo $this->lang->line('application_start_date');?>:</span> <?php  $unix = human_to_unix($project->start.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
+                    <li><span><?php echo $this->lang->line('application_deadline');?>:</span> <?php  $unix = human_to_unix($project->end.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
+                    <li><span><?php echo $this->lang->line('application_time_spent');?>:</span> <?php echo $time_spent;?> </li>
+                    <li><span><?php echo $this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
                   </ul>
 
                     <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
-                        <li><span><?=$this->lang->line('application_qty');?>:</span> <?php echo $project->product_qty;?></li>
-                        <li><span><?=$this->lang->line('application_budget');?>:</span> <?php echo $core_settings->currency.$project->project_budget;?></li>
-                        <li><span><?=$this->lang->line('application_custom_logo');?>:</span> <?php if($project->custom_logo == "1") echo 'Yes'; else echo 'No'; ?></li>
-                        <li><span><?=$this->lang->line('application_custom_packaging');?>:</span> <?php if($project->custom_packaging == "1") echo 'Yes'; else echo 'No'; ?></li>
+                        <li><span><?php echo $this->lang->line('application_qty');?>:</span> <?php echo $project->product_qty;?></li>
+                        <li><span><?php echo $this->lang->line('application_budget');?>:</span> <?php echo $core_settings->currency.$project->project_budget;?></li>
+                        <li><span><?php echo $this->lang->line('application_custom_logo');?>:</span> <?php if($project->custom_logo == "1") echo 'Yes'; else echo 'No'; ?></li>
+                        <li><span><?php echo $this->lang->line('application_custom_packaging');?>:</span> <?php if($project->custom_packaging == "1") echo 'Yes'; else echo 'No'; ?></li>
                     </ul>
 
 
@@ -85,10 +85,10 @@
 
 
     <div class="col-xs-12 col-sm-9">
-        <div class="table-head"><?=$this->lang->line('application_link');?></div>
+        <div class="table-head"><?php echo $this->lang->line('application_link');?></div>
         <div class="subcont">
             <ul class="details col-xs-12 col-sm-12 col-md-12">
-                <li><?=$project->product_link;?></li>
+                <li><?php echo $project->product_link;?></li>
             </ul>
             <br clear="both">
         </div>
@@ -97,7 +97,7 @@
 
 
    <div class="col-xs-12 col-sm-3">
-        <div class="table-head"><?=$this->lang->line('application_reference_photo');?></div>
+        <div class="table-head"><?php echo $this->lang->line('application_reference_photo');?></div>
         <div class="subcont" >
             <?php
             if(!empty($project->reference_photo)){
@@ -114,7 +114,7 @@
 
   <div class="row tab-pane fade" role="tabpanel" id="tasks-tab">
      <div class="col-xs-12 col-sm-12">
-            <div class="table-head"><?=$this->lang->line('application_tasks');?></div>
+            <div class="table-head"><?php echo $this->lang->line('application_tasks');?></div>
   
 
                 <div class="subcont no-padding min-height-410">
@@ -123,12 +123,12 @@
         $count = 0;
         foreach ($project->project_has_tasks as $value):  $count = $count+1; if($value->public != 0){ ?>
 
-            <li class="<?=$value->status;?> priority<?=$value->priority;?>"><a href="#" class=""></a>
+            <li class="<?php echo $value->status;?> priority<?php echo $value->priority;?>"><a href="#" class=""></a>
               
               <input name="form-field-checkbox" class="checkbox-nolabel task-check" disabled="disabled" type="checkbox" <?php if($value->status == "done"){echo "checked";}?>/>
-              <span class="lbl"> <p class="truncate name"><?=$value->name;?></p></span>
+              <span class="lbl"> <p class="truncate name"><?php echo $value->name;?></p></span>
               <span class="pull-right">
-                                  <?php if ($value->user_id != 0) {  ?><img class="img-circle list-profile-img tt"  title="<?=$value->user->firstname;?> <?=$value->user->lastname;?>"  src="<?php 
+                                  <?php if ($value->user_id != 0) {  ?><img class="img-circle list-profile-img tt"  title="<?php echo $value->user->firstname;?> <?php echo $value->user->lastname;?>"  src="<?php
                 if($value->user->userpic != 'no-pic.png'){
                   echo base_url()."files/media/".$value->user->userpic;
                 }else{
@@ -141,15 +141,15 @@
                     <div class="row">
                         <div class="col-sm-3">
                         <ul class="details">
-                            <li><span><?=$this->lang->line('application_priority');?>:</span> <?php switch($value->priority){case "0": echo $this->lang->line('application_no_priority'); break; case "1": echo $this->lang->line('application_low_priority'); break; case "2": echo $this->lang->line('application_med_priority'); break; case "3": echo $this->lang->line('application_high_priority'); break;};?></li>
-                            <?php if($value->value != 0){ ?><li><span><?=$this->lang->line('application_value');?>:</span> <?=$value->value;?></li><?php } ?>
-                            <?php if($value->due_date != ""){ ?><li><span><?=$this->lang->line('application_due_date');?>:</span> <?php  $unix = human_to_unix($value->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></li><?php } ?>
-                            <li><span><?=$this->lang->line('application_assigned_to');?>:</span> <?php if(isset($value->user->lastname)){ echo $value->user->firstname." ".$value->user->lastname;}else{$this->lang->line('application_not_assigned');}?> </li>
+                            <li><span><?php echo $this->lang->line('application_priority');?>:</span> <?php switch($value->priority){case "0": echo $this->lang->line('application_no_priority'); break; case "1": echo $this->lang->line('application_low_priority'); break; case "2": echo $this->lang->line('application_med_priority'); break; case "3": echo $this->lang->line('application_high_priority'); break;};?></li>
+                            <?php if($value->value != 0){ ?><li><span><?php echo $this->lang->line('application_value');?>:</span> <?php echo $value->value;?></li><?php } ?>
+                            <?php if($value->due_date != ""){ ?><li><span><?php echo $this->lang->line('application_due_date');?>:</span> <?php  $unix = human_to_unix($value->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></li><?php } ?>
+                            <li><span><?php echo $this->lang->line('application_assigned_to');?>:</span> <?php if(isset($value->user->lastname)){ echo $value->user->firstname." ".$value->user->lastname;}else{$this->lang->line('application_not_assigned');}?> </li>
 
                          </ul>
                         
                         </div>
-                        <div class="col-sm-9"><h3><?=$this->lang->line('application_description');?></h3> <p><?=$value->description;?></p></div>
+                        <div class="col-sm-9"><h3><?php echo $this->lang->line('application_description');?></h3> <p><?php echo $value->description;?></p></div>
                         
                     </div>
                     </div>
@@ -157,7 +157,7 @@
           </li>
          <?php } endforeach;?>
          <?php if($count == 0) { ?>
-          <li class="notask"><?=$this->lang->line('application_no_tasks_yet');?></li>
+          <li class="notask"><?php echo $this->lang->line('application_no_tasks_yet');?></li>
          <?php } ?>
 
                        
@@ -168,27 +168,27 @@
 </div>
 <div class="row tab-pane fade" role="tabpanel" id="media-tab">
 <div class="col-xs-12 col-sm-12">
- <div class="table-head"><?=$this->lang->line('application_media');?> <span class=" pull-right"><a href="<?=base_url()?>cprojects/media/<?=$project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?=$this->lang->line('application_add_media');?></a></span></div>
+ <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
 <div class="table-div min-height-410">
- <table id="media" class="table data-media" rel="<?=base_url()?>cprojects/media/<?=$project->id;?>" cellspacing="0" cellpadding="0">
+ <table id="media" class="table data-media" rel="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
         <thead>
         <tr>
                     <th  class="hidden"></th>
-          <th><?=$this->lang->line('application_name');?></th>
-          <th class="hidden-xs"><?=$this->lang->line('application_filename');?></th>
-          <th class="hidden-xs"><?=$this->lang->line('application_phase');?></th>
+          <th><?php echo $this->lang->line('application_name');?></th>
+          <th class="hidden-xs"><?php echo $this->lang->line('application_filename');?></th>
+          <th class="hidden-xs"><?php echo $this->lang->line('application_phase');?></th>
           <th class="hidden-xs"><i class="fa fa-download"></i></th>
           </tr></thead>
         
         <tbody>
         <?php foreach ($project->project_has_files as $value):?>
 
-        <tr id="<?=$value->id;?>">
-          <td class="hidden"><?=human_to_unix($value->date);?></td>
-          <td onclick=""><?=$value->name;?></td>
-          <td class="hidden-xs truncate" style="max-width: 80px;"><?=$value->filename;?></td>
-          <td class="hidden-xs"><?=$value->phase;?></td>
-          <td class="hidden-xs"><span class="label label-info tt" title="<?=$this->lang->line('application_download_counter');?>" ><?=$value->download_counter;?></span></td>
+        <tr id="<?php echo $value->id;?>">
+          <td class="hidden"><?php echo human_to_unix($value->date);?></td>
+          <td onclick=""><?php echo $value->name;?></td>
+          <td class="hidden-xs truncate" style="max-width: 80px;"><?php echo $value->filename;?></td>
+          <td class="hidden-xs"><?php echo $value->phase;?></td>
+          <td class="hidden-xs"><span class="label label-info tt" title="<?php echo $this->lang->line('application_download_counter');?>" ><?php echo $value->download_counter;?></span></td>
           
         </tr>
 
@@ -210,9 +210,9 @@
 <div class="col-xs-12 col-sm-12">
 <?php $attributes = array('class' => 'note-form', 'id' => '_notes');
     echo form_open(base_url()."projects/notes/".$project->id, $attributes); ?>
- <div class="table-head"><?=$this->lang->line('application_notes');?> <span class=" pull-right"><a id="send" name="send" class="btn btn-primary button-loader"><?=$this->lang->line('application_save');?></a></span><span id="changed" class="pull-right label label-warning"><?=$this->lang->line('application_unsaved');?></span></div>
+ <div class="table-head"><?php echo $this->lang->line('application_notes');?> <span class=" pull-right"><a id="send" name="send" class="btn btn-primary button-loader"><?php echo $this->lang->line('application_save');?></a></span><span id="changed" class="pull-right label label-warning"><?php echo $this->lang->line('application_unsaved');?></span></div>
 
-  <textarea class="input-block-level summernote-note" name="note" id="textfield" ><?=$project->note;?></textarea>
+  <textarea class="input-block-level summernote-note" name="note" id="textfield" ><?php echo $project->note;?></textarea>
 </form>
 </div>
 
@@ -221,24 +221,24 @@
 <?php if($invoice_access) { ?>
 <div class="row tab-pane fade" role="tabpanel" id="invoices-tab">
  <div class="col-xs-12 col-sm-12">
- <div class="table-head"><?=$this->lang->line('application_invoices');?> <span class=" pull-right"></span></div>
+ <div class="table-head"><?php echo $this->lang->line('application_invoices');?> <span class=" pull-right"></span></div>
 <div class="table-div">
- <table class="data table" id="cinvoices" rel="<?=base_url()?>" cellspacing="0" cellpadding="0">
+ <table class="data table" id="cinvoices" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
     <thead>
-      <th width="70px" class="hidden-xs"><?=$this->lang->line('application_invoice_id');?></th>
-      <th><?=$this->lang->line('application_client');?></th>
-      <th class="hidden-xs"><?=$this->lang->line('application_issue_date');?></th>
-      <th class="hidden-xs"><?=$this->lang->line('application_due_date');?></th>
-      <th><?=$this->lang->line('application_status');?></th>
+      <th width="70px" class="hidden-xs"><?php echo $this->lang->line('application_invoice_id');?></th>
+      <th><?php echo $this->lang->line('application_client');?></th>
+      <th class="hidden-xs"><?php echo $this->lang->line('application_issue_date');?></th>
+      <th class="hidden-xs"><?php echo $this->lang->line('application_due_date');?></th>
+      <th><?php echo $this->lang->line('application_status');?></th>
     </thead>
     <?php foreach ($project_has_invoices as $value):?>
 
-    <tr id="<?=$value->id;?>" >
-      <td class="hidden-xs" onclick=""><?=$core_settings->invoice_prefix;?><?=$value->reference;?></td>
+    <tr id="<?php echo $value->id;?>" >
+      <td class="hidden-xs" onclick=""><?php echo $core_settings->invoice_prefix;?><?php echo $value->reference;?></td>
       <td onclick=""><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
       <td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
-      <td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?=$unix;?></span></td>
-      <td onclick=""><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?=$this->lang->line('application_'.$value->status);?></span></td>
+      <td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?php echo $unix;?></span></td>
+      <td onclick=""><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?php echo $this->lang->line('application_'.$value->status);?></span></td>
     </tr>
 
     <?php endforeach;?>
@@ -247,7 +247,7 @@
         <div class="no-files">  
             <i class="fa fa-file-text"></i><br>
             
-            <?=$this->lang->line('application_no_invoices_yet');?>
+            <?php echo $this->lang->line('application_no_invoices_yet');?>
         </div>
          <?php } ?>
         </div>
@@ -261,8 +261,8 @@
 
 <div class="row tab-pane fade" role="tabpanel" id="activities-tab">
 <div class="col-xs-12 col-sm-12">
-            <div class="table-head"><?=$this->lang->line('application_activities');?>
-            <span class=" pull-right"><a class="btn btn-primary open-comment-box"><?=$this->lang->line('application_new_comment');?></a></span>
+            <div class="table-head"><?php echo $this->lang->line('application_activities');?>
+            <span class=" pull-right"><a class="btn btn-primary open-comment-box"><?php echo $this->lang->line('application_new_comment');?></a></span>
             </div>
             <div class="subcont" > 
 
@@ -273,15 +273,15 @@
                                 echo form_open('cprojects/activity/'.$project->id.'/add', $attributes); 
                                 ?>
                       <div class="comment-pic">
-                        <img class="img-circle tt" title="<?=$this->client->firstname?> <?=$this->client->lastname?>"  src="<?=get_user_pic($this->client->userpic, $this->client->email);?>">
+                        <img class="img-circle tt" title="<?php echo $this->client->firstname?> <?php echo $this->client->lastname?>"  src="<?php echo get_user_pic($this->client->userpic, $this->client->email);?>">
                       
                       </div>
                       <div class="comment-content">
-                          <h5><input type="text" name="subject" class="form-control" id="subject" placeholder="<?=$this->lang->line('application_subject');?>..." required/></h5>
-                            <p><small class="text-muted"><span class="comment-writer"><?=$this->client->firstname?> <?=$this->client->lastname?></span> <span class="datetime"><?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, time()); ?></span></small></p>
-                            <p><textarea class="input-block-level summernote" id="reply" name="message" placeholder="<?=$this->lang->line('application_write_message');?>..." required/></textarea></p>
-                            <button id="send" name="send" class="btn btn-primary button-loader"><?=$this->lang->line('application_send');?></button>
-                            <button id="cancel" name="cancel" class="btn btn-danger open-comment-box"><?=$this->lang->line('application_close');?></button>
+                          <h5><input type="text" name="subject" class="form-control" id="subject" placeholder="<?php echo $this->lang->line('application_subject');?>..." required/></h5>
+                            <p><small class="text-muted"><span class="comment-writer"><?php echo $this->client->firstname?> <?php echo $this->client->lastname?></span> <span class="datetime"><?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, time()); ?></span></small></p>
+                            <p><textarea class="input-block-level summernote" id="reply" name="message" placeholder="<?php echo $this->lang->line('application_write_message');?>..." required/></textarea></p>
+                            <button id="send" name="send" class="btn btn-primary button-loader"><?php echo $this->lang->line('application_send');?></button>
+                            <button id="cancel" name="cancel" class="btn btn-danger open-comment-box"><?php echo $this->lang->line('application_close');?></button>
                                
                       </div>
                        </form>
@@ -300,22 +300,22 @@
                       <li class="comment-item">
                       <div class="comment-pic">
                         <?php if ($writer != FALSE) {  ?>
-                        <img class="img-circle tt" title="<?=$writer?>"  src="<?=$image?>">
+                        <img class="img-circle tt" title="<?php echo $writer?>"  src="<?php echo $image?>">
                         <?php }else{?> <i class="fa fa-rocket"></i> <?php } ?>
                       </div>
                       <div class="comment-content">
-                          <h5><?=$value->subject;?></h5>
-                            <p><small class="text-muted"><span class="comment-writer"><?=$writer?></span> <span class="datetime"><?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $value->datetime); ?></span></small></p>
-                            <p><?=$value->message;?></p>
+                          <h5><?php echo $value->subject;?></h5>
+                            <p><small class="text-muted"><span class="comment-writer"><?php echo $writer?></span> <span class="datetime"><?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $value->datetime); ?></span></small></p>
+                            <p><?php echo $value->message;?></p>
                       </div>
                       </li>
   <?php endforeach;?>
                       <li class="comment-item">
                         <div class="comment-pic"><i class="fa fa-bolt"></i></div>
                           <div class="comment-content">
-                          <h5><?=$this->lang->line('application_project_created');?></h5>
+                          <h5><?php echo $this->lang->line('application_project_created');?></h5>
                             <p><small class="text-muted"><?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></small></p>
-                            <p><?=$this->lang->line('application_project_has_been_created');?></p>
+                            <p><?php echo $this->lang->line('application_project_has_been_created');?></p>
                           </div>
                       </li>  
          </ul>            

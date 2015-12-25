@@ -20,18 +20,18 @@ if(isset($htmlPreview)){
 
 <html xml:lang="en" lang="en">
 <head>
-  <meta name="Author" content="<?= $core_settings->company?>"/> 
+  <meta name="Author" content="<?php echo  $core_settings->company?>"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
 
     @font-face {
     font-family: customfont;
-    src: url(<?php if( $core_settings->pdf_path == 1 ) {echo base_url(); } ?>assets/blueline/fonts/<?= $core_settings->pdf_font?>-Regular.ttf);
+    src: url(<?php if( $core_settings->pdf_path == 1 ) {echo base_url(); } ?>assets/blueline/fonts/<?php echo  $core_settings->pdf_font?>-Regular.ttf);
     font-weight: 400;
     }
     @font-face {
     font-family: customfont;
-    src: url(<?php if( $core_settings->pdf_path == 1 ) {echo base_url(); } ?>assets/blueline/fonts/<?= $core_settings->pdf_font?>-Bold.ttf);
+    src: url(<?php if( $core_settings->pdf_path == 1 ) {echo base_url(); } ?>assets/blueline/fonts/<?php echo  $core_settings->pdf_font?>-Bold.ttf);
     font-weight: 600;
     }
 body{
@@ -177,40 +177,40 @@ p{
 <div class="top-background">
    <table width="100%" cellspacing="0" >
          <tr>
-           <td><img src="<?php if( $core_settings->pdf_path == 1 ) {echo base_url(); } ?><?=$core_settings->invoice_logo;?>" class="company-logo" /></td>
-           <td style="vertical-align: top;"><div class="status <?php echo $status;?>"> <?=$this->lang->line('application_'.$status);?></div></td>
+           <td><img src="<?php if( $core_settings->pdf_path == 1 ) {echo base_url(); } ?><?php echo $core_settings->invoice_logo;?>" class="company-logo" /></td>
+           <td style="vertical-align: top;"><div class="status <?php echo $status;?>"> <?php echo $this->lang->line('application_'.$status);?></div></td>
          </tr>
          <tr>
-            <td style="vertical-align:top"><?=$core_settings->company;?></td>
-            <td class="right" style="vertical-align:top"><?=$estimate->company->name;?></td>
+            <td style="vertical-align:top"><?php echo $core_settings->company;?></td>
+            <td class="right" style="vertical-align:top"><?php echo $estimate->company->name;?></td>
         </tr> 
         <tr>
-            <td style="vertical-align:top"><?=$core_settings->invoice_contact;?></td>
-            <td class="right" style="vertical-align:top"><strong><?php if(isset($estimate->company->client->firstname)){ ?> <?=$estimate->company->client->firstname;?> <?=$estimate->company->client->lastname;?></strong><?php } ?></td>
+            <td style="vertical-align:top"><?php echo $core_settings->invoice_contact;?></td>
+            <td class="right" style="vertical-align:top"><strong><?php if(isset($estimate->company->client->firstname)){ ?> <?php echo $estimate->company->client->firstname;?> <?php echo $estimate->company->client->lastname;?></strong><?php } ?></td>
         </tr>
         <tr>
-            <td style="vertical-align:top"><?=$core_settings->invoice_address;?></td>
-            <td class="right" style="vertical-align:top"><?=$estimate->company->address;?></td>
+            <td style="vertical-align:top"><?php echo $core_settings->invoice_address;?></td>
+            <td class="right" style="vertical-align:top"><?php echo $estimate->company->address;?></td>
         </tr>
         <tr>
-            <td style="vertical-align:top"><?=$core_settings->invoice_city;?></td>
-            <td class="right" style="vertical-align:top"><?=$estimate->company->city;?>, <?=$estimate->company->zipcode;?></td>
-        </tr>
-        <tr>
-            <td style="vertical-align:top"></td>
-            <td class="right" style="vertical-align:top"><?php if($estimate->company->province != ""){?><?=$estimate->company->province;?><?php } ?></td>
+            <td style="vertical-align:top"><?php echo $core_settings->invoice_city;?></td>
+            <td class="right" style="vertical-align:top"><?php echo $estimate->company->city;?>, <?php echo $estimate->company->zipcode;?></td>
         </tr>
         <tr>
             <td style="vertical-align:top"></td>
-            <td class="right" style="vertical-align:top"><?php if($estimate->company->vat != ""){?><?=$this->lang->line('application_vat');?>: <?php echo $estimate->company->vat; ?><?php } ?></td>
+            <td class="right" style="vertical-align:top"><?php if($estimate->company->province != ""){?><?php echo $estimate->company->province;?><?php } ?></td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top"></td>
+            <td class="right" style="vertical-align:top"><?php if($estimate->company->vat != ""){?><?php echo $this->lang->line('application_vat');?>: <?php echo $estimate->company->vat; ?><?php } ?></td>
         </tr>
         <tr>
           <td class="padding" style="vertical-align:top">
-          <span class="invoicereference"><?=$this->lang->line('application_estimate');?> <?=$core_settings->estimate_prefix;?><?=$estimate->reference;?></span><br/>
+          <span class="invoicereference"><?php echo $this->lang->line('application_estimate');?> <?php echo $core_settings->estimate_prefix;?><?php echo $estimate->reference;?></span><br/>
           <span class="over"><?php $unix = human_to_unix($estimate->issue_date.' 00:00'); echo date($core_settings->date_format, $unix);?></span>
           </td>
           <td class="padding" align="right" style="vertical-align:bottom">
-          <?=$this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($estimate->due_date.' 00:00:00'));?>
+          <?php echo $this->lang->line('application_due_date');?> <?php echo date($core_settings->date_format, human_to_unix($estimate->due_date.' 00:00:00'));?>
           </td>
         </tr>
   </table>
@@ -220,10 +220,10 @@ p{
   <table id="table" cellspacing="0"> 
   <thead> 
   <tr class="header"> 
-    <th class="left"><?=$this->lang->line('application_item');?></th>
-    <th width="9%" class="center"><?=$this->lang->line('application_hrs_qty');?></th>
-    <th width="15%" class="right"><?=$this->lang->line('application_unit_price');?></th>
-    <th width="15%" class="right"><?=$this->lang->line('application_sub_total');?></th>
+    <th class="left"><?php echo $this->lang->line('application_item');?></th>
+    <th width="9%" class="center"><?php echo $this->lang->line('application_hrs_qty');?></th>
+    <th width="15%" class="right"><?php echo $this->lang->line('application_unit_price');?></th>
+    <th width="15%" class="right"><?php echo $this->lang->line('application_sub_total');?></th>
   </tr> 
   </thead> 
   <tbody> 
@@ -232,9 +232,9 @@ p{
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td>
         <span class="item-name"><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></span><br/>
-        <span class="description"><?= str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?><span class="item-name">
+        <span class="description"><?php echo  str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?><span class="item-name">
       </td>
-      <td class="center"><?=$estimate->invoice_has_items[$i]->amount;?></td>
+      <td class="center"><?php echo $estimate->invoice_has_items[$i]->amount;?></td>
       <td class="right"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->value));?></td>
       <td class="right"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value));?></td>
     </tr>
@@ -273,11 +273,11 @@ p{
         <table width="100%">
           
         <tr>
-          <?php if ($estimate->discount != 0): ?><td class="side"><span class="over"><?=$this->lang->line('application_discount');?></span><br/><span class="under">- <?=display_money($discount, $estimate->currency);?></span></td><?php endif ?>
-          <td class="side"><span class="over"><?=$this->lang->line('application_sub_total');?></span><br/><span class="under"><?=display_money($presum, $estimate->currency);?></span></td>
-          <?php if($tax_value != "0"){ ?><td class="side"><span class="over"><?=$this->lang->line('application_tax');?> (<?= $tax_value?>%)</span><br/><span class="under"><?=display_money($tax, $estimate->currency)?></span></td><?php } ?>
-          <?php if($second_tax_value != "0" && $second_tax_value != ""){ ?><td class="side"><span class="over"><?=$this->lang->line('application_second_tax');?> (<?= $second_tax_value?>%)</span><br/><span class="under"><?=display_money($second_tax, $estimate->currency)?></span></td><?php } ?>
-          <td class="total-heading"><span class="over"><?=$this->lang->line('application_total');?></span><br/><span class="under"><?=display_money($sum, $estimate->currency);?></span></td>
+          <?php if ($estimate->discount != 0): ?><td class="side"><span class="over"><?php echo $this->lang->line('application_discount');?></span><br/><span class="under">- <?php echo display_money($discount, $estimate->currency);?></span></td><?php endif ?>
+          <td class="side"><span class="over"><?php echo $this->lang->line('application_sub_total');?></span><br/><span class="under"><?php echo display_money($presum, $estimate->currency);?></span></td>
+          <?php if($tax_value != "0"){ ?><td class="side"><span class="over"><?php echo $this->lang->line('application_tax');?> (<?php echo  $tax_value?>%)</span><br/><span class="under"><?php echo display_money($tax, $estimate->currency)?></span></td><?php } ?>
+          <?php if($second_tax_value != "0" && $second_tax_value != ""){ ?><td class="side"><span class="over"><?php echo $this->lang->line('application_second_tax');?> (<?php echo  $second_tax_value?>%)</span><br/><span class="under"><?php echo display_money($second_tax, $estimate->currency)?></span></td><?php } ?>
+          <td class="total-heading"><span class="over"><?php echo $this->lang->line('application_total');?></span><br/><span class="under"><?php echo display_money($sum, $estimate->currency);?></span></td>
         </tr> 
 
         </table>
@@ -285,7 +285,7 @@ p{
 
 
     <div class="custom-terms"><?php echo $estimate->terms; ?></div>
-    <div class="footer"><b><?=$core_settings->company;?></b> | <?=$core_settings->email;?><?php if($core_settings->invoice_tel != ""){echo " | ".$core_settings->invoice_tel;};?><?php if($core_settings->vat != ""){echo " | ".$this->lang->line('application_vat').": ".$core_settings->vat;}?></div>
+    <div class="footer"><b><?php echo $core_settings->company;?></b> | <?php echo $core_settings->email;?><?php if($core_settings->invoice_tel != ""){echo " | ".$core_settings->invoice_tel;};?><?php if($core_settings->vat != ""){echo " | ".$this->lang->line('application_vat').": ".$core_settings->vat;}?></div>
     <script type='text/php'>
         if ( isset($pdf) ) { 
           $font = Font_Metrics::get_font('helvetica', 'normal');

@@ -5,7 +5,7 @@ if(isset($ticket)){ ?>
 <input id="id" type="hidden" name="id" value="<?php echo $ticket->id; ?>" />
 <?php } ?>    
 <div class="form-group">
-        <label for="type"><?=$this->lang->line('application_status');?></label>
+        <label for="type"><?php echo $this->lang->line('application_status');?></label>
         <?php $statuslist = array();
                  
                     $statuslist["open"] = $this->lang->line('application_ticket_status_open');
@@ -18,8 +18,8 @@ if(isset($ticket)){ ?>
 </div>    
 
         <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 

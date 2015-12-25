@@ -9,13 +9,13 @@ if(isset($project)){ ?>
 <div class="row">
 
   <div class="col-xs-3">
-  <label><?=$this->lang->line('application_hours');?></label>
+  <label><?php echo $this->lang->line('application_hours');?></label>
     <input type="numbers" class="form-control" name="hours" >
   </div>
 </div>
 <div class="row">
   <div class="col-xs-3">
-  <label><?=$this->lang->line('application_minutes');?></label>
+  <label><?php echo $this->lang->line('application_minutes');?></label>
     <input type="numbers" class="form-control" name="minutes" >
   </div>
 
@@ -24,8 +24,8 @@ if(isset($project)){ ?>
 
          
 <div class="modal-footer">
-        <input type="submit" name="send" class="btn btn-primary" value="<?=$this->lang->line('application_save');?>"/>
-        <a class="btn btn-default" data-dismiss="modal"><?=$this->lang->line('application_close');?></a>
+        <input type="submit" name="send" class="btn btn-primary" value="<?php echo $this->lang->line('application_save');?>"/>
+        <a class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
 

@@ -18,11 +18,11 @@
     <META Http-Equiv="Expires" Content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title><?=$core_settings->company;?></title>
+    <title><?php echo $core_settings->company;?></title>
     
-    <link href="<?=base_url()?>assets/blueline/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?=base_url()?>assets/blueline/css/blueline.css" rel="stylesheet">
-    <link href="<?=base_url()?>assets/blueline/css/user.css" rel="stylesheet" /> 
+    <link href="<?php echo base_url()?>assets/blueline/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url()?>assets/blueline/css/blueline.css" rel="stylesheet">
+    <link href="<?php echo base_url()?>assets/blueline/css/user.css" rel="stylesheet" />
     <script type="text/javascript">
   WebFontConfig = {
     google: { families: [ 'Open+Sans:400italic,400,300,600,700:latin' ] }
@@ -36,7 +36,7 @@
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(wf, s);
   })(); </script>
-     <link rel="SHORTCUT ICON" href="<?=base_url()?>assets/blueline/img/favicon.ico"/>
+     <link rel="SHORTCUT ICON" href="<?php echo base_url()?>assets/blueline/img/favicon.ico"/>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,18 +48,18 @@
   <body class="login">
     <div class="container-fluid">
       <div class="row">
-        <?=$yield?>
+        <?php echo $yield?>
       </div>
     </div>
      <!-- Notify -->
     <?php if($this->session->flashdata('message')) { $exp = explode(':', $this->session->flashdata('message'))?>
-        <div class="notify <?=$exp[0]?>"><?=$exp[1]?></div>
+        <div class="notify <?php echo $exp[0]?>"><?php echo $exp[1]?></div>
     <?php } ?>
-    <script src="<?=base_url()?>assets/blueline/js/plugins/jquery-1.11.0.min.js"></script>
-    <script src="<?=base_url()?>assets/blueline/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/velocity.min.js"></script>
-    <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/velocity.ui.min.js"></script>
-    <script type="text/javascript" src="<?=base_url()?>assets/blueline/js/plugins/validator.min.js"></script>
+    <script src="<?php echo base_url()?>assets/blueline/js/plugins/jquery-1.11.0.min.js"></script>
+    <script src="<?php echo base_url()?>assets/blueline/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/velocity.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/velocity.ui.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url()?>assets/blueline/js/plugins/validator.min.js"></script>
     <script type="text/javascript">
             $(document).ready(function(){
               $("form").validator();
