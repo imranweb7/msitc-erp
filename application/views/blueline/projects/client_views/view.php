@@ -13,7 +13,8 @@
     
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
-        <li role="presentation" class="hidden-xs"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
+          <li role="presentation" class="hidden-xs"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
+          <li role="presentation" class="hidden-xs"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
         <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
         <li role="presentation" class="hidden-xs"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_notes');?></a></li>
        <?php if($invoice_access) { ?>
@@ -25,7 +26,8 @@
             <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><?php echo $this->lang->line('application_overview');?> <span class="caret"></span></a>
             <ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
               <li role="presentation" class="active"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
-              <li role="presentation"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
+                <li role="presentation"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
+                <li role="presentation"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
               <li role="presentation"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
               <li role="presentation"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_notes');?></a></li>
              <?php if($invoice_access) { ?>
@@ -174,7 +176,7 @@
         <thead>
         <tr>
                     <th  class="hidden"></th>
-          <th><?php echo $this->lang->line('application_name');?></th>
+          <th><?php echo $this->lang->line('media_application_name');?></th>
           <th class="hidden-xs"><?php echo $this->lang->line('application_filename');?></th>
           <th class="hidden-xs"><?php echo $this->lang->line('application_phase');?></th>
           <th class="hidden-xs"><i class="fa fa-download"></i></th>

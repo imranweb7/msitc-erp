@@ -8,8 +8,6 @@ if(isset($project)){ ?>
 
 <input type="hidden" name="reference" class="form-control" id="reference" value="<?php if(isset($project)){echo $project->reference;} else{ echo $core_settings->project_reference;} ?>" required/>
 
-<input type="hidden" name="company_id" value="<?php echo $this->client->company->id; ?>" />
-
 <input type="hidden" class="hidden" id="progress" name="progress" value="<?php if(isset($project)){echo $project->progress;}else{echo "0";} ?>">
 
 <input type="hidden" name="progress_calc" value="<?php if(isset($project) && $project->progress_calc == "1"){ echo $project->progress_calc; } else { echo '0'; } ?>" />
