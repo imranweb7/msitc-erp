@@ -64,6 +64,15 @@ $(document).on("click", '.ajax', function (e) {
   }
 }); 
 
+$(document).on("click", ".addNewitem", function(e){
+    $(".item-new").each(function(){
+        $(this).attr('required', 'required');
+    });
+
+    $("#new_item").val("1");
+});
+
+
 //Ajax background load
   $(document).on("click", '.ajax-silent', function (e) {
   e.preventDefault();
@@ -236,7 +245,7 @@ $(document).on("click", '.section-reload #send', function (e) {
     e.stopPropagation();
     e.preventDefault();
     var content = $('textarea.summernote-modal').html($('#mainModal .note-editable').code());
-    var url = $(this).closest('form').attr('action'); 
+    var url = $(this).closest('form').attr('action');
     var active = $(this);
     var data = new FormData($(this).closest('form')[0]);
    
@@ -388,6 +397,22 @@ $('.to_modal').click(function(e) {
             if(!$(this).hasClass('option')){window.location = site+"/view/"+id;}
         }
     });
+
+    $(document).on("click", 'table#items td', function (e) {
+        var id = $(this).parent().attr("id");
+        if(id){
+            var site = $(this).closest('table').attr("rel");
+            if(!$(this).hasClass('option')){window.location = site+"/view/"+id;}
+        }
+    });
+
+    $(document).on("click", 'table#item-list td', function (e) {
+    var id = $(this).parent().attr("id");
+    if(id){
+        var site = $(this).closest('table').attr("rel");
+        if(!$(this).hasClass('option')){$(".view_project_item").trigger("click");}
+    }
+});
 
     $(document).on("click", 'table#media td', function (e) {
 	    var id = $(this).parent().attr("id");

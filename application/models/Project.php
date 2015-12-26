@@ -8,6 +8,7 @@ class Project extends ActiveRecord\Model {
 
 	static $has_many = array(
     array("project_has_tasks"),
+        array("project_has_items"),
     array('project_has_files'),
     array('project_has_workers'),
     array('project_has_invoices'),

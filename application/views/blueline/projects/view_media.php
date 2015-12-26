@@ -7,7 +7,7 @@
 	 	<div class="table-head"><?php echo $this->lang->line('application_media_details');?></div>
 		<div class="subcont">
 			<ul class="details">
-				<li><span><?php echo $this->lang->line('application_name');?>:</span> <?php echo $media->name;?></li>
+				<li><span><?php echo $this->lang->line('media_application_name');?>:</span> <?php echo $media->name;?></li>
 				<li><span><?php echo $this->lang->line('application_filename');?>:</span> <?php echo $media->filename;?></li>
 				<!-- <li><span><?php echo $this->lang->line('application_phase');?>:</span> <?php echo $media->phase;?></li> -->
 				<li><span><?php echo $this->lang->line('application_uploaded_by');?>:</span> <a class="label label-info"><?php if(isset($media->user->firstname)){ ?><?php echo $media->user->firstname;?> <?php echo $media->user->lastname;?><?php }else{ ?> <?php echo $media->client->firstname;?> <?php echo $media->client->lastname;?><?php } ?></a></li>
@@ -15,7 +15,7 @@
 				<li><span><?php echo $this->lang->line('application_filename');?>:</span> <a href="<?php echo base_url()?>projects/download/<?php echo $media->id;?>" class="btn btn-xs btn-success"><i class="icon-download icon-white"></i> <?php echo $this->lang->line('application_download');?></a></li>
                 
                 
-				<li><span><?php if(!empty($media->description)){ ?><?php echo $this->lang->line('application_description');?>: </span><?php echo $media->description;?></li><?php } ?>
+				<li><span><?php if(!empty($media->description)){ ?><?php echo $this->lang->line('media_application_description');?>: </span><?php echo $media->description;?></li><?php } ?>
 			
             
             </ul>

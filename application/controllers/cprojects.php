@@ -68,6 +68,8 @@ class cProjects extends MY_Controller {
 			unset($_POST['dummy']);
 
 			$_POST['datetime'] = time();
+			$_POST['company_id'] = $this->client->company->id;
+
 			$_POST = array_map('htmlspecialchars', $_POST);
 
 			$project = Project::create($_POST);

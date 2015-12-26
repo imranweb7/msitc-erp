@@ -43,6 +43,10 @@ $lang['messages_delete_task_error'] = "Error while deleting task!";
 $lang['messages_delete_task_success'] = "Task has been deleted!";
 $lang['messages_save_media_error'] = "Error while saving media file!";
 $lang['messages_save_media_success'] = "Media file has been saved!";
+
+$lang['messages_project_save_item_error'] = "Error while saving new item!";
+$lang['messages_project_save_item_success'] = "Item has been saved!";
+$lang['messages_project_save_item_exist'] = "Item already added!";
 $lang['messages_delete_media_error'] = "Error while deleting media!";
 $lang['messages_delete_media_success'] = "Media has been deleted!";
 $lang['messages_delete_message_error'] = "Error while deleting message!";

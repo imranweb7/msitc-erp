@@ -1,9 +1,6 @@
 Copyright (c) 2014, Luxsys
 All rights reserved.
 
-Homepage: www.luxsys-apps.com
-Contact:  support@luxsys-apps.com
-
 INDEMNITY
 You agree to indemnify and hold harmless the authors of the Software and
 any contributors for any direct, indirect, incidental, or consequential

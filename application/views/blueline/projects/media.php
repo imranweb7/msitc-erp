@@ -7,9 +7,9 @@
 		<table class="data" id="media" rel="<?php echo base_url()?>projects/media/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
 		<thead>
 			<th class="listicon"></th>
-			<th><?php echo $this->lang->line('application_name');?></th>
+			<th><?php echo $this->lang->line('media_application_name');?></th>
 			<th><?php echo $this->lang->line('application_filename');?></th>
-			<th><?php echo $this->lang->line('application_description');?></th>
+			<th><?php echo $this->lang->line('media_application_description');?></th>
 			<th><?php echo $this->lang->line('application_phase');?></th>
 			<th><?php echo $this->lang->line('application_action');?></th>
 		</thead>

@@ -8,11 +8,11 @@ echo form_open_multipart($form_action, $attributes);
 <input id="date" type="hidden" name="date" value="<?php echo $datetime; ?>" />
 
 <div class="form-group">
-        <label for="name"><?php echo $this->lang->line('application_name');?> *</label>
+        <label for="name"><?php echo $this->lang->line('media_application_name');?> *</label>
         <input id="name" type="text" name="name" class="required form-control" value="<?php if(isset($media)){echo $media->name;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="description"><?php echo $this->lang->line('application_description');?></label>
+        <label for="description"><?php echo $this->lang->line('media_application_description');?></label>
         <input id="description" type="text" name="description" class="form-control" value="<?php if(isset($media)){echo $media->description;} ?>"  required/>
 </div>
 <div class="form-group">

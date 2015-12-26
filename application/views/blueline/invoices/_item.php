@@ -11,7 +11,7 @@ if(isset($invoice_has_items)){ ?>
 <input id="invoice_id" type="hidden" name="invoice_id" value="<?php echo $invoice_has_items->invoice_id;?>" />
 
  <div class="form-group">
-        <label for="name"><?php echo $this->lang->line('application_name');?></label>
+        <label for="name"><?php echo $this->lang->line('item_application_name');?></label>
         <input id="name" name="name" type="text" class="required form-control"  value="<?php echo $invoice_has_items->name;?>" />
  </div>
  <div class="form-group">
@@ -39,7 +39,7 @@ if(isset($invoice_has_items)){ ?>
 </div>
 <div id="item-editor">
  <div class="form-group">
-        <label for="name"><?php echo $this->lang->line('application_name');?></label>
+        <label for="name"><?php echo $this->lang->line('item_application_name');?></label>
         <input id="name" name="name" type="text" class="required form-control"  value="" />
  </div>
  <div class="form-group">
@@ -57,7 +57,7 @@ if(isset($invoice_has_items)){ ?>
         <input id="amount" type="text" name="amount" class="required form-control number comma-to-point"  value="<?php if(isset($invoice_has_items)){ echo $invoice_has_items->amount; }else{echo '1';} ?>"  />
  </div>
  <div class="form-group">
-        <label for="description"><?php echo $this->lang->line('application_description');?></label>
+        <label for="description"><?php echo $this->lang->line('item_application_description');?></label>
         <textarea id="description" class="form-control" name="description"><?php if(isset($invoice_has_items)){ echo $invoice_has_items->description; } ?></textarea>
  </div>
 
