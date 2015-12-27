@@ -14,9 +14,8 @@
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
           <li role="presentation" class="hidden-xs"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
-          <li role="presentation" class="hidden-xs"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
-        <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
-        <li role="presentation" class="hidden-xs"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_notes');?></a></li>
+          <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
+
        <?php if($invoice_access) { ?>
         <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
        <?php } ?>
@@ -27,9 +26,7 @@
             <ul class="dropdown-menu" aria-labelledby="myTabDrop1" id="myTabDrop1-contents">
               <li role="presentation" class="active"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
                 <li role="presentation"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
-                <li role="presentation"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_tasks');?></a></li>
               <li role="presentation"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
-              <li role="presentation"><a href="#notes-tab" aria-controls="notes-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_notes');?></a></li>
              <?php if($invoice_access) { ?>
               <li role="presentation"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
              <?php } ?>
@@ -114,60 +111,47 @@
 </div>
 
 
-  <div class="row tab-pane fade" role="tabpanel" id="tasks-tab">
-     <div class="col-xs-12 col-sm-12">
-            <div class="table-head"><?php echo $this->lang->line('application_tasks');?></div>
-  
+       <div class="row tab-pane fade" role="tabpanel" id="items-tab">
+           <div class="col-xs-12 col-sm-12">
+               <div class="table-head"><?php echo $this->lang->line('application_item');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/order/<?php echo $project->id;?>/create" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_create_order');?></a></span></div>
+               <div class="table-div min-height-410">
+                   <table id="item-list" class="table data-item-list" rel="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
+                       <thead>
+                       <tr>
+                           <th><?php echo $this->lang->line('item_application_name');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_sku');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_cost');?></th>
+                           <th><?php echo $this->lang->line('application_action');?></th>
+                       </tr></thead>
 
-                <div class="subcont no-padding min-height-410">
-                  <ul id="task-list" class="todo sortlist">
-                      <?php 
-        $count = 0;
-        foreach ($project->project_has_tasks as $value):  $count = $count+1; if($value->public != 0){ ?>
+                       <tbody>
+                       <?php $count = 0; foreach ($project->project_has_items as $value):  $count = $count+1;?>
 
-            <li class="<?php echo $value->status;?> priority<?php echo $value->priority;?>"><a href="#" class=""></a>
-              
-              <input name="form-field-checkbox" class="checkbox-nolabel task-check" disabled="disabled" type="checkbox" <?php if($value->status == "done"){echo "checked";}?>/>
-              <span class="lbl"> <p class="truncate name"><?php echo $value->name;?></p></span>
-              <span class="pull-right">
-                                  <?php if ($value->user_id != 0) {  ?><img class="img-circle list-profile-img tt"  title="<?php echo $value->user->firstname;?> <?php echo $value->user->lastname;?>"  src="<?php
-                if($value->user->userpic != 'no-pic.png'){
-                  echo base_url()."files/media/".$value->user->userpic;
-                }else{
-                  echo get_gravatar($value->user->email);
-                }
-                 ?>"><?php } ?>
-                                   
-                                  </span>
-                    <div class="todo-details">
-                    <div class="row">
-                        <div class="col-sm-3">
-                        <ul class="details">
-                            <li><span><?php echo $this->lang->line('application_priority');?>:</span> <?php switch($value->priority){case "0": echo $this->lang->line('application_no_priority'); break; case "1": echo $this->lang->line('application_low_priority'); break; case "2": echo $this->lang->line('application_med_priority'); break; case "3": echo $this->lang->line('application_high_priority'); break;};?></li>
-                            <?php if($value->value != 0){ ?><li><span><?php echo $this->lang->line('application_value');?>:</span> <?php echo $value->value;?></li><?php } ?>
-                            <?php if($value->due_date != ""){ ?><li><span><?php echo $this->lang->line('application_due_date');?>:</span> <?php  $unix = human_to_unix($value->due_date.' 00:00'); echo date($core_settings->date_format, $unix);?></li><?php } ?>
-                            <li><span><?php echo $this->lang->line('application_assigned_to');?>:</span> <?php if(isset($value->user->lastname)){ echo $value->user->firstname." ".$value->user->lastname;}else{$this->lang->line('application_not_assigned');}?> </li>
+                           <tr id="<?php echo $value->id;?>">
+                               <td onclick=""><?php echo $value->name;?></td>
+                               <td class="hidden-xs"><?php echo $value->sku;?></td>
+                               <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
+                               <td class="option " width="10%">
+                                   <a href="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>/view/<?php echo $value->id;?>" class="btn-option view_project_item" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
+                               </td>
 
-                         </ul>
-                        
-                        </div>
-                        <div class="col-sm-9"><h3><?php echo $this->lang->line('application_description');?></h3> <p><?php echo $value->description;?></p></div>
-                        
-                    </div>
-                    </div>
-              
-          </li>
-         <?php } endforeach;?>
-         <?php if($count == 0) { ?>
-          <li class="notask"><?php echo $this->lang->line('application_no_tasks_yet');?></li>
-         <?php } ?>
+                           </tr>
 
-                       
-         
-                         </ul>
-                </div>
+                       <?php endforeach;?>
+
+                       </tbody>
+
+                   </table>
+                   <?php if($count == 0) { ?>
+                       <div class="no-items">
+                           <i class="fa fa-item"></i><br>
+                           No items have been added yet!
+                       </div>
+                   <?php } ?>
                </div>
-</div>
+           </div>
+       </div>
+
 <div class="row tab-pane fade" role="tabpanel" id="media-tab">
 <div class="col-xs-12 col-sm-12">
  <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
@@ -207,17 +191,6 @@
          <?php } ?>
         </div>
 </div>
-</div>
-<div class="row tab-pane fade" role="tabpanel" id="notes-tab">
-<div class="col-xs-12 col-sm-12">
-<?php $attributes = array('class' => 'note-form', 'id' => '_notes');
-    echo form_open(base_url()."projects/notes/".$project->id, $attributes); ?>
- <div class="table-head"><?php echo $this->lang->line('application_notes');?> <span class=" pull-right"><a id="send" name="send" class="btn btn-primary button-loader"><?php echo $this->lang->line('application_save');?></a></span><span id="changed" class="pull-right label label-warning"><?php echo $this->lang->line('application_unsaved');?></span></div>
-
-  <textarea class="input-block-level summernote-note" name="note" id="textfield" ><?php echo $project->note;?></textarea>
-</form>
-</div>
-
 </div>
 
 <?php if($invoice_access) { ?>

@@ -65,6 +65,7 @@ $lang['application_due_date'] = "Due date";
 $lang['application_edit'] = "Edit";
 $lang['application_edit_client'] = "Edit Client";
 $lang['application_edit_invoice'] = "Edit Invoice";
+$lang['application_create_order'] = "Make Order";
 $lang['application_edit_item'] = "Edit Item";
 $lang['application_edit_media'] = "Edit Media";
 $lang['application_edit_project'] = "Edit Project";
