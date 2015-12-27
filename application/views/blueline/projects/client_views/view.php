@@ -114,6 +114,48 @@
 </div>
 
 
+       <div class="row tab-pane fade" role="tabpanel" id="items-tab">
+           <div class="col-xs-12 col-sm-12">
+               <div class="table-head"><?php echo $this->lang->line('application_item');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/order/<?php echo $project->id;?>/create" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_create_order');?></a></span></div>
+               <div class="table-div min-height-410">
+                   <table id="item-list" class="table data-item-list" rel="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
+                       <thead>
+                       <tr>
+                           <th><?php echo $this->lang->line('item_application_name');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_sku');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_cost');?></th>
+                           <th><?php echo $this->lang->line('application_action');?></th>
+                       </tr></thead>
+
+                       <tbody>
+                       <?php $count = 0; foreach ($project->project_has_items as $value):  $count = $count+1;?>
+
+                           <tr id="<?php echo $value->id;?>">
+                               <td onclick=""><?php echo $value->name;?></td>
+                               <td class="hidden-xs"><?php echo $value->sku;?></td>
+                               <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
+                               <td class="option " width="10%">
+                                   <a href="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>/view/<?php echo $value->id;?>" class="btn-option view_project_item" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
+                               </td>
+
+                           </tr>
+
+                       <?php endforeach;?>
+
+                       </tbody>
+
+                   </table>
+                   <?php if($count == 0) { ?>
+                       <div class="no-items">
+                           <i class="fa fa-item"></i><br>
+                           No items have been added yet!
+                       </div>
+                   <?php } ?>
+               </div>
+           </div>
+       </div>
+
+
   <div class="row tab-pane fade" role="tabpanel" id="tasks-tab">
      <div class="col-xs-12 col-sm-12">
             <div class="table-head"><?php echo $this->lang->line('application_tasks');?></div>
