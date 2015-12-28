@@ -33,7 +33,8 @@ class Projects extends MY_Controller {
 				 		$this->lang->line('application_closed') => 'projects/filter/closed'
 				 		);	
 		$this->load->database();
-		
+
+		$this->load->library('projectlib');
 	}	
 	function index()
 	{
@@ -101,6 +102,9 @@ class Projects extends MY_Controller {
 			$_POST['datetime'] = time();
 			$_POST = array_map('htmlspecialchars', $_POST);
 
+			$_POST['phases'] = $this->projectlib->getProjectPhasesByTypeId($_POST['project_type_id']);
+			$_POST['media_phases'] = $this->projectlib->getProjectPhasesByTypeId($_POST['project_type_id'], 'media');
+
 			$project = Project::create($_POST);
 			$new_project_reference = $_POST['reference']+1;
 			$project_reference = Setting::first();
@@ -153,6 +157,9 @@ class Projects extends MY_Controller {
 			if (!isset($_POST["progress_calc"])) {
 				$_POST["progress_calc"] = 0;
 			}
+
+			$_POST['phases'] = $this->projectlib->getProjectPhasesByTypeId($_POST['project_type_id']);
+			$_POST['media_phases'] = $this->projectlib->getProjectPhasesByTypeId($_POST['project_type_id'], 'media');
 
 			$project->update_attributes($_POST);
        		if(!$project){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_project_error'));}
@@ -669,45 +676,24 @@ class Projects extends MY_Controller {
 
 						$item_name = $item_description = $_POST['name'];
 
-						$media_data = array(
-							'project_id' => $id,
-							'user_id' => $this->user->id,
-							'type' => $type,
+						$cost = $original_cost = $_POST['cost'];
+						$sku = $_POST['sku'];
+						$inactive = $_POST['inactive'];
+
+						$item_data = array(
+							'photo' => $savename,
+							'photo_type' => $type,
+							'photo_original_name' => $filename,
 							'name' => $item_name,
-							'filename' => $filename,
-							'description' =>$item_description,
-							'savename' => $savename,
+							'value' => $original_cost,
+							'description' => $item_description,
+							'sku' => $sku,
+							'inactive' => $inactive
 						);
 
-						$media = ProjectHasFile::create($media_data);
+						$item = Item::create($item_data);
 
-
-						########### Item Entry #######
-						if(!$media) {
-							$error = $this->upload->display_errors('', ' ');
-							$this->session->set_flashdata('message', 'error:'.$error);
-							redirect('projects/item/'.$id);
-						}else{
-
-							$cost = $original_cost = $_POST['cost'];
-							$sku = $_POST['sku'];
-							$inactive = $_POST['inactive'];
-
-							$item_data = array(
-								'photo' => $savename,
-								'photo_type' => $type,
-								'photo_original_name' => $filename,
-								'name' => $item_name,
-								'value' => $original_cost,
-								'description' => $item_description,
-								'sku' => $sku,
-								'inactive' => $inactive
-							);
-
-							$item = Item::create($item_data);
-
-							$item_id = $_POST['item_id'] = $item->id;
-						}
+						$item_id = $_POST['item_id'] = $item->id;
 					}else{
 						unset($_POST['send']);
 						unset($_POST['userfile']);
@@ -744,20 +730,6 @@ class Projects extends MY_Controller {
 						redirect('projects/item/'.$id);
 
 					}else{
-						if(!$is_new_item){
-							$media_data = array(
-								'project_id' => $id,
-								'user_id' => $this->user->id,
-								'type' => $type,
-								'name' => $item_name,
-								'filename' => $filename,
-								'description' => $item_name,
-								'savename' => $savename,
-							);
-
-							$media = ProjectHasFile::create($media_data);
-						}
-
 						$project_item_data = array(
 							'item_id'=>$item_id,
 							'project_id'=>$id,
