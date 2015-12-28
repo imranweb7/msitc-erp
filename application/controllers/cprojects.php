@@ -27,8 +27,6 @@ class cProjects extends MY_Controller {
 		}
 
 
-		
-
 		$this->view_data['submenu'] = array(
 				 		$this->lang->line('application_my_projects') => 'cprojects'
 				 		);	
@@ -38,6 +36,8 @@ class cProjects extends MY_Controller {
 						 		$this->lang->line('application_media') => 'cprojects/media/'.$id,
 						 		);
 						}
+
+		$this->load->library('projectlib');
 	}	
 	function index()
 	{
@@ -71,6 +71,9 @@ class cProjects extends MY_Controller {
 			$_POST['company_id'] = $this->client->company->id;
 
 			$_POST = array_map('htmlspecialchars', $_POST);
+
+			$_POST['phases'] = $this->projectlib->getProjectPhasesByTypeId($_POST['project_type_id']);
+			$_POST['media_phases'] = $this->projectlib->getProjectPhasesByTypeId($_POST['project_type_id'], 'media');
 
 			$project = Project::create($_POST);
 			$new_project_reference = $_POST['reference']+1;
