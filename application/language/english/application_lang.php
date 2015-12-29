@@ -379,7 +379,7 @@ $lang['application_no_contact_assigned'] = "No contact assigned";
 $lang['application_events'] = "Events";
 $lang['application_my_open_tasks'] = "My Open Tasks";
 $lang['application_recent_messages'] = "Recent Messages";
-
+$lang['item_application_qty'] = "Quantity";
 $lang['application_agents'] = "Agents";
 $lang['application_no_data_yet'] = "No data yet!";
 $lang['application_Jan'] = "January";

@@ -46,6 +46,7 @@ class cProjects extends MY_Controller {
 		$this->view_data['project'] = Project::find('all',array('conditions' => array('company_id=?',$this->client->company->id)));
 		$this->content_view = 'projects/client_views/all';
 	}
+
 	function order($id = FALSE, $condition = FALSE, $order_id = FALSE)
 	{
 		$this->load->helper('notification');
@@ -62,15 +63,62 @@ class cProjects extends MY_Controller {
 					redirect('cprojects/view/'.$id);
 				}
 
+				$items = $_POST['items'];
 
-				$this->theme_view = 'modal';
-				$this->content_view = 'projects/client_views/create_order';
-				$this->view_data['title'] = $this->lang->line('application_make_order');
-				$this->view_data['project'] = Project::find($id);
-				$this->view_data['project_id'] = $id;
-				$this->view_data['item'] = ProjectHasItem::find($order_id);
-				$this->view_data['form_action'] = 'projects/item/'.$id.'/view/'.$item_id;
-				$this->view_data['backlink'] = 'projects/view/'.$id;
+				unset($_POST['userfile']);
+				unset($_POST['items']);
+				unset($_POST['send']);
+				unset($_POST['files']);
+
+				$core_settings = Setting::first();
+				$_POST['reference'] = $core_settings->invoice_reference;
+				$_POST['company_id'] = $this->client->company->id;
+				$_POST['project_id'] = $id;
+				$_POST['status'] = 'Open';
+				$_POST['issue_date'] = date('Y-m-d');
+				$_POST['due_date'] = date('Y-m-d');
+				$_POST['currency'] = $core_settings->currency;
+				$_POST['terms'] = $core_settings->invoice_terms;
+
+				$invoice = Invoice::create($_POST);
+				$new_invoice_reference = $_POST['reference']+1;
+
+				$invoice_reference = Setting::first();
+				$invoice_reference->update_attributes(array('invoice_reference' => $new_invoice_reference));
+
+				$invoice_id = $invoice->id;
+				foreach($items as $k=>$item){
+					$project_item = ProjectHasItem::find($item);
+
+					$invoice_item_data = array(
+						'invoice_id' => $invoice_id,
+						'item_id' => $project_item->item_id,
+						'project_item_id' => $project_item->id,
+						'photo' => $project_item->photo,
+						'photo_type' =>$project_item->photo_type,
+						'photo_original_name' => $project_item->photo_original_name,
+						'name' => $project_item->name,
+						'amount' => $project_item->quantity,
+						'description' => $project_item->description,
+						'sku' => $project_item->sku,
+						'value' => $project_item->cost,
+						'original_cost' => $project_item->original_cost,
+					);
+
+					$item_add = InvoiceHasItem::create($invoice_item_data);
+
+					$project_item->payment_status = 'invoiced';
+					$project_item->save();
+				}
+
+				$this->projectlib->updateInvoiceTotal($invoice);
+				$this->projectlib->sendInvoice($invoice_id, false);
+
+				if(!$invoice){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_invoice_error'));}
+				else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_invoice_success'));}
+
+				echo $invoice_id;die();
+
 				break;
 
 			case 'view':
@@ -332,178 +380,9 @@ class cProjects extends MY_Controller {
 				$this->view_data['form_action'] = 'projects/item/'.$id.'/view/'.$item_id;
 				$this->view_data['backlink'] = 'projects/view/'.$id;
 				break;
-			case 'add':
-				$this->content_view = 'projects/_item';
-				$this->view_data['project'] = Project::find($id);
-				if($_POST){
-					$is_new_item = false;
-					if(isset($_POST['new_item']) && htmlspecialchars($_POST['new_item']) == "1"){
-						$is_new_item = true;
 
-						$config['upload_path'] = self::ITEM_UPLOAD_PATH;
-						$config['encrypt_name'] = TRUE;
-						$config['allowed_types'] = '*';
-
-						$this->load->library('upload', $config);
-
-						if ( ! $this->upload->do_upload())
-						{
-							$error = $this->upload->display_errors('', ' ');
-							$this->session->set_flashdata('message', 'error:'.$error);
-							redirect('projects/item/'.$id);
-						}
-						else
-						{
-							$data = array('upload_data' => $this->upload->data());
-
-							$filename = $data['upload_data']['orig_name'];
-							$savename = $data['upload_data']['file_name'];
-							$type = $data['upload_data']['file_type'];
-						}
-
-						unset($_POST['send']);
-						unset($_POST['userfile']);
-						unset($_POST['file-name']);
-						unset($_POST['files']);
-						$_POST = array_map('htmlspecialchars', $_POST);
-
-						$item_name = $item_description = $_POST['name'];
-
-						$media_data = array(
-							'project_id' => $id,
-							'user_id' => $this->user->id,
-							'type' => $type,
-							'name' => $item_name,
-							'filename' => $filename,
-							'description' =>$item_description,
-							'savename' => $savename,
-						);
-
-						$media = ProjectHasFile::create($media_data);
-
-
-						########### Item Entry #######
-						if(!$media) {
-							$error = $this->upload->display_errors('', ' ');
-							$this->session->set_flashdata('message', 'error:'.$error);
-							redirect('projects/item/'.$id);
-						}else{
-
-							$cost = $original_cost = $_POST['cost'];
-							$sku = $_POST['sku'];
-							$inactive = $_POST['inactive'];
-
-							$item_data = array(
-								'photo' => $savename,
-								'photo_type' => $type,
-								'photo_original_name' => $filename,
-								'name' => $item_name,
-								'value' => $original_cost,
-								'description' => $item_description,
-								'sku' => $sku,
-								'inactive' => $inactive
-							);
-
-							$item = Item::create($item_data);
-
-							$item_id = $_POST['item_id'] = $item->id;
-						}
-					}else{
-						unset($_POST['send']);
-						unset($_POST['userfile']);
-						unset($_POST['file-name']);
-						unset($_POST['files']);
-						unset($_POST['new_item']);
-						unset($_POST['name']);
-						unset($_POST['sku']);
-						unset($_POST['inactive']);
-
-						$_POST = array_map('htmlspecialchars', $_POST);
-
-						$_POST['project_id'] = $id;
-						$item_id = $_POST['item_id'];
-
-						$item_details = Item::find($item_id);
-						$item_name = $item_details->name;
-						$item_description = $item_details->description;
-						$cost = $_POST['cost'];
-						$original_cost = $item_details->value;
-						$savename = $item_details->photo;
-						$type = $item_details->photo_type;
-						$filename = $item_details->photo_original_name;
-						$sku = $item_details->sku;
-						$inactive = $item_details->inactive;
-					}
-
-					$project_item_exist = ProjectHasItem::count(array('conditions' => array('project_id=? AND item_id=?',$id, $item_id)));
-					if($project_item_exist){
-						$project_item = false;
-
-						$error = $this->lang->line('messages_project_save_item_exist');
-						$this->session->set_flashdata('message', 'error:'.$error);
-						redirect('projects/item/'.$id);
-
-					}else{
-						if(!$is_new_item){
-							$media_data = array(
-								'project_id' => $id,
-								'user_id' => $this->user->id,
-								'type' => $type,
-								'name' => $item_name,
-								'filename' => $filename,
-								'description' => $item_name,
-								'savename' => $savename,
-							);
-
-							$media = ProjectHasFile::create($media_data);
-						}
-
-						$project_item_data = array(
-							'item_id'=>$item_id,
-							'project_id'=>$id,
-							'name' => $item_name,
-							'cost' => $cost,
-							'original_cost' => $original_cost,
-							'photo' => $savename,
-							'photo_type' => $type,
-							'photo_original_name' => $filename,
-							'description' => $item_description,
-							'sku' => $sku,
-							'inactive' => $inactive
-						);
-
-						$project_item = ProjectHasItem::create($project_item_data);
-					}
-
-					if(!$project_item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_project_save_item_error'));}
-					else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_project_save_item_success'));
-
-						$attributes = array('subject' => $this->lang->line('application_new_project_item_subject'), 'message' => '<b>'.$this->user->firstname.' '.$this->user->lastname.'</b> '.$this->lang->line('application_item_created'). ' '.$item_name, 'datetime' => time(), 'project_id' => $id, 'type' => 'item', 'user_id' => $this->user->id);
-						$activity = ProjectHasActivity::create($attributes);
-
-						foreach ($this->view_data['project']->project_has_workers as $workers){
-							send_notification($workers->user->email, "[".$this->view_data['project']->name."] ".$this->lang->line('application_new_project_item_subject'), $this->lang->line('application_new_project_item_was_added').' <strong>'.$this->view_data['project']->name.'</strong>');
-						}
-						if(isset($this->view_data['project']->company->client->email)){
-							$access = explode(',', $this->view_data['project']->company->client->access);
-							if(in_array('12', $access)){
-								send_notification($this->view_data['project']->company->client->email, "[".$this->view_data['project']->name."] ".$this->lang->line('application_new_project_item_subject'), $this->lang->line('application_new_project_item_was_added').' <strong>'.$this->view_data['project']->name.'</strong>');
-							}
-						}
-
-					}
-					redirect('projects/view/'.$id);
-				}else
-				{
-					$this->theme_view = 'modal';
-					$this->view_data['items'] = Item::find('all',array('conditions' => array('inactive=?','0')));
-					$this->view_data['title'] = $this->lang->line('application_add_item');
-					$this->view_data['form_action'] = 'projects/item/'.$id.'/add';
-					$this->content_view = 'projects/_item';
-				}
-				break;
 			case 'update':
-				$this->content_view = 'projects/_edit_item';
+				$this->content_view = 'projects/client_views/_edit_item';
 				$this->view_data['item'] = ProjectHasItem::find($item_id);
 				$this->view_data['items'] = Item::find('all',array('conditions' => array('inactive=?','0')));
 				$this->view_data['project'] = Project::find($id);
@@ -517,26 +396,16 @@ class cProjects extends MY_Controller {
 					$item->update_attributes($_POST);
 					if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_item_error'));}
 					else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_save_item_success'));}
-					redirect('projects/view/'.$id);
+					redirect('cprojects/view/'.$id);
 				}else
 				{
 					$this->theme_view = 'modal';
 					$this->view_data['title'] = $this->lang->line('application_edit_item');
-					$this->view_data['form_action'] = 'projects/item/'.$id.'/update/'.$item_id;
-					$this->content_view = 'projects/_edit_item';
+					$this->view_data['form_action'] = 'cprojects/item/'.$id.'/update/'.$item_id;
+					$this->content_view = 'projects/client_views/_edit_item';
 				}
 				break;
-			case 'delete':
-				$item = ProjectHasItem::find($item_id);
-				$item->delete();
 
-				if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_delete_item_error'));}
-				else{
-					@unlink(self::ITEM_UPLOAD_PATH.$item->photo);
-					$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_delete_item_success'));
-				}
-				redirect('projects/view/'.$id);
-				break;
 			default:
 				$this->view_data['project'] = Project::find($id);
 				$this->content_view = 'projects/view/'.$id;

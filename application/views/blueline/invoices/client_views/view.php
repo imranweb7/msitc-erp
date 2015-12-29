@@ -43,8 +43,9 @@
 		<div class="table-div min-height-200">
 		<table class="table" id="items" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 		<thead>
-			<th><?php echo $this->lang->line('application_name');?></th>
-			<th class="hidden-xs"><?php echo $this->lang->line('application_description');?></th>
+			<th><?php echo $this->lang->line('item_application_name');?></th>
+			<th class="hidden-xs"><?php echo $this->lang->line('item_application_description');?></th>
+			<th class="hidden-xs" width="8%"><?php echo $this->lang->line('item_application_sku');?></th>
 			<th class="hidden-xs" width="8%"><?php echo $this->lang->line('application_hrs_qty');?></th>
 			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_unit_price');?></th>
 			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
@@ -55,6 +56,7 @@
 	
 			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice->invoice_has_items[$i]->item->name; }?></td>
 			<td class="hidden-xs"><?php echo $invoice->invoice_has_items[$i]->description;?></td>
+			<td class="hidden-xs"><?php echo $invoice->invoice_has_items[$i]->sku;?></td>
 			<td class="hidden-xs" align="center"><?php echo $invoice->invoice_has_items[$i]->amount;?></td>
 			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->value));?></td>
 			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value));?></td>
@@ -92,24 +94,24 @@
 		?>
 		<?php if ($discount != 0): ?>
 		<tr>
-			<td colspan="4" align="right"><?php echo $this->lang->line('application_discount');?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_discount');?></td>
 			<td>- <?php echo display_money($discount);?></td>
 		</tr>	
 		<?php endif ?>
 		<?php if ($tax_value != "0"){ ?>
 		<tr>
-			<td colspan="4" align="right"><?php echo $this->lang->line('application_tax');?> (<?php echo  $tax_value?>%)</td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_tax');?> (<?php echo  $tax_value?>%)</td>
 			<td><?php echo display_money($tax)?></td>
 		</tr>
 		<?php } ?>
 		<?php if ($second_tax != "0"){ ?>
 		<tr>
-			<td colspan="4" align="right"><?php echo $this->lang->line('application_second_tax');?> (<?php echo  $second_tax_value?>%)</td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_second_tax');?> (<?php echo  $second_tax_value?>%)</td>
 			<td><?php echo display_money($second_tax);?></td>
 		</tr>
 		<?php } ?>
 		<tr class="active">
-			<td colspan="4" align="right"><?php echo $this->lang->line('application_total');?></td>
+			<td colspan="5" align="right"><?php echo $this->lang->line('application_total');?></td>
 			<td><?php echo display_money($sum, $invoice->currency);?></td>
 		</tr>
 		</table>
