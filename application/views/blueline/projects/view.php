@@ -192,6 +192,7 @@
                            <th><?php echo $this->lang->line('item_application_name');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_sku');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_cost');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_qty');?></th>
                            <th><?php echo $this->lang->line('application_action');?></th>
                        </tr></thead>
 
@@ -202,6 +203,7 @@
                                <td onclick=""><?php echo $value->name;?></td>
                                <td class="hidden-xs"><?php echo $value->sku;?></td>
                                <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
+                               <td class="hidden-xs"><?php echo $value->quantity;?></td>
                                <td class="option " width="10%">
                                    <button type="button" class="btn-option btn-xs po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>projects/item/<?php echo $project->id;?>/delete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
                                    <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/update/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>

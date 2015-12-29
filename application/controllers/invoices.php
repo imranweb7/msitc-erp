@@ -21,7 +21,11 @@ class Invoices extends MY_Controller {
 				 		$this->lang->line('application_open') => 'invoices/filter/open',
 				 		$this->lang->line('application_Sent') => 'invoices/filter/sent',
 				 		$this->lang->line('application_Paid') => 'invoices/filter/paid',
-				 		);	
+				 		);
+
+		$this->load->library('projectlib');
+
+		$this->view_data['projectlib'] = $this->projectlib;
 		
 	}	
 	function index()
@@ -262,6 +266,8 @@ class Invoices extends MY_Controller {
 			if($invoice->sum == $_POST['amount']){
 				$new_status = "Paid";
 				$payment_date = $_POST['date'];
+
+				$this->projectlib->updateInvoiceProjectItemStatus($invoice);
 			}else{
 				$new_status = "PartiallyPaid";
 			}
@@ -312,6 +318,7 @@ class Invoices extends MY_Controller {
 			if($invoice->sum <= $paymentsum){
 				$new_status = "Paid";
 				$payment_date = $_POST['date'];
+				$this->projectlib->updateInvoiceProjectItemStatus($invoice);
 				
 			}else{
 				$new_status = "PartiallyPaid";
@@ -604,54 +611,7 @@ class Invoices extends MY_Controller {
 	$this->content_view = 'invoices/_preview';
 	}
 	function sendinvoice($id = FALSE){
-			$this->load->helper(array('dompdf', 'file'));
-			$this->load->library('parser');
-
-			$data["invoice"] = Invoice::find($id); 
-			$data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
-     		$data["core_settings"] = Setting::first();
-    		$due_date = date($data["core_settings"]->date_format, human_to_unix($data["invoice"]->due_date.' 00:00:00')); 
-  			//Set parse values
-  			$parse_data = array(
-            					'client_contact' => $data["invoice"]->company->client->firstname.' '.$data["invoice"]->company->client->lastname,
-            					'client_company' => $data["invoice"]->company->name,
-            					'due_date' => $due_date,
-            					'invoice_id' => $data["invoice"]->reference,
-            					'client_link' => $data["core_settings"]->domain,
-            					'company' => $data["core_settings"]->company,
-            					'logo' => '<img src="'.base_url().''.$data["core_settings"]->logo.'" alt="'.$data["core_settings"]->company.'"/>',
-            					'invoice_logo' => '<img src="'.base_url().''.$data["core_settings"]->invoice_logo.'" alt="'.$data["core_settings"]->company.'"/>'
-            					);
-            // Generate PDF     
-  			$html = $this->load->view($data["core_settings"]->template. '/' .$data["core_settings"]->invoice_pdf_template, $data, true); 
-    		$html = $this->parser->parse_string($html, $parse_data);
-    		$filename = $this->lang->line('application_invoice').'_'.$data["invoice"]->reference;
-     		pdf_create($html, $filename, FALSE);
-     		//email
-     		$subject = $this->parser->parse_string($data["core_settings"]->invoice_mail_subject, $parse_data);
-			$this->email->from($data["core_settings"]->email, $data["core_settings"]->company);
-			if(!isset($data["invoice"]->company->client->email)){
-				$this->session->set_flashdata('message', 'error:This client company has no primary contact! Just add a primary contact.');
-				redirect('invoices/view/'.$id);
-			}
-			$this->email->to($data["invoice"]->company->client->email); 
-			$this->email->subject($subject); 
-  			$this->email->attach("files/temp/".$filename.".pdf");
-  			
-
-
-  			$email_invoice = read_file('./application/views/'.$data["core_settings"]->template.'/templates/email_invoice.html');
-  			$message = $this->parser->parse_string($email_invoice, $parse_data);
-			$this->email->message($message);			
-			if($this->email->send()){$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_send_invoice_success'));
-			$data["invoice"]->update_attributes(array('status' => 'Sent', 'sent_date' => date("Y-m-d")));
-			log_message('error', 'Invoice #'.$data["invoice"]->reference.' has been send to '.$data["invoice"]->company->client->email);
-			}
-       		else{$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_send_invoice_error'));
-       		log_message('error', 'ERROR: Invoice #'.$data["invoice"]->reference.' has not been send to '.$data["invoice"]->company->client->email.'. Please check your servers email settings.');
-       		}
-			unlink("files/temp/".$filename.".pdf");
-			redirect('invoices/view/'.$id);
+		$this->projectlib->sendInvoice($id);
 	}
 	function item($id = FALSE)
 	{	

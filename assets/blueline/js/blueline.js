@@ -377,9 +377,6 @@ $('.to_modal').click(function(e) {
 });
 
 
-
-
-
 //Clickable rows
 	$(document).on("click", 'table#projects td, table#clients td, table#invoices td, table#cprojects td, table#cinvoices td, table#estimates td, table#cestimates td, table#quotations td, table#messages td, table#cmessages td, table#subscriptions td, table#csubscriptions td, table#tickets td, table#ctickets td', function (e) {
 	    
@@ -418,28 +415,57 @@ $('.to_modal').click(function(e) {
         var len = $(".items-check:checked").size();
         var success_content = $(this).attr('data-success-content');
         var error_content = $(this).attr('data-error-content');
+        var alert_title = $(this).attr('data-alert-title');
+
+        $('#alertModal').modal();
+
+        $("#alertModal .modal-title").html(alert_title);
 
         if(len > 0){
-            $(".btn-popover").attr('data-content', success_content);
+            $("#alertModal .modal-body").html(success_content);
         }else{
-            $(".btn-popover").attr('data-content',error_content);
+            $("#alertModal .modal-body").html(error_content);
         }
-
-        $(".btn-popover").trigger("click");
-    });
-
-    $('body').on('click', function (e) {
-        $('[data-toggle="popover"]').each(function () {
-            //the 'is' for buttons that trigger popups
-            //the 'has' for icons within a button that triggers a popup
-            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                $(this).popover('hide');
-            }
-        });
     });
 
     $(document).on("click", ".create_order", function(e){
+        var len = $(".items-check:checked").size();
+        var url = $(this).attr('href');
 
+        var reload_invoice = $(this).attr('data-reload');
+
+        if(len == 0){
+            $('#alertModal').modal();
+            $("#alertModal .modal-title").html("Error!!");
+            $("#alertModal .modal-body").html("No items selected");
+            return false;
+        }else{
+            $('#alertModal').modal('toggle');
+        }
+
+        var items = [];
+        $('.items-check:checked').each(function(index, item) {
+            $(item).attr('checked', false)
+            items.push($(item).val());
+        });
+
+        e.preventDefault();
+        NProgress.start();
+
+        $.post(url,
+        {
+            'items[]': items
+        },
+        function(data) {
+            NProgress.done();
+        })
+        .done(function(data) {
+                window.location.href = reload_invoice+data;
+            })
+        .fail(function() { })
+        .always(function() {  });
+
+        return false;
     });
 
     $(document).on("click", 'table#media td', function (e) {
