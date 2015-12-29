@@ -13,10 +13,40 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Projectlib
 {
 	private $_ci;				// CodeIgniter instance
+	private $_item_status = array('pending'=>'Pending', 'paid'=>'Paid');
+
 
 	function __construct($url = '')
 	{
 		$this->_ci = & get_instance();
+	}
+
+	/*
+	 * Get project items status array
+	 *
+	 * @return Array
+	 */
+	public function getStatusArray()
+	{
+		return $this->_item_status;
+	}
+
+	/*
+	 * Get project items status array
+	 *
+	 * @return Array
+	 */
+	public function getPaymentStatusbyKey($key=NULL)
+	{
+		if(empty($key)){
+			return '';
+		}
+
+		if(!array_key_exists($key, $this->getStatusArray())){
+			return '';
+		}
+
+		return $this->getStatusArray()[$key];
 	}
 
 	/*

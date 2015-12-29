@@ -112,7 +112,7 @@ $(document).on("click", ".addNewitem", function(e){
                         
     }).success(function() { NProgress.done(); });
   
-}); 
+});
 
 //message list delete item
 $(document).on("click", '.message-list-delete', function (e) {
@@ -406,13 +406,41 @@ $('.to_modal').click(function(e) {
         }
     });
 
-    $(document).on("click", 'table#item-list td', function (e) {
-    var id = $(this).parent().attr("id");
-    if(id){
-        var site = $(this).closest('table').attr("rel");
-        if(!$(this).hasClass('option')){$(".view_project_item").trigger("click");}
-    }
-});
+    $(document).on("click", 'table#item-list td:not(.item-selector, .action-td)', function (e) {
+        var id = $(this).parent().attr("id");
+        if(id){
+            var site = $(this).closest('table').attr("rel");
+            if(!$(this).hasClass('option')){$(".view_project_item_"+id).trigger("click");}
+        }
+    });
+
+    $(document).on("click", ".pre_create_order", function(e){
+        var len = $(".items-check:checked").size();
+        var success_content = $(this).attr('data-success-content');
+        var error_content = $(this).attr('data-error-content');
+
+        if(len > 0){
+            $(".btn-popover").attr('data-content', success_content);
+        }else{
+            $(".btn-popover").attr('data-content',error_content);
+        }
+
+        $(".btn-popover").trigger("click");
+    });
+
+    $('body').on('click', function (e) {
+        $('[data-toggle="popover"]').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
+
+    $(document).on("click", ".create_order", function(e){
+
+    });
 
     $(document).on("click", 'table#media td', function (e) {
 	    var id = $(this).parent().attr("id");
