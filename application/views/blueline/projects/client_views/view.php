@@ -113,14 +113,16 @@
 
        <div class="row tab-pane fade" role="tabpanel" id="items-tab">
            <div class="col-xs-12 col-sm-12">
-               <div class="table-head"><?php echo $this->lang->line('application_item');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/order/<?php echo $project->id;?>/create" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_create_order');?></a></span></div>
+               <div class="table-head"><?php echo $this->lang->line('application_item');?> <span class=" pull-right"><a style="" tabindex="0" role="button" href="#" class="po btn-popover" data-toggle="popover" data-placement="left" data-original-title="<b><?php echo $this->lang->line('application_really_create_project');?></b>"></a><button type="button" class="btn btn-primary pre_create_order" data-error-content="<span class='btn btn-danger'><?php echo $this->lang->line('messages_project_make_order_select_item_empty');?></span>" data-success-content="<a class='btn btn-success create_order ajax-silent' href='<?php echo base_url()?>cprojects/order/<?php echo $project->id;?>/create'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button>"><?php echo $this->lang->line('application_create_order');?></button></span></div>
                <div class="table-div min-height-410">
                    <table id="item-list" class="table data-item-list" rel="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
                        <thead>
                        <tr>
+                           <th style="width: 10px;">##</th>
                            <th><?php echo $this->lang->line('item_application_name');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_sku');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_cost');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_payment_status');?></th>
                            <th><?php echo $this->lang->line('application_action');?></th>
                        </tr></thead>
 
@@ -128,11 +130,13 @@
                        <?php $count = 0; foreach ($project->project_has_items as $value):  $count = $count+1;?>
 
                            <tr id="<?php echo $value->id;?>">
+                               <td class="item-selector"><input name="items[]" class="form-control checkbox-nolabel items-check" type="checkbox" value="<?php echo $value->id;?>" /></td>
                                <td onclick=""><?php echo $value->name;?></td>
                                <td class="hidden-xs"><?php echo $value->sku;?></td>
                                <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
-                               <td class="option " width="10%">
-                                   <a href="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>/view/<?php echo $value->id;?>" class="btn-option view_project_item" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
+                               <td class="hidden-xs"><?php echo $projectlib->getPaymentStatusbyKey($value->payment_status);?></td>
+                               <td class="action-td" width="10%">
+                                   <a href="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>/view/<?php echo $value->id;?>" class="view_project_item_<?php echo $value->id;?>" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
                                </td>
 
                            </tr>
