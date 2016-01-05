@@ -11,7 +11,7 @@
          <p class="truncate description"><?php echo $project->description;?></p>
       </div>
     
-      <ul class="nav nav-tabs" role="tablist">
+      <ul class="nav nav-tabs project-tabs" role="tablist">
         <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
           <li role="presentation" class="hidden-xs"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
           <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
@@ -159,45 +159,34 @@
        </div>
 
 <div class="row tab-pane fade" role="tabpanel" id="media-tab">
-<div class="col-xs-12 col-sm-12">
- <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
-<div class="table-div min-height-410">
- <table id="media" class="table data-media" rel="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
-        <thead>
-        <tr>
-                    <th  class="hidden"></th>
-          <th><?php echo $this->lang->line('media_application_name');?></th>
-          <th class="hidden-xs"><?php echo $this->lang->line('application_filename');?></th>
-          <th class="hidden-xs"><?php echo $this->lang->line('application_phase');?></th>
-          <th class="hidden-xs"><i class="fa fa-download"></i></th>
-          </tr></thead>
-        
-        <tbody>
-        <?php foreach ($project->project_has_files as $value):?>
 
-        <tr id="<?php echo $value->id;?>">
-          <td class="hidden"><?php echo human_to_unix($value->date);?></td>
-          <td onclick=""><?php echo $value->name;?></td>
-          <td class="hidden-xs truncate" style="max-width: 80px;"><?php echo $value->filename;?></td>
-          <td class="hidden-xs"><?php echo $value->phase;?></td>
-          <td class="hidden-xs"><span class="label label-info tt" title="<?php echo $this->lang->line('application_download_counter');?>" ><?php echo $value->download_counter;?></span></td>
-          
-        </tr>
+    <div class="col-xs-12 col-sm-12">
+        <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
 
-        <?php endforeach;?>
-        
-        
-        
-        </tbody></table>
-        <?php if(!$project->project_has_files) { ?>
-        <div class="no-files">  
-            <i class="fa fa-cloud-upload"></i><br>
-            No files have been uploaded yet!
-        </div>
-         <?php } ?>
-        </div>
+        <div class="table-head sub-table-head">
+                <ul class="nav nav-tabs media-tabs" role="tablist" data-rel="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/load">
+                    <?php
+                    $tab_options = explode(',', $project->media_phases);
+                    $media_tab_count = 1;
+                    $tab_content = '';
+                    foreach ($tab_options as $tab_value):
+                        $tab_name = "media-tab-no-".$media_tab_count;
+                        $tab_content .= '<div class="row tab-pane fade" role="tabpanel" id="'.$tab_name.'"><div class="col-xs-12 col-sm-12 media-tab-container"></div></div>';
+                        ?>
+                        <li role="presentation"><a href="#<?php echo $tab_name;?>" aria-controls="<?php echo $tab_name;?>" role="tab" data-toggle="tab" data-phase="<?php echo $tab_value;?>"><?php echo $tab_value;?></a></li>
+                        <?php
+                        $media_tab_count++;
+                        $media_tab_active = '';
+                    endforeach;
+                    ?>
+                </ul>
+            </div>
+
+        <div class="tab-content sub-tab-content"><?php echo $tab_content; ?></div>
+
+    </div>
 </div>
-</div>
+
 
 <?php if($invoice_access) { ?>
 <div class="row tab-pane fade" role="tabpanel" id="invoices-tab">

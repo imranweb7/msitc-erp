@@ -69,7 +69,7 @@ $lang['messages_install_update_error'] = "Update installation failed! Please ins
 $lang['messages_install_update_success'] = "Update has been installed!";
 $lang['messages_restore_backup_error'] = "Backup restore failed!";
 $lang['messages_restore_backup_success'] = "Database backup has been restored!";
-
+$lang['messages_no_media_category_files'] = "No files have been uploaded yet into this category!";
 $lang['messages_create_project_type_error'] = "Error while creating project type!";
 $lang['messages_create_project_type_success'] = "New project type has been created!";
 $lang['messages_delete_project_type_error'] = "Error while deleting Project Type!";

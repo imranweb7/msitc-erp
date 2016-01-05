@@ -248,6 +248,7 @@ $(document).on("click", '.section-reload #send', function (e) {
     var url = $(this).closest('form').attr('action');
     var active = $(this);
     var data = new FormData($(this).closest('form')[0]);
+      var is_media_form = (typeof $(this).attr('data-media-form') == 'undefined') ? true : false;
    
     $.ajax({
            type: "POST",
@@ -285,6 +286,10 @@ $(document).on("click", '.section-reload #send', function (e) {
                           }
                           var value = active.text().replace('<i class="fa fa-spinner fa-spin"></i> ', '');
                           active.html(value);
+
+                         if(is_media_form){
+                             $('.project-tabs a[href="#media-tab"]').tab('show');
+                         }
                         
                      }); 
                      
@@ -310,6 +315,10 @@ $(document).on("click", '.section-reload #send', function (e) {
                           }
                           var value = active.text().replace('<i class="fa fa-spinner fa-spin"></i> ', '');
                           active.html(value);
+
+                         if(is_media_form){
+                             $('.project-tabs a[href="#media-tab"]').tab('show');
+                         }
                         
                      }); 
                      
@@ -427,6 +436,47 @@ $('.to_modal').click(function(e) {
             $("#alertModal .modal-body").html(error_content);
         }
     });
+
+    $(document).on('show.bs.tab', 'ul.project-tabs li a[data-toggle="tab"]', function (e) {
+        var tab_name = $(e.target).attr("aria-controls");
+
+        if(tab_name == "media-tab"){
+            $('.media-tabs a:first').tab('show');
+        }
+    });
+
+    $(document).on('shown.bs.tab', 'ul.media-tabs li a[data-toggle="tab"]', function (e) {
+        var phase_name = $(e.target).attr("data-phase");
+        var tab_name = $(e.target).attr("aria-controls");
+
+        if(typeof e.relatedTarget != 'undefined'){
+            var prev_tab_name = $(e.relatedTarget).attr("aria-controls");
+            $("#"+prev_tab_name+" .media-tab-container").html('<div class="media-tab-container-loader"><i class="fa fa-spinner fa-spin"></i></div>');
+        }
+
+        $("#"+tab_name+" .media-tab-container").html('<div class="media-tab-container-loader"><i class="fa fa-spinner fa-spin"></i></div>');
+
+        var url = $("ul.media-tabs").attr("data-rel");
+
+        e.preventDefault();
+        NProgress.start();
+
+        $.post(url,
+            {
+                'phase': phase_name
+            },
+            function(data) {
+                NProgress.done();
+            })
+            .done(function(data) {
+                $("#"+tab_name+" .media-tab-container").html(data);
+            })
+            .fail(function() { })
+            .always(function() {  });
+
+        return false;
+    });
+
 
     $(document).on("click", ".create_order", function(e){
         var len = $(".items-check:checked").size();

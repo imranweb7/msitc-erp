@@ -17,7 +17,7 @@ echo form_open_multipart($form_action, $attributes);
 </div>
 <div class="form-group">
         <label for="phase"><?php echo $this->lang->line('application_phase');?></label>
-        <?php $options = explode(',', $project->phases); 
+        <?php $options = explode(',', $project->media_phases);
                 $options2 = array();
                 foreach ($options as $value): 
                 $options2[$value] = $value;

@@ -42,11 +42,12 @@ class Projectlib
 			return '';
 		}
 
-		if(!array_key_exists($key, $this->getStatusArray())){
+		$arr = $this->getStatusArray();
+		if(!array_key_exists($key, $arr)){
 			return '';
 		}
 
-		return $this->getStatusArray()[$key];
+		return $arr[$key];
 	}
 
 	/*
