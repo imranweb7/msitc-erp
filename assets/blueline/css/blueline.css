@@ -3011,6 +3011,33 @@ border-radius: 2px;
 	border:0px;
 }
 
+.media_preview{
+	font-size: 80px;
+	line-height: 30px;
+	vertical-align: top;
+}
+
+.media_preview img{
+	max-width: 80px !important;
+}
+
+.media-tabs > li.active > a{
+	color: #11a7db !important;
+}
+
+.media-tab-container-loader{
+	font-size: 50px;
+	text-align: center;
+}
+
+.sub-table-head{
+	margin-top: 5px !important;
+}
+
+.sub-tab-content{
+	margin-top: 0 !important;
+}
+
 /* ----- Installer end -----*/
 
 

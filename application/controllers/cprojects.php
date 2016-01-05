@@ -286,6 +286,24 @@ class cProjects extends MY_Controller {
 						 		$this->lang->line('application_media') => 'cprojects/media/'.$id,
 						 		);
 		switch ($condition) {
+			case 'load':
+				$this->view_data['project'] = Project::find($id);
+				$this->view_data['files'] = array();
+
+				$this->theme_view = 'ajax';
+				$this->content_view = 'projects/client_views/view_media_list';
+
+				if(!isset($_POST['phase']) || empty($_POST['phase'])){
+
+				}else{
+					$_POST = array_map('htmlspecialchars', $_POST);
+					$phase = $_POST['phase'];
+
+					$this->view_data['project'] = Project::find($id);
+					$this->view_data['files'] = ProjectHasFile::find('all',array('conditions' => array('project_id=? AND phase=?', $id, $phase)));
+				}
+				break;
+
 			case 'view':
 
 				if($_POST){

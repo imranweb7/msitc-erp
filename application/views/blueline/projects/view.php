@@ -13,7 +13,7 @@
          <p class="truncate description"><?php echo $project->description;?></p>
       </div>
     
-      <ul class="nav nav-tabs" role="tablist">
+      <ul class="nav nav-tabs project-tabs" role="tablist">
         <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
           <li role="presentation" class="hidden-xs"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
         <li role="presentation" class="hidden-xs"><a href="#tasks-tab" aria-controls="tasks-tab" role="tab" data-toggle="tab"><?php if($mytasks != 0){?><span class="badge"><?php echo $mytasks?></span><?php } ?><?php echo $this->lang->line('application_tasks');?></a></li>
@@ -204,10 +204,10 @@
                                <td class="hidden-xs"><?php echo $value->sku;?></td>
                                <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
                                <td class="hidden-xs"><?php echo $value->quantity;?></td>
-                               <td class="option " width="10%">
+                               <td class="option action-td" width="10%">
                                    <button type="button" class="btn-option btn-xs po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>projects/item/<?php echo $project->id;?>/delete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
                                    <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/update/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
-                                   <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/view/<?php echo $value->id;?>" class="btn-option view_project_item" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
+                                   <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/view/<?php echo $value->id;?>" class="btn-option view_project_item_<?php echo $value->id;?>" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
                                </td>
 
                            </tr>
@@ -283,49 +283,31 @@
                </div>
 </div>
 <div class="row tab-pane fade" role="tabpanel" id="media-tab">
-<div class="col-xs-12 col-sm-12">
- <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
-<div class="table-div min-height-410">
- <table id="media" class="table data-media" rel="<?php echo base_url()?>projects/media/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
-        <thead>
-        <tr>
-                    <th  class="hidden"></th>
-					<th><?php echo $this->lang->line('media_application_name');?></th>
-					<th class="hidden-xs"><?php echo $this->lang->line('application_filename');?></th>
-					<th class="hidden-xs"><?php echo $this->lang->line('application_phase');?></th>
-					<th class="hidden-xs"><i class="fa fa-download"></i></th>
-					<th><?php echo $this->lang->line('application_action');?></th>
-          </tr></thead>
-        
-        <tbody>
-        <?php foreach ($project->project_has_files as $value):?>
+    <div class="col-xs-12 col-sm-12">
+        <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
 
-				<tr id="<?php echo $value->id;?>">
-					<td class="hidden"><?php echo human_to_unix($value->date);?></td>
-					<td onclick=""><?php echo $value->name;?></td>
-					<td class="hidden-xs truncate" style="max-width: 80px;"><?php echo $value->filename;?></td>
-					<td class="hidden-xs"><?php echo $value->phase;?></td>
-					<td class="hidden-xs"><span class="label label-info tt" title="<?php echo $this->lang->line('application_download_counter');?>" ><?php echo $value->download_counter;?></span></td>
-					<td class="option " width="10%">
-				        <button type="button" class="btn-option btn-xs po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>projects/media/<?php echo $project->id;?>/delete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
-				        <a href="<?php echo base_url()?>projects/media/<?php echo $project->id;?>/update/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
-			       </td>
-					
-				</tr>
-
-				<?php endforeach;?>
-				
-        
-        
-        </tbody></table>
-        <?php if(!$project->project_has_files) { ?>
-				<div class="no-files">	
-				    <i class="fa fa-cloud-upload"></i><br>
-				    No files have been uploaded yet!
-				</div>
-				 <?php } ?>
+        <div class="table-head sub-table-head">
+            <ul class="nav nav-tabs media-tabs" role="tablist" data-rel="<?php echo base_url()?>projects/media/<?php echo $project->id;?>/load">
+                <?php
+                $tab_options = explode(',', $project->media_phases);
+                $media_tab_count = 1;
+                $tab_content = '';
+                foreach ($tab_options as $tab_value):
+                    $tab_name = "media-tab-no-".$media_tab_count;
+                    $tab_content .= '<div class="row tab-pane fade" role="tabpanel" id="'.$tab_name.'"><div class="col-xs-12 col-sm-12 media-tab-container"></div></div>';
+                    ?>
+                    <li role="presentation"><a href="#<?php echo $tab_name;?>" aria-controls="<?php echo $tab_name;?>" role="tab" data-toggle="tab" data-phase="<?php echo $tab_value;?>"><?php echo $tab_value;?></a></li>
+                    <?php
+                    $media_tab_count++;
+                    $media_tab_active = '';
+                endforeach;
+                ?>
+            </ul>
         </div>
-</div>
+
+        <div class="tab-content sub-tab-content"><?php echo $tab_content; ?></div>
+
+    </div>
 </div>
 <div class="row tab-pane fade" role="tabpanel" id="notes-tab">
 <div class="col-xs-12 col-sm-12">
