@@ -3037,7 +3037,9 @@ border-radius: 2px;
 .sub-tab-content{
 	margin-top: 0 !important;
 }
-
+.media-tabs > li{
+	margin-bottom: -3px !important;
+}
 /* ----- Installer end -----*/
 
 

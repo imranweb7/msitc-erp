@@ -730,7 +730,7 @@ class Projects extends MY_Controller {
 						$item_details = Item::find($item_id);
 						$item_name = $item_details->name;
 						$item_description = $item_details->description;
-						$cost = $_POST['cost'];
+						$cost = (empty($_POST['cost'])) ? $item_details->value : $_POST['cost'];
 						$original_cost = $item_details->value;
 						$savename = $item_details->photo;
 						$type = $item_details->photo_type;

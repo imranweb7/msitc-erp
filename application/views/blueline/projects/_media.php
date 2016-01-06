@@ -12,7 +12,7 @@ echo form_open_multipart($form_action, $attributes);
         <input id="name" type="text" name="name" class="required form-control" value="<?php if(isset($media)){echo $media->name;} ?>"  required/>
 </div>
 <div class="form-group">
-        <label for="description"><?php echo $this->lang->line('media_application_description');?></label>
+        <label for="description"><?php echo $this->lang->line('media_application_description');?> *</label>
         <input id="description" type="text" name="description" class="form-control" value="<?php if(isset($media)){echo $media->description;} ?>"  required/>
 </div>
 <div class="form-group">
@@ -30,10 +30,10 @@ echo form_open_multipart($form_action, $attributes);
 
 <div class="form-group">
                 <label for="userfile"><?php echo $this->lang->line('application_file');?></label><div>
-                <input id="uploadFile" class="form-control uploadFile" placeholder="Choose File" disabled="disabled" />
+                <input id="uploadFile" class="form-control uploadFile" placeholder="Choose File" readonly required />
                           <div class="fileUpload btn btn-primary">
                               <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?php echo $this->lang->line('application_select');?></span></span>
-                              <input id="uploadBtn" type="file" name="userfile" class="upload" />
+                              <input id="uploadBtn" type="file" name="userfile" class="upload" required />
                           </div>
                   </div>
               </div>
@@ -41,7 +41,7 @@ echo form_open_multipart($form_action, $attributes);
 <?php } ?>  
 
         <div class="modal-footer">
-        <button type="submit" id="send" name="send" class="btn btn-primary send button-loader"><?php echo $this->lang->line('application_save');?></button>
+        <button type="submit" id="send" name="send" class="btn btn-primary valid-send" data-media-form="true"><?php echo $this->lang->line('application_save');?></button>
         <a class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 
