@@ -6,7 +6,7 @@ $.ajaxSetup ({
 // Support for AJAX loaded modal window.
 // Focuses on first input textbox after it loads the window. 
 function modalfunc(){
-$('[data-toggle="mainmodal"]').bind('click',function(e) {
+$(document).on('click', '[data-toggle="mainmodal"]', function(e) {
   NProgress.start();
   e.preventDefault();
   var url = $(this).attr('href');
@@ -38,6 +38,14 @@ function easyPie() {
 
 };
 easyPie();
+
+//Form validation
+$("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
+
+$(document).on("click", ".valid-send", function(e){
+
+});
+
 //Ajax loaded content
 $(document).on("click", '.ajax', function (e) {
   e.preventDefault();
@@ -83,14 +91,13 @@ $(document).on("click", ".addNewitem", function(e){
                         
     }).success(function() { $('.message-list ul li a').first().click(); NProgress.done(); });
   
-}); 
+});
 
-          //button loaded on click
-        $(document).on("click", '.button-loader', function (e) {
-          var value = $( this ).text();
-            $(this).html('<i class="fa fa-spinner fa-spin"></i> '+ value);
-        });
-
+    //button loaded on click
+    $(document).on("click", '.button-loader', function (e) {
+        var value = $( this ).text();
+        $(this).html('<i class="fa fa-spinner fa-spin"></i> '+ value);
+    });
 
   //Ajax background load
   $(document).on("change", '.description-setter', function (e) {
@@ -248,35 +255,35 @@ $(document).on("click", '.section-reload #send', function (e) {
     var url = $(this).closest('form').attr('action');
     var active = $(this);
     var data = new FormData($(this).closest('form')[0]);
-      var is_media_form = (typeof $(this).attr('data-media-form') == 'undefined') ? true : false;
-   
+      var is_media_form = (typeof $(this).attr('data-media-form') != 'undefined') ? true : false;
+
     $.ajax({
            type: "POST",
            url: url,
            mimeType: "multipart/form-data",
            contentType: false,
            cache: false,
-           processData: false, 
+           processData: false,
            data: data,
            success: function(data, textStatus, jqXHR)
            {
  if(typeof data.error === 'undefined')
             {
-                
+
             }
             else
             {
-               
+
                 console.log('ERRORS: ' + data.error);
             }
                  var reload = active.closest('form').data('reload');
                  if(reload) {
                      $('#'+reload).velocity("transition.slideDownOut");
                      $('#'+reload).load(document.URL + ' #'+reload, function(data) {
-                        
+
                          $('#'+reload + ' .checkbox-nolabel').labelauty({ label: false });
                          modalfunc();
-                         $('#'+reload).velocity("transition.slideUpIn"); 
+                         $('#'+reload).velocity("transition.slideUpIn");
                          keepmodal = active.data('keepmodal');
                          if(keepmodal === undefined){
                             $('#mainModal').modal('hide');
@@ -288,24 +295,25 @@ $(document).on("click", '.section-reload #send', function (e) {
                           active.html(value);
 
                          if(is_media_form){
-                             $('.project-tabs a[href="#media-tab"]').tab('show');
+                             $('.media-tabs li:first').removeClass('active');
+                             $('.media-tabs a:first').trigger('click');
                          }
-                        
-                     }); 
-                     
+
+                     });
+
                  }
-                  
+
            },
            error: function(formData)
            {
-              
+
               var reload = active.closest('form').data('reload');
                  if(reload) {
                      $('#'+reload).velocity("transition.slideDownOut");
                      $('#'+reload).load(document.URL + ' #'+reload, function(data) {
-                        
+
                          $('#'+reload + ' .checkbox-nolabel').labelauty({ label: false });
-                         $('#'+reload).velocity("transition.slideUpIn"); 
+                         $('#'+reload).velocity("transition.slideUpIn");
                          keepmodal = active.data('keepmodal');
                          if(keepmodal === undefined){
                             $('#mainModal').modal('hide');
@@ -317,13 +325,14 @@ $(document).on("click", '.section-reload #send', function (e) {
                           active.html(value);
 
                          if(is_media_form){
-                             $('.project-tabs a[href="#media-tab"]').tab('show');
+                             $('.media-tabs li:first').removeClass('active');
+                             $('.media-tabs a:first').trigger('click');
                          }
-                        
-                     }); 
-                     
+
+                     });
+
                  }
-                
+
            }
          });
 
@@ -437,7 +446,44 @@ $('.to_modal').click(function(e) {
         }
     });
 
-    $(document).on('show.bs.tab', 'ul.project-tabs li a[data-toggle="tab"]', function (e) {
+
+    $(document).on("click", ".po_delete_confirmed", function(e){
+        var url = $(this).attr('href');
+        var reload = $(this).attr('data-reload');
+
+        $('#alertModal').modal('toggle');
+
+        e.preventDefault();
+
+        NProgress.start();
+
+        $.post(url,
+            {
+
+            },
+            function(data) {
+                NProgress.done();
+            })
+            .done(function(data) {
+                window.location.href = reload;
+            })
+            .fail(function() { })
+            .always(function() {  });
+
+        return false;
+    });
+
+    $(document).on("click", ".po_confirm_delete", function(e){
+        var success_content = $(this).attr('data-success-content');
+        var error_content = $(this).attr('data-error-content');
+        var alert_title = $(this).attr('data-alert-title');
+
+        $('#alertModal').modal();
+        $("#alertModal .modal-title").html(alert_title);
+        $("#alertModal .modal-body").html(success_content);
+    });
+
+    $(document).on('shown.bs.tab', 'ul.project-tabs li a[data-toggle="tab"]', function (e) {
         var tab_name = $(e.target).attr("aria-controls");
 
         if(tab_name == "media-tab"){
@@ -602,7 +648,7 @@ $('.to_modal').click(function(e) {
 
 
       //Custom select plugin
-      $(".chosen-select").chosen({disable_search_threshold: 4, width: "100%"});
+      $(".chosen-select").chosen({width: "100%"});
 
 
       //notify 
@@ -621,9 +667,6 @@ $('.to_modal').click(function(e) {
       //Custom Scrollbar
       $(".scroll-content").mCustomScrollbar({theme:"dark-2"});
       $(".scroll-content-2").mCustomScrollbar({theme:"dark-2"});
-      
-      //Form validation
-      $("input,select,textarea").not("[type=submit]").jqBootstrapValidation();
 
       $('.use-tooltip').tooltip();
        $('.tt').tooltip();
@@ -756,11 +799,7 @@ $('.to_modal').click(function(e) {
 
         //message reply slide down
         $(document).on("click", '.message-reply-button', function (e) {
-        //button loaded on click
-        $(document).on("click", '.button-loader', function (e) {
-          var value = $( this ).text();
-            $(this).html('<i class="fa fa-spinner fa-spin"></i> '+ value);
-        });
+
         $('.summernote-ajax').summernote({
             height:"200px",
             shortcuts: false,

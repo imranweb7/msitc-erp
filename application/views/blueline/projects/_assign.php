@@ -27,3 +27,10 @@ if(isset($project)){ ?>
 
 
 <?php echo form_close(); ?>
+
+<script type="text/javascript">
+        $(function(){
+                $('.chosen-select').trigger('liszt:updated');
+                $('.chosen-select').trigger('liszt:updated');
+        });
+</script>

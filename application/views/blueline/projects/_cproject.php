@@ -43,7 +43,7 @@ if(isset($project)){ ?>
 
 <div class="form-group">
     <label for="product_qty"><?php echo $this->lang->line('application_qty');?> *</label>
-    <input type="text" name="product_qty" class="form-control" id="product_qty"  value="<?php if(isset($project)){echo $project->product_qty;} ?>" required/>
+    <input type="number" name="product_qty" class="form-control" id="product_qty"  value="<?php if(isset($project)){echo $project->product_qty;} ?>" required/>
 </div>
 
 <div class="form-group">
