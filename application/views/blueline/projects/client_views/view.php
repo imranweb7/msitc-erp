@@ -119,6 +119,7 @@
                        <tr>
                            <th style="width: 10px;">##</th>
                            <th><?php echo $this->lang->line('item_application_name');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('item_application_file');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_sku');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_cost');?></th>
                            <th class="hidden-xs"><?php echo $this->lang->line('item_application_qty');?></th>
@@ -132,6 +133,7 @@
                            <tr id="<?php echo $value->id;?>">
                                <td class="item-selector"><input name="items[]" class="form-control checkbox-nolabel items-check" type="checkbox" value="<?php echo $value->id;?>" /></td>
                                <td onclick=""><?php echo $value->name;?></td>
+                               <td class="hidden-xs"><img class="img-responsive img-list-view" src="<?php echo base_url().'files/media/'.$value->photo;?>" /></td>
                                <td class="hidden-xs"><?php echo $value->sku;?></td>
                                <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
                                <td class="hidden-xs"><?php echo $value->quantity;?></td>
