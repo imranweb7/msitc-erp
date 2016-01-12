@@ -50,15 +50,18 @@ if(isset($estimate)){ ?>
 </div>
 
 <div class="form-group">
-    <label for="shipping_box_size"><?php echo $this->lang->line('application_shipping_box_size');?></label><br>
-    <?php
-    $options = array();
-    $options['W'] = 'W';
-    $options['L'] = 'L';
-    $options['H'] = 'H';
-    if(isset($estimate)){$shipping_box_size_selected = $estimate->shipping_box_size;}else{$shipping_box_size_selected = "W";}
-    echo form_dropdown('shipping_box_size', $options, $shipping_box_size_selected, 'style="width:100%" class="chosen-select"');?>
+    <label for="shipping_box_size_length"><?php echo $this->lang->line('application_shipping_box_size_length');?> *</label>
+    <input type="text" name="shipping_box_size_length" class="form-control" id="shipping_box_size_length" value="<?php if(isset($estimate)){echo $estimate->shipping_box_size_length;} ?>" required/>
+</div>
 
+<div class="form-group">
+    <label for="shipping_box_size_width"><?php echo $this->lang->line('application_shipping_box_size_width');?> *</label>
+    <input type="text" name="shipping_box_size_width" class="form-control" id="shipping_box_size_width" value="<?php if(isset($estimate)){echo $estimate->shipping_box_size_width;} ?>" required/>
+</div>
+
+<div class="form-group">
+    <label for="shipping_box_size_height"><?php echo $this->lang->line('application_shipping_box_size_height');?> *</label>
+    <input type="text" name="shipping_box_size_height" class="form-control" id="shipping_box_size_height" value="<?php if(isset($estimate)){echo $estimate->shipping_box_size_height;} ?>" required/>
 </div>
 
 <div class="form-group">
@@ -75,7 +78,7 @@ if(isset($estimate)){ ?>
 
 <div class="form-group">
     <label for="shipping_company"><?php echo $this->lang->line('application_shipping_company');?></label>
-    <textarea class="input-block-level form-control" id="shipping_company" name="shipping_company"><?php if(isset($estimate)){echo $estimate->shipping_company;} ?></textarea>
+    <input type="text" name="shipping_company" class="form-control" id="shipping_company"  value="<?php if(isset($estimate)){echo $estimate->shipping_company;} ?>"/>
 </div>
 
 

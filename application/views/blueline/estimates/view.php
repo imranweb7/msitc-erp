@@ -14,7 +14,7 @@
           <div class="row">
 
 		<div class="col-md-12">
-		<div class="table-head"><?php echo $this->lang->line('application_estimate_details');?></div>
+		<div class="table-head"><?php if($estimate->invoice_type != 'Shipment') { echo $this->lang->line('application_estimate_details'); } else { echo $this->lang->line('application_shipping_plan_detaile_title'); }?></div>
 		<div class="subcont">
 		<ul class="details col-xs-12 col-sm-6">
 			<li><span><?php echo $this->lang->line('application_estimate_id');?>:</span> <?php echo $core_settings->estimate_prefix;?><?php echo $estimate->reference;?></li>
@@ -139,7 +139,9 @@
 						  <li><span><?php echo $this->lang->line('application_shipping_goods_description');?>:</span> <?php echo $estimate->shipping_goods_description;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_total_boxes');?>:</span> <?php echo $estimate->shipping_total_boxes;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_qty_per_box');?>:</span> <?php echo $estimate->shipping_qty_per_box;?></li>
-						  <li><span><?php echo $this->lang->line('application_shipping_box_size');?>:</span> <?php echo $estimate->shipping_box_size;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_size_length');?>:</span> <?php echo $estimate->shipping_box_size_length;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_size_width');?>:</span> <?php echo $estimate->shipping_box_size_width;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_size_height');?>:</span> <?php echo $estimate->shipping_box_size_height;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_box_weight');?>:</span> <?php echo $estimate->shipping_box_weight; ?></li>
 					  </ul>
 

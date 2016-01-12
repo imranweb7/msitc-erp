@@ -172,6 +172,9 @@ class Estimates extends MY_Controller {
 
 		$estimate->sum = $sum;
 			$estimate->save();
+
+		$this->view_data['estimate_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		$this->content_view = 'estimates/view';
 	}
 
