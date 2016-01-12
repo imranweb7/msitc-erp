@@ -20,7 +20,7 @@
         <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
        <?php } ?>
 
-          <li role="presentation" class="hidden-xs"><a href="#estimates-tab" aria-controls="estimates-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_estimates');?></a></li>
+          <li role="presentation" class="hidden-xs"><a href="#estimates-tab" aria-controls="estimates-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_shipping_plan_tab');?></a></li>
 
         <li role="presentation" class="hidden-xs"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
         

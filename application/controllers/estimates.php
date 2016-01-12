@@ -172,6 +172,9 @@ class Estimates extends MY_Controller {
 
 		$estimate->sum = $sum;
 			$estimate->save();
+
+		$this->view_data['estimate_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		$this->content_view = 'estimates/view';
 	}
 
@@ -188,6 +191,24 @@ class Estimates extends MY_Controller {
 			redirect('invoices/view/'.$id);
 			
 		
+	}
+
+	function download($id = FALSE){
+
+		$this->load->helper('download');
+		$estimate = Invoice::find($id);
+
+		if(!$estimate){
+			redirect('estimates/view/'.$id);
+		}
+
+		$data = file_get_contents('./files/media/'.$estimate->shipping_lebel);
+
+		$type = array_reverse(explode('.', $estimate->shipping_lebel));
+		$type = strtolower($type[0]);
+
+		$name = 'shipping_label_'.$estimate->reference.'.'.$type;
+		force_download($name, $data);
 	}
 	
 

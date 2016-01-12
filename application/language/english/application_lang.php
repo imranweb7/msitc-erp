@@ -230,7 +230,13 @@ $lang['application_write_a_message'] = "Write a message";
 $lang['application_write_new_message'] = "Write a message";
 $lang['application_yes'] = "Yes";
 $lang['application_zip_code'] = "Zip code";
-$lang['application_shipping_box_size'] = "Box Size";
+$lang['application_shipping_box_size_length'] = "Box Length (cm)";
+$lang['application_shipping_box_size_width'] = "Box Width (cm)";
+$lang['application_shipping_box_size_height'] = "Box Height (cm)";
+
+$lang['application_shipping_plan_tab'] = "Shipping Plan";
+$lang['application_shipping_plan_detaile_title'] = "Shipping Plan Details";
+
 $lang['application_assets'] = "assets";
 $lang['application_item_details'] = "Item Details";
 $lang['application_shipping_details_label'] = "Shipping Details";
