@@ -29,19 +29,39 @@
 			<?php if(isset($invoice->project->name)){?>
 			<li><span><?php echo $this->lang->line('application_projects');?>:</span> <?php echo $invoice->project->name; ?></li>
 			<?php } ?>
-			<span class="visible-xs"></span>
-		</ul>
-		<ul class="details col-xs-12 col-sm-6">
-			<?php if(isset($invoice->company->name)){ ?>
-			<li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice->company->id;?>" class="label label-info"><?php echo $invoice->company->name;?></a></li>
-			<li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
-			<li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice->company->address;?></li>
-			<li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice->company->zipcode;?> <?php echo $invoice->company->city;?></li>
-			<li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice->company->province = empty($invoice->company->province) ? "-" : $invoice->company->province; ?></li>
+
+			<?php if(count($invoice_addresses) > 0){ foreach($invoice_addresses as $invoice_address){ ?>
+			<li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice_address->company_id;?>" class="label label-info"><?php echo $invoice_address->billing_company;?></a></li>
+			<li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php echo $invoice_address->billing_name;?></li>
+
+			<?php } }else if(isset($invoice->company->name)){ ?>
+				<li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice->company->id;?>" class="label label-info"><?php echo $invoice->company->name;?></a></li>
+				<li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
+
 			<?php }else{ ?>
 				<li><?php echo $this->lang->line('application_no_client_assigned');?></li>
 			<?php } ?>
+
+			<span class="visible-xs"></span>
 		</ul>
+			<ul class="details col-xs-12 col-sm-6">
+				<?php if(count($invoice_addresses) > 0){ foreach($invoice_addresses as $invoice_address){ ?>
+					<li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice_address->billing_address;?></li>
+					<li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice_address->billing_zip;?> <?php echo $invoice_address->billing_city;?></li>
+					<li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice_address->billing_state = empty($invoice_address->billing_state) ? "-" : $invoice_address->billing_state; ?></li>
+					<li><span><?php echo $this->lang->line('application_country');?>:</span> <?php echo $invoice_address->billing_country;?></li>
+					<?php if(!empty($invoice_address->billing_phone)){ ?><li><span><?php echo $this->lang->line('application_phone');?>:</span> <?php echo $invoice_address->billing_phone;?></li><?php } ?>
+					<?php if(!empty($invoice_address->billing_email)){ ?><li><span><?php echo $this->lang->line('application_email');?>:</span> <?php echo $invoice_address->billing_email;?></li><?php } ?>
+					<?php if(!empty($invoice_address->billing_website)){ ?><li><span><?php echo $this->lang->line('application_website');?>:</span> <?php echo $invoice_address->billing_website;?></li><?php } ?>
+
+				<?php } }else if(isset($invoice->company->name)){ ?>
+					<li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice->company->address;?></li>
+					<li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice->company->zipcode;?> <?php echo $invoice->company->city;?></li>
+					<li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice->company->province = empty($invoice->company->province) ? "-" : $invoice->company->province; ?></li>
+				<?php }else{ ?>
+					<li><?php echo $this->lang->line('application_no_client_assigned');?></li>
+				<?php } ?>
+			</ul>
 		<br clear="all">
 		</div>
 		</div>

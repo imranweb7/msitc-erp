@@ -33,7 +33,7 @@ echo form_open_multipart($form_action, $attributes);
 <?php } ?>
 
 <div class="form-group">
-        <label for="name"><?php echo $this->lang->line('application_company');?> <?php echo $this->lang->line('application_name');?> *</label>
+        <label for="name"><?php echo $this->lang->line('application_company_name');?> *</label>
         <input id="name" type="text" name="name" class="required form-control" value="<?php if(isset($company)){echo $company->name;} ?>"  required/>
 </div>
 <div class="form-group">

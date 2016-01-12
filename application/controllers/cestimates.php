@@ -98,8 +98,6 @@ class cEstimates extends MY_Controller {
 	
 	function view($id = FALSE)
 	{
-
-		
 		$this->view_data['submenu'] = array(
 						$this->lang->line('application_back') => 'cestimates',
 				 		);	
@@ -134,6 +132,9 @@ class cEstimates extends MY_Controller {
 
 		$estimate->sum = $sum;
 			$estimate->save();
+
+		$this->view_data['estimate_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		$this->content_view = 'estimates/client_views/view';
 	}
 
