@@ -138,6 +138,24 @@ class cEstimates extends MY_Controller {
 		$this->content_view = 'estimates/client_views/view';
 	}
 
+	function download($id = FALSE){
+
+		$this->load->helper('download');
+		$estimate = Invoice::find($id);
+
+		if(!$estimate){
+			redirect('cestimates/view/'.$id);
+		}
+
+		$data = file_get_contents('./files/media/'.$estimate->shipping_lebel);
+
+		$type = array_reverse(explode('.', $estimate->shipping_lebel));
+		$type = strtolower($type[0]);
+
+		$name = 'shipping_label_'.$estimate->reference.'.'.$type;
+		force_download($name, $data);
+	}
+
 
 	function preview($id = FALSE){
      $this->load->helper(array('dompdf', 'file')); 

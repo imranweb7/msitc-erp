@@ -192,6 +192,24 @@ class Estimates extends MY_Controller {
 			
 		
 	}
+
+	function download($id = FALSE){
+
+		$this->load->helper('download');
+		$estimate = Invoice::find($id);
+
+		if(!$estimate){
+			redirect('estimates/view/'.$id);
+		}
+
+		$data = file_get_contents('./files/media/'.$estimate->shipping_lebel);
+
+		$type = array_reverse(explode('.', $estimate->shipping_lebel));
+		$type = strtolower($type[0]);
+
+		$name = 'shipping_label_'.$estimate->reference.'.'.$type;
+		force_download($name, $data);
+	}
 	
 
 	function delete($id = FALSE)

@@ -153,8 +153,21 @@
 					  <div class="subcont" >
 						  <?php
 						  if(!empty($estimate->shipping_lebel)){
+							  $type = array_reverse(explode('.', $estimate->shipping_lebel));
+							  $type = strtolower($type[0]);
+
+							  $img_type = array('jpg' , 'jpeg', 'gif', 'png', 'bpm');
+
+							  if(in_array($type, $img_type)) {
+								  ?>
+								  <img class="img-responsive"
+									   src="<?php echo base_url() . 'files/media/' . $estimate->shipping_lebel; ?>"/>
+								  <?php
+							  }
 							  ?>
-							  <img class="img-responsive" src="<?php echo base_url().'files/media/'.$estimate->shipping_lebel;?>" />
+							  <br />
+							  <a href="<?php echo base_url()?>estimates/download/<?php echo $estimate->id;?>" class="btn btn-xs btn-success"><i class="icon-download icon-white"></i> <?php echo $this->lang->line('application_download');?></a>
+
 							  <?php
 						  }
 						  ?>
