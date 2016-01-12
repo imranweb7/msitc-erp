@@ -23,8 +23,8 @@ class Estimates extends MY_Controller {
 				 		$this->lang->line('application_Accepted') => 'estimates/filter/accepted',
 				 		$this->lang->line('application_Invoiced') => 'estimates/filter/invoiced',
 
-				 		);	
-		
+				 		);
+		$this->load->library('projectlib');
 	}	
 	function index()
 	{
@@ -289,26 +289,51 @@ class Estimates extends MY_Controller {
 		if($_POST){
 			unset($_POST['send']);
 			$_POST = array_map('htmlspecialchars', $_POST);
+
+			$invoice = Invoice::find($_POST['invoice_id']);
+
 			if($_POST['name'] != ""){
 				$_POST['name'] = $_POST['name'];
 				$_POST['value'] = $_POST['value'];
 				$_POST['type'] = $_POST['type'];
+
+				$item = InvoiceHasItem::create($_POST);
 			}else{
 				if($_POST['item_id'] == "-"){
 					$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_add_item_error'));
 					redirect('estimates/view/'.$_POST['invoice_id']);
 
 				}else{
-				$itemvalue = Item::find_by_id($_POST['item_id']);
-				$_POST['name'] = $itemvalue->name;
-				$_POST['type'] = $itemvalue->type;
-				$_POST['value'] = $itemvalue->value;
+					$itemvalue = Item::find_by_id($_POST['item_id']);
+
+					$invoice_item_data = array(
+						'invoice_id' => $_POST['invoice_id'],
+						'item_id' => $_POST['item_id'],
+						'project_item_id' => '0',
+						'photo' => $itemvalue->photo,
+						'photo_type' =>$itemvalue->photo_type,
+						'photo_original_name' => $itemvalue->photo_original_name,
+						'name' => $itemvalue->name,
+						'amount' => $_POST['amount'],
+						'description' => $itemvalue->description,
+						'sku' => $itemvalue->sku,
+						'value' => (empty($_POST['value'])) ? $itemvalue->value : $_POST['value'],
+						'original_cost' => $itemvalue->value,
+						'shipping_item' => ($invoice->invoice_type == 'Shipment') ? '1' : '0'
+					);
+
+					$item = InvoiceHasItem::create($invoice_item_data);
 				}
 			}
 
-			$item = InvoiceHasItem::create($_POST);
-       		if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_add_item_error'));}
-       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_add_item_success'));}
+
+       		if(!$item){
+				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_add_item_error'));
+			}
+       		else{
+				$this->projectlib->updateInvoiceTotal($invoice);
+				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_add_item_success'));
+			}
 			redirect('estimates/view/'.$_POST['invoice_id']);
 			
 		}else
@@ -328,8 +353,14 @@ class Estimates extends MY_Controller {
 			$_POST = array_map('htmlspecialchars', $_POST);
 			$item = InvoiceHasItem::find($_POST['id']);
 			$item = $item->update_attributes($_POST);
-       		if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_item_error'));}
-       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_save_item_success'));}
+       		if(!$item){
+				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_item_error'));
+			}
+       		else{
+				$invoice = Invoice::find($item->invoice_id);
+				$this->projectlib->updateInvoiceTotal($invoice);
+				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_save_item_success'));
+			}
 			redirect('estimates/view/'.$_POST['invoice_id']);
 			
 		}else
@@ -344,11 +375,16 @@ class Estimates extends MY_Controller {
 	function item_delete($id = FALSE, $estimate_id = FALSE)
 	{	
 		$item = InvoiceHasItem::find($id);
+		$invoice = Invoice::find($item->invoice_id);
 		$item->delete();
 		$this->content_view = 'estimates/view';
-		if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_delete_item_error'));}
-       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_delete_item_success'));}
-			redirect('estimates/view/'.$estimate_id);
+		if(!$item){
+			$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_delete_item_error'));
+		}else{
+			$this->projectlib->updateInvoiceTotal($invoice);
+			$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_delete_item_success'));
+		}
+		redirect('estimates/view/'.$estimate_id);
 	}	
 	
 }

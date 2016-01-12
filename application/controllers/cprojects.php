@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class cProjects extends MY_Controller {
+
+	private $invoice_shipment_type = 'Shipment';
                
 	function __construct()
 	{
@@ -51,10 +53,10 @@ class cProjects extends MY_Controller {
 	{
 		$this->load->helper('notification');
 		$this->view_data['submenu'] = array(
-			$this->lang->line('application_back') => 'projects',
-			$this->lang->line('application_overview') => 'projects/view/'.$id,
-			$this->lang->line('application_tasks') => 'projects/tasks/'.$id,
-			$this->lang->line('application_media') => 'projects/media/'.$id,
+			$this->lang->line('application_back') => 'cprojects',
+			$this->lang->line('application_overview') => 'cprojects/view/'.$id,
+			$this->lang->line('application_tasks') => 'cprojects/tasks/'.$id,
+			$this->lang->line('application_media') => 'cprojects/media/'.$id,
 		);
 		switch ($condition) {
 			case 'create':
@@ -113,6 +115,7 @@ class cProjects extends MY_Controller {
 
 				$this->projectlib->updateInvoiceTotal($invoice);
 				$this->projectlib->sendInvoice($invoice_id, false);
+				$this->projectlib->addInvoiceAddress($invoice_id);
 
 				if(!$invoice){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_invoice_error'));}
 				else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_invoice_success'));}
@@ -126,8 +129,115 @@ class cProjects extends MY_Controller {
 				$this->content_view = 'cprojects/view/'.$id;
 				break;
 		}
-
 	}
+
+	function estimate($id = FALSE, $condition = FALSE, $estimate_id = FALSE)
+	{
+		$this->load->helper('notification');
+		$this->view_data['submenu'] = array(
+			$this->lang->line('application_back') => 'cprojects',
+			$this->lang->line('application_overview') => 'cprojects/view/'.$id,
+			$this->lang->line('application_tasks') => 'cprojects/tasks/'.$id,
+			$this->lang->line('application_media') => 'cprojects/media/'.$id,
+		);
+		switch ($condition) {
+			case 'create':
+				if($_POST) {
+					unset($_POST['send']);
+					unset($_POST['files']);
+
+					$_POST['shipping_lebel'] = '';
+
+					$config['upload_path'] = './files/media';
+					$config['encrypt_name'] = TRUE;
+					$config['allowed_types'] = '*';
+
+					$this->load->library('upload', $config);
+
+					if ($this->upload->do_upload())
+					{
+						$data = array('upload_data' => $this->upload->data());
+						$_POST['shipping_lebel'] = $data['upload_data']['file_name'];
+					}
+
+					unset($_POST['userfile']);
+					unset($_POST['dummy']);
+
+					$_POST = array_map('htmlspecialchars', $_POST);
+
+					$shipping_address = array(
+						'shipping_name'=>$_POST['shipping_name'],
+						'shipping_company'=>$_POST['shipping_company'],
+						'shipping_address'=>$_POST['shipping_address'],
+						'shipping_city'=>$_POST['shipping_city'],
+						'shipping_state'=>$_POST['shipping_state'],
+						'shipping_zip'=>$_POST['shipping_zip'],
+						'shipping_country'=>$_POST['shipping_country'],
+						'shipping_phone'=>$_POST['shipping_phone'],
+						'shipping_email'=>$_POST['shipping_email'],
+						'shipping_website'=>$_POST['shipping_website'],
+					);
+
+					unset($_POST['shipping_name']);
+					unset($_POST['shipping_company']);
+					unset($_POST['shipping_address']);
+					unset($_POST['shipping_city']);
+					unset($_POST['shipping_state']);
+					unset($_POST['shipping_zip']);
+					unset($_POST['shipping_country']);
+					unset($_POST['shipping_phone']);
+					unset($_POST['shipping_email']);
+					unset($_POST['shipping_website']);
+
+					$core_settings = Setting::first();
+					$_POST['reference'] = $core_settings->invoice_reference;
+					$_POST['project_id'] = $id;
+					$_POST['company_id'] = $this->client->company->id;
+					$_POST['status'] = 'Sent';
+					$_POST['estimate_status'] = 'Sent';
+					$_POST['issue_date'] = date('Y-m-d');
+					$_POST['due_date'] = date('Y-m-d');
+					$_POST['currency'] = $core_settings->currency;
+					$_POST['terms'] = $core_settings->invoice_terms;
+					$_POST['invoice_type'] = $this->invoice_shipment_type;
+					$_POST['estimate'] = 1;
+
+					$estimate = Invoice::create($_POST);
+					$new_estimate_reference = $_POST['reference']+1;
+
+					$estimate_id = $estimate->id;
+					$this->projectlib->addInvoiceAddress($estimate->id, true, $shipping_address);
+
+					$estimate_reference = Setting::first();
+					$estimate_reference->update_attributes(array('invoice_reference' => $new_estimate_reference));
+
+					if(!$estimate){
+						$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_estimate_error'));
+					}
+					else{
+						$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_estimate_success'));
+					}
+
+					redirect('cprojects/view/'.$id);
+				}else{
+					$this->view_data['companies'] = Company::find('all',array('conditions' => array('inactive=?','0')));
+					$this->view_data['shipping_methods'] = ShippingMethod::find('all', array('order' => 'name desc'));
+					$this->view_data['next_reference'] = Project::last();
+					$this->theme_view = 'modal';
+					$this->view_data['title'] = $this->lang->line('application_create_shipping_estimate');
+					$this->view_data['form_action'] = 'cprojects/estimate/'.$id.'/create';
+					$this->content_view = 'projects/client_views/_cestimate';
+				}
+
+				break;
+
+			default:
+				$this->view_data['project'] = Project::find($id);
+				$this->content_view = 'cprojects/view/'.$id;
+				break;
+		}
+	}
+
 	function create()
 	{
 		if($_POST){
@@ -173,6 +283,7 @@ class cProjects extends MY_Controller {
 		{
 			$this->view_data['companies'] = Company::find('all',array('conditions' => array('inactive=?','0')));
 			$this->view_data['project_types'] = ProjectType::find('all',array('conditions' => array('inactive=?','0')));
+			$this->view_data['shipping_methods'] = ShippingMethod::find('all',array('conditions' => array('inactive=?','0')));
 			$this->view_data['next_reference'] = Project::last();
 			$this->theme_view = 'modal';
 			$this->view_data['title'] = $this->lang->line('application_create_project');
@@ -242,6 +353,8 @@ class cProjects extends MY_Controller {
 						 		);
 		$this->view_data['project'] = Project::find($id);
 		$this->view_data['project_has_invoices'] = Invoice::find('all',array('conditions' => array('project_id = ? AND company_id=? AND estimate != ? AND issue_date<=?',$id,$this->client->company->id,1,date('Y-m-d', time()))));
+		$this->view_data['project_has_estimates'] = Invoice::find('all',array('order' => 'id desc', 'conditions' => array('project_id = ? AND company_id=? AND estimate != ? AND issue_date<=?',$id,$this->client->company->id,0,date('Y-m-d', time()))));
+
 		$tasks = ProjectHasTask::count(array('conditions' => 'project_id = '.$id));
 		$tasks_done = ProjectHasTask::count(array('conditions' => array('status = ? AND project_id = ?', 'done', $id)));
 		@$this->view_data['opentaskspercent'] = $tasks_done/$tasks*100;

@@ -72,11 +72,17 @@ $lang['messages_restore_backup_success'] = "Database backup has been restored!";
 $lang['messages_no_media_category_files'] = "No files have been uploaded yet into this category!";
 $lang['messages_create_project_type_error'] = "Error while creating project type!";
 $lang['messages_create_project_type_success'] = "New project type has been created!";
+$lang['messages_create_shipping_method_error'] = "Error while creating new shipping method!";
+$lang['messages_create_shipping_method_success'] = "New shipping method has been created!";
+
 $lang['messages_delete_project_type_error'] = "Error while deleting Project Type!";
 $lang['messages_delete_project_type_success'] = "Project type has been deleted!";
 $lang['messages_save_project_type_error'] = "Error while saving project type!";
 $lang['messages_save_project_type_success'] = "Project type has been updated!";
-
+$lang['messages_save_shipping_method_error'] = "Error while saving shipping method!";
+$lang['messages_save_shipping_method_success'] = "Shipping method has been updated!";
+$lang['messages_delete_shipping_method_error'] = "Error while deleting shipping method!";
+$lang['messages_delete_shipping_method_success'] = "Shipping method has been deleted!";
 $lang['messages_save_quotation_error'] = "Error while saving quotation";
 $lang['messages_save_quotation_success'] = "Quotation has been updated";
 $lang['messages_delete_quotation_error'] = "Error while deleting quotation";

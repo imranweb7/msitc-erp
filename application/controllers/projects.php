@@ -319,6 +319,9 @@ class Projects extends MY_Controller {
 		$this->view_data['project'] = Project::find($id);
 		$this->view_data['project_has_invoices'] = Invoice::all(array('conditions' => array('project_id = ? AND estimate != ?', $id, 1)));
 		if(!isset($this->view_data['project_has_invoices'])){$this->view_data['project_has_invoices'] = array();}
+
+		$this->view_data['project_has_estimates'] = Invoice::find('all',array('order' => 'id desc', 'conditions' => array('project_id = ? AND estimate != ?',$id,0,)));
+
 		$tasks = ProjectHasTask::count(array('conditions' => 'project_id = '.$id));
 		$this->view_data['alltasks'] = $tasks;
 		$this->view_data['opentasks'] = ProjectHasTask::count(array('conditions' => array('status != ? AND project_id = ?', 'done', $id)));

@@ -139,7 +139,10 @@ class Invoices extends MY_Controller {
 			
 			$invoice_reference = Setting::first();
 			$invoice_reference->update_attributes(array('invoice_reference' => $new_invoice_reference));
-       		if(!$invoice){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_invoice_error'));}
+
+			$this->projectlib->addInvoiceAddress($invoice->id);
+
+			if(!$invoice){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_invoice_error'));}
        		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_invoice_success'));}
 			redirect('invoices');
 		}else
@@ -187,8 +190,6 @@ class Invoices extends MY_Controller {
 	
 	function view($id = FALSE)
 	{
-
-		
 		$this->view_data['submenu'] = array(
 						$this->lang->line('application_back') => 'invoices',
 				 		);	
@@ -242,6 +243,9 @@ class Invoices extends MY_Controller {
 
 		$invoice->sum = $sum;
 			$invoice->save();
+
+		$this->view_data['invoice_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		$this->content_view = 'invoices/view';
 	}
 	function banktransfer($id = FALSE, $sum = FALSE){

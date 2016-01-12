@@ -31,32 +31,33 @@ class cInvoices extends MY_Controller {
 	function view($id = FALSE)
 	{
 		$this->view_data['submenu'] = array(
-						$this->lang->line('application_back') => 'invoices',
-				 		);	
+			$this->lang->line('application_back') => 'invoices',
+		);
 		$this->view_data['invoice'] = Invoice::find($id);
 		$this->view_data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
+		$this->view_data['invoice_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		if($this->view_data['invoice']->company_id != $this->client->company->id){ redirect('cinvoices');}
 		$this->content_view = 'invoices/client_views/view';
 	}
 	function download($id = FALSE){
-     $this->load->helper(array('dompdf', 'file')); 
-     $this->load->library('parser');
-     $data["invoice"] = Invoice::find($id); 
-     $data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
-     if($data['invoice']->company_id != $this->client->company->id){ redirect('cinvoices');}
-     $data["core_settings"] = Setting::first(); 
-     $due_date = date($data["core_settings"]->date_format, human_to_unix($data["invoice"]->due_date.' 00:00:00'));  
-     $parse_data = array(
-            					'due_date' => $due_date,
-            					'invoice_id' => $data["invoice"]->reference,
-            					'client_link' => $data["core_settings"]->domain,
-            					'company' => $data["core_settings"]->company,
-            					); 
-  	$html = $this->load->view($data["core_settings"]->template. '/' .$data["core_settings"]->invoice_pdf_template, $data, true); 
-     $html = $this->parser->parse_string($html, $parse_data); 
-     $filename = 'Invoice_'.$data["invoice"]->reference;
-     pdf_create($html, $filename, TRUE);
-       
+		 $this->load->helper(array('dompdf', 'file'));
+		 $this->load->library('parser');
+		 $data["invoice"] = Invoice::find($id);
+		 $data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
+		 if($data['invoice']->company_id != $this->client->company->id){ redirect('cinvoices');}
+		 $data["core_settings"] = Setting::first();
+		 $due_date = date($data["core_settings"]->date_format, human_to_unix($data["invoice"]->due_date.' 00:00:00'));
+		 $parse_data = array(
+									'due_date' => $due_date,
+									'invoice_id' => $data["invoice"]->reference,
+									'client_link' => $data["core_settings"]->domain,
+									'company' => $data["core_settings"]->company,
+									);
+		 $html = $this->load->view($data["core_settings"]->template. '/' .$data["core_settings"]->invoice_pdf_template, $data, true);
+		 $html = $this->parser->parse_string($html, $parse_data);
+		 $filename = 'Invoice_'.$data["invoice"]->reference;
+		 pdf_create($html, $filename, TRUE);
 	}
 	function banktransfer($id = FALSE, $sum = FALSE){
 

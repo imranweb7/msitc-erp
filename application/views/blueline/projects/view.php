@@ -22,7 +22,11 @@
        <?php if($invoice_access) { ?>
         <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
        <?php } ?>
-        <li role="presentation" class="hidden-xs"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
+
+          <li role="presentation" class="hidden-xs"><a href="#estimates-tab" aria-controls="estimates-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_estimates');?></a></li>
+
+
+          <li role="presentation" class="hidden-xs"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
         
         <li role="presentation" class="dropdown visible-xs">
             <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown" aria-controls="myTabDrop1-contents" aria-expanded="false"><?php echo $this->lang->line('application_overview');?> <span class="caret"></span></a>
@@ -35,6 +39,8 @@
              <?php if($invoice_access) { ?>
               <li role="presentation"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
              <?php } ?>
+
+
               <li role="presentation"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
             </ul>
         </li>
@@ -368,7 +374,53 @@
 </div>
 <?php } ?>
 
+       <div class="row tab-pane fade" role="tabpanel" id="estimates-tab">
+           <div class="col-xs-12 col-sm-12">
+               <div class="table-head"><?php echo $this->lang->line('application_estimates');?> <span class=" pull-right"></span></div>
+               <div class="table-div">
+                   <table class="data-estimate-list table" id="estimates" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
+                       <thead>
+                       <th width="70px" class="hidden-xs"><?php echo $this->lang->line('application_estimate_id');?></th>
+                       <th><?php echo $this->lang->line('application_client');?></th>
+                       <th class="hidden-xs"><?php echo $this->lang->line('application_issue_date');?></th>
+                       <th class="hidden-xs"><?php echo $this->lang->line('application_total');?></th>
+                       <th><?php echo $this->lang->line('application_status');?></th>
+                       </thead>
+                       <?php foreach ($project_has_estimates as $value):
 
+                           $change_date = "";
+                           switch($value->estimate_status){
+                               case "Open": $custom_status = $value->estimate_status; $label = "label-default"; break;
+                               case "Accepted": $custom_status = $value->estimate_status; $label = "label-success"; $change_date = 'title="'.date($core_settings->date_format, human_to_unix($value->estimate_accepted_date.' 00:00')).'"'; break;
+                               case "Sent": $custom_status = "Open"; $label = "label-warning"; $change_date = 'title="'.date($core_settings->date_format, human_to_unix($value->estimate_sent.' 00:00')).'"'; break;
+                               case "Declined": $custom_status = $value->estimate_status; $label = "label-important"; $change_date = 'title="'.date($core_settings->date_format, human_to_unix($value->estimate_accepted_date.' 00:00')).'"'; break;
+                               case "Invoiced": $custom_status = $value->estimate_status; $label = "label-chilled"; $change_date = 'title="'.$this->lang->line('application_Accepted').' '.date($core_settings->date_format, human_to_unix($value->estimate_accepted_date.' 00:00')).'"'; break;
+                               case "Revised": $custom_status = $value->estimate_status; $label = "label-warning"; $change_date = 'title="'.$this->lang->line('application_Revised').' '.date($core_settings->date_format, human_to_unix($value->estimate_accepted_date.' 00:00')).'"'; break;
+
+                               default: $label = "label-default"; break;
+                           }?>
+                           <tr id="<?php echo $value->id;?>" >
+                               <td class="hidden-xs" onclick=""><?php echo $core_settings->estimate_prefix;?><?php echo $value->reference;?></td>
+                               <td onclick=""><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
+                               <td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
+                               <td class="hidden-xs"><?php echo display_money(sprintf("%01.2f", round($value->sum, 2)));?></td>
+                               <td><span class="label  <?php echo $label?> tt" <?php echo $change_date;?>><?php echo $this->lang->line('application_'.$custom_status);?></span></td>
+                           </tr>
+
+                       <?php endforeach;?>
+                   </table>
+                   <?php if(!$project_has_estimates) { ?>
+                       <div class="no-files">
+                           <i class="fa fa-file-text"></i><br>
+
+                           <?php echo $this->lang->line('application_no_estimate_yet');?>
+                       </div>
+                   <?php } ?>
+               </div>
+           </div>
+
+
+       </div>
 
 <div class="row tab-pane fade" role="tabpanel" id="activities-tab">
 <div class="col-xs-12 col-sm-12">
