@@ -23,7 +23,11 @@
         <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
        <?php } ?>
 
-          <li role="presentation" class="hidden-xs"><a href="#estimates-tab" aria-controls="estimates-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_shipping_plan_tab');?></a></li>
+          <li role="presentation" class="hidden-xs"><a href="#shipping-item-tab" aria-controls="shipping-item-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_shipping_item_tab');?></a></li>
+
+          <li role="presentation" class="hidden-xs"><a href="#shipping-slip-tab" aria-controls="shipping-slip-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_shipping_slip_tab');?></a></li>
+
+          <li role="presentation" class="hidden-xs"><a href="#estimates-tab" aria-controls="estimates-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_estimates');?></a></li>
 
 
           <li role="presentation" class="hidden-xs"><a href="#activities-tab" aria-controls="activities-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_activities');?></a></li>
@@ -235,6 +239,56 @@
            </div>
        </div>
 
+
+       <div class="row tab-pane fade" role="tabpanel" id="shipping-item-tab">
+           <div class="col-xs-12 col-sm-12">
+               <div class="table-head"><?php echo $this->lang->line('application_shipping_item_tab_title');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/addShippingItem" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_shipping_item');?></a></span></div>
+               <div class="table-div min-height-410">
+                   <table id="shipping-item-list" class="table data-shipping-item-list" rel="<?php echo base_url()?>projects/item/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
+                       <thead>
+                       <tr>
+                           <th><?php echo $this->lang->line('shipping_item_application_name');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('application_select_shipping_method');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('shipping_item_application_available_inventory');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('shipping_item_application_box_size');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('shipping_item_application_box_size_weight');?></th>
+                           <th class="hidden-xs"><?php echo $this->lang->line('shipping_item_application_handling_fee');?></th>
+                           <th><?php echo $this->lang->line('application_action');?></th>
+                       </tr></thead>
+
+                       <tbody>
+                       <?php $count = 0; foreach ($project->project_has_shipping_items as $value):  $count = $count+1;?>
+
+                           <tr id="<?php echo $value->id;?>">
+                               <td onclick=""><?php echo $value->name;?></td>
+                               <td class="hidden-xs"><?php echo $value->shipping_method;?></td>
+                               <td class="hidden-xs"><?php echo $value->shipping_available_inventory;?></td>
+                               <td class="hidden-xs"><?php echo $value->shipping_box_size_width;?> X <?php echo $value->shipping_box_size_length;?> X <?php echo $value->shipping_box_size_height;?></td>
+                               <td class="hidden-xs"><?php echo $value->shipping_box_size_weight;?></td>
+                               <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
+                               <td class="option action-td" width="10%">
+                                   <button type="button" class="btn-option btn-xs po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemDelete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
+                                   <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemUpdate/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
+                                   <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemView/<?php echo $value->id;?>" class="btn-option view_project_item_<?php echo $value->id;?>" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
+                               </td>
+
+                           </tr>
+
+                       <?php endforeach;?>
+
+                       </tbody>
+
+                   </table>
+                   <?php if($count == 0) { ?>
+                       <div class="no-items">
+                           <i class="fa fa-item"></i><br>
+                           No shipping items have been added yet!
+                       </div>
+                   <?php } ?>
+               </div>
+           </div>
+       </div>
+
   <div class="row tab-pane fade" role="tabpanel" id="tasks-tab">
      <div class="col-xs-12 col-sm-12">
             <div class="table-head"><?php echo $this->lang->line('application_tasks');?> <span class=" pull-right"><button class="btn btn-default sortListTrigger" ><i class="fa fa-sort-amount-desc"></i></button> <a href="<?php echo base_url()?>projects/tasks/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_task');?></a></span></div>
@@ -372,6 +426,49 @@
 
 
 </div>
+
+    <div class="row tab-pane fade" role="tabpanel" id="shipping-slip-tab">
+        <div class="col-xs-12 col-sm-12">
+            <div class="table-head"><?php echo $this->lang->line('application_shipping_slips');?> <span class=" pull-right"></span></div>
+            <div class="table-div">
+                <table class="data table" id="invoices" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
+                    <thead>
+                    <th width="70px" class="hidden-xs"><?php echo $this->lang->line('application_invoice_id');?></th>
+                    <th><?php echo $this->lang->line('application_client');?></th>
+                    <th class="hidden-xs"><?php echo $this->lang->line('application_issue_date');?></th>
+                    <th class="hidden-xs"><?php echo $this->lang->line('application_due_date');?></th>
+                    <th><?php echo $this->lang->line('application_status');?></th>
+                    <th class="hidden-xs"><?php echo $this->lang->line('application_action');?></th>
+                    </thead>
+                    <?php foreach ($project_has_shippings as $value):?>
+
+                        <tr id="<?php echo $value->id;?>" >
+                            <td class="hidden-xs" onclick=""><?php echo $core_settings->invoice_prefix;?><?php echo $value->reference;?></td>
+                            <td onclick=""><span class="label label-info"><?php if(isset($value->company->name)){echo $value->company->name; }?></span></td>
+                            <td class="hidden-xs"><span><?php $unix = human_to_unix($value->issue_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
+                            <td class="hidden-xs"><span class="label <?php if($value->status == "Paid"){echo 'label-success';} if($value->due_date <= date('Y-m-d') && $value->status != "Paid"){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->due_date.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span> <span class="hidden"><?php echo $unix;?></span></td>
+                            <td onclick=""><span class="label <?php $unix = human_to_unix($value->sent_date.' 00:00'); if($value->status == "Paid"){echo 'label-success';}elseif($value->status == "Sent"){ echo 'label-warning tt" title="'.date($core_settings->date_format, $unix);} ?>"><?php echo $this->lang->line('application_'.$value->status);?></span></td>
+
+                            <td class="option hidden-xs" width="8%">
+                                <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>invoices/delete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
+                                <a href="<?php echo base_url()?>invoices/update/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
+                            </td>
+                        </tr>
+
+                    <?php endforeach;?>
+                </table>
+                <?php if(!$project_has_shippings) { ?>
+                    <div class="no-files">
+                        <i class="fa fa-file-text"></i><br>
+
+                        <?php echo $this->lang->line('application_no_invoices_yet');?>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+
+
+    </div>
 <?php } ?>
 
        <div class="row tab-pane fade" role="tabpanel" id="estimates-tab">
@@ -556,6 +653,4 @@ $('.dial').each(function () {
    
  });
 
-</script> 
-	
-	
+</script>

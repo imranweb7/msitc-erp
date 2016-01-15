@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class cInvoices extends MY_Controller {
+
+	private $invoice_shipment_type = 'Shipment';
                
 	function __construct()
 	{
@@ -33,12 +35,33 @@ class cInvoices extends MY_Controller {
 		$this->view_data['submenu'] = array(
 			$this->lang->line('application_back') => 'invoices',
 		);
-		$this->view_data['invoice'] = Invoice::find($id);
+		$invoice = $this->view_data['invoice'] = Invoice::find($id);
 		$this->view_data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		$this->view_data['invoice_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
 
 		if($this->view_data['invoice']->company_id != $this->client->company->id){ redirect('cinvoices');}
+
+		$this->view_data['trackings'] = InvoiceHasTracking::find('all',array('conditions' => array('invoice_id=?',$id)));
+
 		$this->content_view = 'invoices/client_views/view';
+	}
+	function downloadLabel($id = FALSE){
+
+		$this->load->helper('download');
+		$invoice = Invoice::find($id);
+
+		if(!$invoice){
+			redirect('cinvoices/view/'.$id);
+		}
+
+		$data = file_get_contents('./files/media/'.$invoice->shipping_lebel);
+
+		$type = array_reverse(explode('.', $invoice->shipping_lebel));
+		$type = strtolower($type[0]);
+
+		$name = 'shipping_label_'.$invoice->reference.'.'.$type;
+		force_download($name, $data);
 	}
 	function download($id = FALSE){
 		 $this->load->helper(array('dompdf', 'file'));

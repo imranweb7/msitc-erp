@@ -8,7 +8,17 @@ class Project extends ActiveRecord\Model {
 
 	static $has_many = array(
     array("project_has_tasks"),
-        array("project_has_items"),
+        array("project_has_items",
+            'class_name' => 'ProjectHasItem',
+            'foreign_key' => 'project_id',
+            'conditions' => 'type = "regular"'
+        ),
+
+        array("project_has_shipping_items",
+            'class_name' => 'ProjectHasItem',
+            'foreign_key' => 'project_id',
+            'conditions' => 'type = "shipping"'
+        ),
     array('project_has_files'),
     array('project_has_workers'),
     array('project_has_invoices'),

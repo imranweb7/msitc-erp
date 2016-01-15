@@ -14,6 +14,7 @@ class Projectlib
 {
 	private $_ci;				// CodeIgniter instance
 	private $_item_status = array('pending'=>'Pending', 'invoiced'=> 'Invoiced', 'paid'=>'Paid');
+	private $invoice_shipment_type = 'Shipment';
 
 
 	function __construct($url = '')
@@ -131,12 +132,21 @@ class Projectlib
 			return;
 		}
 
-		$items = $invoice->invoice_has_items;
+		if($invoice->invoice_type == $this->invoice_shipment_type){
+			$item_type = 'invoice_has_shipping_items';
+		}else{
+			$item_type = 'invoice_has_items';
+		}
+
+		$items = $invoice->$item_type;
+
 
 		//calculate sum
 		$i = 0; $sum = 0; $core_settings = Setting::first();
 		foreach ($items as $value){
-			$sum = $sum+$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value; $i++;
+			$invoice_item = $invoice->$item_type;
+
+			$sum = $sum+$invoice_item[$i]->amount*$invoice_item[$i]->value; $i++;
 		}
 		if(substr($invoice->discount, -1) == "%"){
 			$discount = sprintf("%01.2f", round(($sum/100)*substr($invoice->discount, 0, -1), 2));
@@ -192,7 +202,13 @@ class Projectlib
 			return;
 		}
 
-		$items = $invoice->invoice_has_items;
+		if($invoice->invoice_type == $this->invoice_shipment_type){
+			$item_type = 'invoice_has_shipping_items';
+		}else{
+			$item_type = 'invoice_has_items';
+		}
+
+		$items = $invoice->$item_type;
 
 		$i = 0;
 		foreach ($items as $value){
@@ -219,6 +235,7 @@ class Projectlib
 		$this->_ci->load->library('parser');
 
 		$data["invoice"] = Invoice::find($id);
+
 		$data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
 		$data["core_settings"] = Setting::first();
 		$due_date = date($data["core_settings"]->date_format, human_to_unix($data["invoice"]->due_date.' 00:00:00'));

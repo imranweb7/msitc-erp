@@ -3044,6 +3044,10 @@ border-radius: 2px;
 .img-list-view{
 	max-width: 60px;
 }
+
+.has-error .chosen-container {
+	border: 1px solid #ed5564 !important;
+}
 /* ----- Installer end -----*/
 
 

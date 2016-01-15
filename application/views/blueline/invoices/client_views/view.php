@@ -6,7 +6,7 @@
           <div class="row">
 
 		<div class="col-md-12">
-		<div class="table-head"><?php echo $this->lang->line('application_invoice_details');?></div>
+		<div class="table-head"><?php if($invoice->invoice_type != 'Shipment') {echo $this->lang->line('application_invoice_details'); } else { echo $this->lang->line('application_shipping_plan_detaile_title'); }?></div>
 		<div class="subcont">
 		<ul class="details col-xs-12 col-sm-6">
 			<li><span><?php echo $this->lang->line('application_invoice_id');?>:</span> <?php echo $core_settings->invoice_prefix;?><?php echo $invoice->reference;?></li>
@@ -24,19 +24,9 @@
 
 			<span class="visible-xs"></span>
 		</ul>
+			<?php if($invoice->invoice_type != 'Shipment'){ ?>
 		<ul class="details col-xs-12 col-sm-6">
-			<?php if(count($invoice_addresses) > 0){ foreach($invoice_addresses as $invoice_address){ ?>
-				<li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="#" class="label label-info"><?php echo $invoice_address->billing_company;?></a></li>
-				<li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php echo $invoice_address->billing_name;?></li>
-				<li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice_address->billing_address;?></li>
-				<li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice_address->billing_zip;?> <?php echo $invoice_address->billing_city;?></li>
-				<li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice_address->billing_state = empty($invoice_address->billing_state) ? "-" : $invoice_address->billing_state; ?></li>
-				<li><span><?php echo $this->lang->line('application_country');?>:</span> <?php echo $invoice_address->billing_country;?></li>
-				<?php if(!empty($invoice_address->billing_phone)){ ?><li><span><?php echo $this->lang->line('application_phone');?>:</span> <?php echo $invoice_address->billing_phone;?></li><?php } ?>
-				<?php if(!empty($invoice_address->billing_email)){ ?><li><span><?php echo $this->lang->line('application_email');?>:</span> <?php echo $invoice_address->billing_email;?></li><?php } ?>
-				<?php if(!empty($invoice_address->billing_website)){ ?><li><span><?php echo $this->lang->line('application_website');?>:</span> <?php echo $invoice_address->billing_website;?></li><?php } ?>
-
-			<?php } }else if(isset($invoice->company->name)){ ?>
+			<?php if(isset($invoice->company->name)){ ?>
 				<li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice->company->id;?>" class="label label-info"><?php echo $invoice->company->name;?></a></li>
 				<li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
 
@@ -47,10 +37,140 @@
 				<li><?php echo $this->lang->line('application_no_client_assigned');?></li>
 			<?php } ?>
 		</ul>
+			<?php } ?>
 		<br clear="all">
 		</div>
 		</div>
 		</div>
+
+		  <?php if($invoice->invoice_type == 'Shipment'){ ?>
+			  <div class="row">
+				  <div class="col-md-6">
+
+					  <div class="table-head"><?php echo $this->lang->line('application_billing_address_label');?></div>
+
+					  <ul class="details col-md-12 subcont">
+						  <?php if(count($invoice_addresses) > 0){ foreach($invoice_addresses as $invoice_address){ ?>
+							  <?php if(!empty($invoice_address->billing_company)){ ?><li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="#" class="label label-info"><?php echo $invoice_address->billing_company;?></a></li><?php } ?>
+							  <li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php echo $invoice_address->billing_name;?></li>
+							  <li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice_address->billing_address;?></li>
+							  <li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice_address->billing_city;?></li>
+							  <li><span><?php echo $this->lang->line('application_zip_code');?>:</span> <?php echo $invoice_address->billing_zip;?></li>
+							  <li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice_address->billing_state = empty($invoice_address->billing_state) ? "-" : $invoice_address->billing_state; ?></li>
+							  <li><span><?php echo $this->lang->line('application_country');?>:</span> <?php echo $invoice_address->billing_country;?></li>
+							  <?php if(!empty($invoice_address->billing_phone)){ ?><li><span><?php echo $this->lang->line('application_phone');?>:</span> <?php echo $invoice_address->billing_phone;?></li><?php } ?>
+							  <?php if(!empty($invoice_address->billing_email)){ ?><li><span><?php echo $this->lang->line('application_email');?>:</span> <?php echo $invoice_address->billing_email;?></li><?php } ?>
+							  <?php if(!empty($invoice_address->billing_website)){ ?><li><span><?php echo $this->lang->line('application_website');?>:</span> <?php echo $invoice_address->billing_website;?></li><?php } ?>
+
+						  <?php } }else if(isset($invoice->company->name)){ ?>
+							  <li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice->company->id;?>" class="label label-info"><?php echo $invoice->company->name;?></a></li>
+							  <li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
+							  <li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice->company->address;?></li>
+							  <li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice->company->city;?></li>
+							  <li><span><?php echo $this->lang->line('application_zip_code');?>:</span> <?php echo $invoice->company->zipcode;?></li>
+							  <li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice->company->province = empty($invoice->company->province) ? "-" : $invoice->company->province; ?></li>
+						  <?php }else{ ?>
+
+						  <?php } ?>
+					  </ul>
+
+				  </div>
+
+				  <div class="col-md-6">
+					  <div class="table-head"><?php echo $this->lang->line('application_shipping_address_label');?></div>
+
+					  <ul class="details col-md-12 subcont">
+						  <?php if(count($invoice_addresses) > 0){ foreach($invoice_addresses as $invoice_address){ ?>
+							  <?php if(!empty($invoice_address->shipping_company)){ ?><li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="#" class="label label-info"><?php echo $invoice_address->shipping_company;?></a></li><?php } ?>
+							  <li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php echo $invoice_address->shipping_name;?></li>
+							  <li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice_address->shipping_address;?></li>
+							  <li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice_address->shipping_city;?></li>
+							  <li><span><?php echo $this->lang->line('application_zip_code');?>:</span> <?php echo $invoice_address->shipping_zip;?></li>
+							  <li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice_address->shipping_state = empty($invoice_address->shipping_state) ? "-" : $invoice_address->shipping_state; ?></li>
+							  <li><span><?php echo $this->lang->line('application_country');?>:</span> <?php echo $invoice_address->shipping_country;?></li>
+							  <?php if(!empty($invoice_address->shipping_phone)){ ?><li><span><?php echo $this->lang->line('application_phone');?>:</span> <?php echo $invoice_address->shipping_phone;?></li><?php } ?>
+							  <?php if(!empty($invoice_address->shipping_email)){ ?><li><span><?php echo $this->lang->line('application_email');?>:</span> <?php echo $invoice_address->shipping_email;?></li><?php } ?>
+							  <?php if(!empty($invoice_address->shipping_website)){ ?><li><span><?php echo $this->lang->line('application_website');?>:</span> <?php echo $invoice_address->shipping_website;?></li><?php } ?>
+
+						  <?php } }else if(isset($invoice->company->name)){ ?>
+							  <li><span><?php echo $this->lang->line('application_company');?>:</span> <a href="<?php echo base_url()?>clients/view/<?php echo $invoice->company->id;?>" class="label label-info"><?php echo $invoice->company->name;?></a></li>
+							  <li><span><?php echo $this->lang->line('application_contact');?>:</span> <?php if(isset($invoice->company->client->firstname)){ ?><?php echo $invoice->company->client->firstname;?> <?php echo $invoice->company->client->lastname;?> <?php }else{echo "-";} ?></li>
+							  <li><span><?php echo $this->lang->line('application_street');?>:</span> <?php echo $invoice->company->address;?></li>
+							  <li><span><?php echo $this->lang->line('application_city');?>:</span> <?php echo $invoice->company->city;?></li>
+							  <li><span><?php echo $this->lang->line('application_zip_code');?>:</span> <?php echo $invoice->company->zipcode;?></li>
+							  <li><span><?php echo $this->lang->line('application_province');?>:</span> <?php echo $invoice->company->province = empty($invoice->company->province) ? "-" : $invoice->company->province; ?></li>
+						  <?php }else{ ?>
+
+						  <?php } ?>
+					  </ul>
+				  </div>
+			  </div>
+
+			  <div class="row">
+				  <div class="col-md-6">
+
+					  <div class="table-head"><?php echo $this->lang->line('application_shipping_details_label');?></div>
+
+					  <ul class="details col-md-12 subcont">
+						  <?php if($invoice->shipping_method != ''){?>
+						  <li><span><?php echo $this->lang->line('application_shipping_goods_description');?>:</span> <?php echo $invoice->shipping_goods_description;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_total_boxes');?>:</span> <?php echo $invoice->shipping_total_boxes;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_qty_per_box');?>:</span> <?php echo $invoice->shipping_qty_per_box;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_size_length');?>:</span> <?php echo $invoice->shipping_box_size_length;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_size_width');?>:</span> <?php echo $invoice->shipping_box_size_width;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_size_height');?>:</span> <?php echo $invoice->shipping_box_size_height;?></li>
+						  <li><span><?php echo $this->lang->line('application_shipping_box_weight');?>:</span> <?php echo $invoice->shipping_box_weight; ?></li>
+					  		<?php } else {?>
+
+							  <?php foreach ($items as $value):?>
+
+							  <li><span><?php echo $this->lang->line('application_shipping_goods_description');?>:</span> <?php echo $value->name;?></li>
+								  <li><span><?php echo $this->lang->line('application_shipping_qty_require');?>:</span> <?php echo $value->amount; ?></li>
+
+								  <li><span><?php echo $this->lang->line('shipping_item_application_handling_fee');?>:</span> <?php echo $core_settings->currency.display_money(sprintf("%01.2f", $value->value));?> / <?php echo $this->lang->line('application_quantity');?></li>
+
+
+							  <li><span><?php echo $this->lang->line('application_select_shipping_method');?>:</span> <?php echo $value->shipping_method;?></li>
+							  <li><span><?php echo $this->lang->line('application_shipping_box_size_length');?>:</span> <?php echo $value->shipping_box_size_length;?></li>
+							  <li><span><?php echo $this->lang->line('application_shipping_box_size_width');?>:</span> <?php echo $value->shipping_box_size_width;?></li>
+							  <li><span><?php echo $this->lang->line('application_shipping_box_size_height');?>:</span> <?php echo $value->shipping_box_size_height;?></li>
+							  <li><span><?php echo $this->lang->line('application_shipping_box_weight');?>:</span> <?php echo $value->shipping_box_size_weight; ?></li>
+
+								  <?php endforeach; ?>
+						  <?php } ?>
+
+					  </ul>
+
+				  </div>
+
+				  <div class="col-md-6">
+					  <div class="table-head"><?php echo $this->lang->line('application_shipping_lebel');?></div>
+
+					  <div class="subcont" >
+						  <?php
+						  if(!empty($invoice->shipping_lebel)){
+							  $type = array_reverse(explode('.', $invoice->shipping_lebel));
+							  $type = strtolower($type[0]);
+
+							  $img_type = array('jpg' , 'jpeg', 'gif', 'png', 'bpm');
+
+							  if(in_array($type, $img_type)) {
+								  ?>
+								  <img class="img-responsive"
+									   src="<?php echo base_url() . 'files/media/' . $invoice->shipping_lebel; ?>"/>
+								  <?php
+							  }
+							  ?>
+							  <br />
+							  <a href="<?php echo base_url()?>cinvoices/downloadLabel/<?php echo $invoice->id;?>" class="btn btn-xs btn-success"><i class="icon-download icon-white"></i> <?php echo $this->lang->line('application_download');?></a>
+
+							  <?php
+						  }
+						  ?>
+					  </div>
+				  </div>
+			  </div>
+		  <?php } ?>
 
 		<div class="row">
 		<div class="col-md-12">
@@ -66,19 +186,29 @@
 			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
 		</thead>
 		<?php $i = 0; $sum = 0;?>
-		<?php foreach ($items as $value):?>
+		<?php
+
+		if($invoice->invoice_type == 'Shipment'){
+			$item_type = 'invoice_has_shipping_items';
+		}else{
+			$item_type = 'invoice_has_items';
+		}
+
+		$invoice_item = $invoice->$item_type;
+
+		foreach ($items as $value):?>
 		<tr id="<?php echo $value->id;?>" >
 	
-			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice->invoice_has_items[$i]->item->name; }?></td>
-			<td class="hidden-xs"><?php echo $invoice->invoice_has_items[$i]->description;?></td>
-			<td class="hidden-xs"><?php echo $invoice->invoice_has_items[$i]->sku;?></td>
-			<td class="hidden-xs" align="center"><?php echo $invoice->invoice_has_items[$i]->amount;?></td>
-			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->value));?></td>
-			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value));?></td>
+			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice_item[$i]->name; }?></td>
+			<td class="hidden-xs"><?php echo $invoice_item[$i]->description;?></td>
+			<td class="hidden-xs"><?php echo $invoice_item[$i]->sku;?></td>
+			<td class="hidden-xs" align="center"><?php echo $invoice_item[$i]->amount;?></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->value));?></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->amount*$invoice_item[$i]->value));?></td>
 
 		</tr>
 		
-		<?php $sum = $sum+$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value; $i++;?>
+		<?php $sum = $sum+$invoice_item[$i]->amount*$invoice_item[$i]->value; $i++;?>
 		
 		<?php endforeach;
 		if(empty($items)){ echo "<tr><td colspan='6'>".$this->lang->line('application_no_items_yet')."</td></tr>";}
@@ -245,3 +375,33 @@
 
 		</div>
 		</div>
+
+
+		  <?php if(count($trackings)) { ?><div class="row">
+			  <div class="col-md-12">
+				  <div class="table-head"><?php echo $this->lang->line('application_invoice_trackings');?></div>
+				  <div class="table-div min-height-200">
+					  <table class="table noclick" id="trackings" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
+						  <thead>
+						  <tr>
+							  <th><?php echo $this->lang->line('application_tracking_id');?></th>
+							  <th class="hidden-xs"><?php echo $this->lang->line('application_tracking_desc');?></th>
+							  <th class="hidden-xs"><?php echo $this->lang->line('application_tracking_date');?></th>
+						  </tr></thead>
+
+						  <tbody>
+						  <?php foreach ($trackings as $value):?>
+							  <tr id="<?php echo $value->id;?>" >
+								  <td><?php echo $value->tracking_id; ?></td>
+								  <td class="hidden-xs"><?php echo $value->comments;?></td>
+								  <td class="hidden-xs"><span><?php $unix = human_to_unix($value->created.' 00:00'); echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
+							  </tr>
+						  <?php endforeach; ?>
+						  </tbody>
+					  </table>
+
+				  </div>
+
+
+			  </div>
+			  </div> <?php } ?>
