@@ -317,8 +317,10 @@ class Projects extends MY_Controller {
 	{ 
 		$this->view_data['submenu'] = array();
 		$this->view_data['project'] = Project::find($id);
-		$this->view_data['project_has_invoices'] = Invoice::all(array('conditions' => array('project_id = ? AND estimate != ?', $id, 1)));
+		$this->view_data['project_has_invoices'] = Invoice::all(array('conditions' => array('project_id = ? AND estimate != ? AND invoice_type != ?',$id,1,'Shipment')));
+		$this->view_data['project_has_shippings'] = Invoice::find('all',array('conditions' => array('project_id = ? AND estimate != ? AND invoice_type = ? AND shipping_method = ? ',$id,1,'Shipment', '')));
 		if(!isset($this->view_data['project_has_invoices'])){$this->view_data['project_has_invoices'] = array();}
+		if(!isset($this->view_data['project_has_shippings'])){$this->view_data['project_has_shippings'] = array();}
 
 		$this->view_data['project_has_estimates'] = Invoice::find('all',array('order' => 'id desc', 'conditions' => array('project_id = ? AND estimate != ?',$id,0,)));
 
@@ -650,6 +652,17 @@ class Projects extends MY_Controller {
 			$this->lang->line('application_media') => 'projects/media/'.$id,
 		);
 		switch ($condition) {
+			case 'shippingItemView':
+				$this->theme_view = 'modal';
+				$this->content_view = 'projects/view_shipping_item';
+				$this->view_data['title'] = $this->lang->line('application_shipping_item_details');
+				$this->view_data['project'] = Project::find($id);
+				$this->view_data['project_id'] = $id;
+				$this->view_data['item'] = ProjectHasItem::find($item_id);
+				$this->view_data['form_action'] = 'projects/item/'.$id.'/shippingItemView/'.$item_id;
+				$this->view_data['backlink'] = 'projects/view/'.$id;
+				break;
+
 			case 'view':
 				$this->theme_view = 'modal';
 				$this->content_view = 'projects/view_item';
@@ -660,6 +673,7 @@ class Projects extends MY_Controller {
 				$this->view_data['form_action'] = 'projects/item/'.$id.'/view/'.$item_id;
 				$this->view_data['backlink'] = 'projects/view/'.$id;
 				break;
+
 			case 'add':
 				$this->content_view = 'projects/_item';
 				$this->view_data['project'] = Project::find($id);
@@ -748,7 +762,7 @@ class Projects extends MY_Controller {
 
 						$error = $this->lang->line('messages_project_save_item_exist');
 						$this->session->set_flashdata('message', 'error:'.$error);
-						redirect('projects/item/'.$id);
+						redirect('projects/view/'.$id);
 
 					}else{
 						$project_item_data = array(
@@ -795,6 +809,156 @@ class Projects extends MY_Controller {
 					$this->content_view = 'projects/_item';
 				}
 				break;
+
+			case 'addShippingItem':
+				$this->content_view = 'projects/_shipping_item';
+				$this->view_data['project'] = Project::find($id);
+				if($_POST){
+					$is_new_item = false;
+					if(isset($_POST['new_item']) && htmlspecialchars($_POST['new_item']) == "1"){
+						$is_new_item = true;
+
+						unset($_POST['send']);
+						unset($_POST['userfile']);
+						unset($_POST['file-name']);
+						unset($_POST['files']);
+						unset($_POST['new_item']);
+						unset($_POST['item_id']);
+						$_POST = array_map('htmlspecialchars', $_POST);
+
+						$savename = '';
+						$type = 'shipping';
+						$photo_type = '';
+						$filename = '';
+
+						$item_name = $item_description = $_POST['name'];
+
+						$cost = $original_cost = $_POST['value'];
+						$sku = 'shipping#'.time();
+						$inactive = $_POST['inactive'];
+
+						$shipping_method =  $_POST['shipping_method'];
+						$shipping_available_inventory =  $_POST['shipping_available_inventory'];
+						$shipping_box_size_length =  $_POST['shipping_box_size_length'];
+						$shipping_box_size_width =  $_POST['shipping_box_size_width'];
+						$shipping_box_size_height =  $_POST['shipping_box_size_height'];
+						$shipping_box_size_weight =  $_POST['shipping_box_size_weight'];
+						$shipping_pcs_in_carton =  $_POST['shipping_pcs_in_carton'];
+
+						$item_data = array(
+							'description' => $item_description,
+							'sku' => $sku,
+							'type' => $type,
+						);
+
+						$item_data = array_merge($item_data, $_POST);
+
+						$item = Item::create($item_data);
+
+						$item_id = $_POST['item_id'] = $item->id;
+					}else{
+						unset($_POST['send']);
+						unset($_POST['userfile']);
+						unset($_POST['file-name']);
+						unset($_POST['files']);
+						unset($_POST['new_item']);
+						unset($_POST['name']);
+						unset($_POST['shipping_method']);
+						unset($_POST['shipping_available_inventory']);
+						unset($_POST['shipping_box_size_length']);
+						unset($_POST['shipping_box_size_width']);
+						unset($_POST['shipping_box_size_height']);
+						unset($_POST['shipping_box_size_weight']);
+						unset($_POST['shipping_pcs_in_carton']);
+
+						$_POST = array_map('htmlspecialchars', $_POST);
+
+						$_POST['project_id'] = $id;
+						$item_id = $_POST['item_id'];
+
+						$item_details = Item::find($item_id);
+						$item_name = $item_details->name;
+						$item_description = $item_details->description;
+						$cost = (empty($_POST['value'])) ? $item_details->value : $_POST['value'];
+						$original_cost = $item_details->value;
+						$savename = $item_details->photo;
+						$type = $item_details->type;
+						$photo_type = $item_details->photo_type;
+						$filename = $item_details->photo_original_name;
+						$sku = $item_details->sku;
+						$inactive = $item_details->inactive;
+						$shipping_method = $item_details->shipping_method;
+						$shipping_available_inventory = $item_details->shipping_available_inventory;
+						$shipping_box_size_length = $item_details->shipping_box_size_length;
+						$shipping_box_size_width = $item_details->shipping_box_size_width;
+						$shipping_box_size_height = $item_details->shipping_box_size_height;
+						$shipping_box_size_weight = $item_details->shipping_box_size_weight;
+						$shipping_pcs_in_carton = $item_details->shipping_pcs_in_carton;
+					}
+
+					$project_item_exist = ProjectHasItem::count(array('conditions' => array('project_id=? AND item_id=?',$id, $item_id)));
+					if($project_item_exist){
+						$project_item = false;
+
+						$error = $this->lang->line('messages_project_save_shipping_item_exist');
+						$this->session->set_flashdata('message', 'error:'.$error);
+						redirect('projects/view/'.$id);
+
+					}else{
+						$project_item_data = array(
+							'item_id'=>$item_id,
+							'project_id'=>$id,
+							'name' => $item_name,
+							'cost' => $cost,
+							'original_cost' => $original_cost,
+							'type' => $type,
+							'photo' => $savename,
+							'photo_type' => $photo_type,
+							'photo_original_name' => $filename,
+							'description' => $item_description,
+							'sku' => $sku,
+							'inactive' => $inactive,
+							'shipping_method' => $shipping_method,
+							'shipping_available_inventory' => $shipping_available_inventory,
+							'shipping_box_size_length' => $shipping_box_size_length,
+							'shipping_box_size_width' => $shipping_box_size_width,
+							'shipping_box_size_height' => $shipping_box_size_height,
+							'shipping_box_size_weight' => $shipping_box_size_weight,
+							'shipping_pcs_in_carton' => $shipping_pcs_in_carton
+						);
+
+						$project_item = ProjectHasItem::create($project_item_data);
+					}
+
+					if(!$project_item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_project_save_shipping_item_error'));}
+					else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_project_save_shipping_item_error'));
+
+						$attributes = array('subject' => $this->lang->line('application_new_project_shipping_item_subject'), 'message' => '<b>'.$this->user->firstname.' '.$this->user->lastname.'</b> '.$this->lang->line('application_item_created'). ' '.$item_name, 'datetime' => time(), 'project_id' => $id, 'type' => 'item', 'user_id' => $this->user->id);
+						$activity = ProjectHasActivity::create($attributes);
+
+						foreach ($this->view_data['project']->project_has_workers as $workers){
+							send_notification($workers->user->email, "[".$this->view_data['project']->name."] ".$this->lang->line('application_new_project_shipping_item_subject'), $this->lang->line('application_new_project_shipping_item_was_added').' <strong>'.$this->view_data['project']->name.'</strong>');
+						}
+						if(isset($this->view_data['project']->company->client->email)){
+							$access = explode(',', $this->view_data['project']->company->client->access);
+							if(in_array('12', $access)){
+								send_notification($this->view_data['project']->company->client->email, "[".$this->view_data['project']->name."] ".$this->lang->line('application_new_project_shipping_item_subject'), $this->lang->line('application_new_project_shipping_item_was_added').' <strong>'.$this->view_data['project']->name.'</strong>');
+							}
+						}
+
+					}
+					redirect('projects/view/'.$id);
+				}else
+				{
+					$this->theme_view = 'modal';
+					$this->view_data['shipping_methods'] = ShippingMethod::find('all', array('order' => 'name desc'));
+					$this->view_data['items'] = Item::find('all',array('conditions' => array('inactive=? AND type=?','0', 'shipping')));
+					$this->view_data['title'] = $this->lang->line('application_add_shipping_item');
+					$this->view_data['form_action'] = 'projects/item/'.$id.'/addShippingItem';
+					$this->content_view = 'projects/_shipping_item';
+				}
+				break;
+
 			case 'update':
 				$this->content_view = 'projects/_edit_item';
 				$this->view_data['item'] = ProjectHasItem::find($item_id);
@@ -819,6 +983,29 @@ class Projects extends MY_Controller {
 					$this->content_view = 'projects/_edit_item';
 				}
 				break;
+			case 'shippingItemUpdate':
+				$this->content_view = 'projects/_edit_shipping_item';
+				$this->view_data['item'] = ProjectHasItem::find($item_id);
+				$this->view_data['project'] = Project::find($id);
+				if($_POST){
+					unset($_POST['send']);
+					unset($_POST['_wysihtml5_mode']);
+					unset($_POST['files']);
+					$_POST = array_map('htmlspecialchars', $_POST);
+					$item_id = $_POST['id'];
+					$item = ProjectHasItem::find($item_id);
+					$item->update_attributes($_POST);
+					if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_shipping_item_error'));}
+					else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_save_shipping_item_success'));}
+					redirect('projects/view/'.$id);
+				}else
+				{
+					$this->theme_view = 'modal';
+					$this->view_data['title'] = $this->lang->line('application_edit_shipping_item');
+					$this->view_data['form_action'] = 'projects/item/'.$id.'/shippingItemUpdate/'.$item_id;
+					$this->content_view = 'projects/_edit_shipping_item';
+				}
+				break;
 			case 'delete':
 				$item = ProjectHasItem::find($item_id);
 				$item->delete();
@@ -827,6 +1014,16 @@ class Projects extends MY_Controller {
 				else{
 					@unlink(self::ITEM_UPLOAD_PATH.$item->photo);
 					$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_delete_item_success'));
+				}
+				redirect('projects/view/'.$id);
+				break;
+			case 'shippingItemDelete':
+				$item = ProjectHasItem::find($item_id);
+				$item->delete();
+
+				if(!$item){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_delete_shipping_item_error'));}
+				else{
+					$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_delete_shipping_item_success'));
 				}
 				redirect('projects/view/'.$id);
 				break;

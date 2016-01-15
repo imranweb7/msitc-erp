@@ -78,7 +78,7 @@ class cProjects extends MY_Controller {
 				$_POST['project_id'] = $id;
 				$_POST['status'] = 'Open';
 				$_POST['issue_date'] = date('Y-m-d');
-				$_POST['due_date'] = date('Y-m-d');
+				$_POST['due_date'] = date('Y-m-d', strtotime('+1 day'));
 				$_POST['currency'] = $core_settings->currency;
 				$_POST['terms'] = $core_settings->invoice_terms;
 
@@ -121,6 +121,172 @@ class cProjects extends MY_Controller {
 				else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_invoice_success'));}
 
 				echo $invoice_id;die();
+
+				break;
+
+			default:
+				$this->view_data['project'] = Project::find($id);
+				$this->content_view = 'cprojects/view/'.$id;
+				break;
+		}
+	}
+
+	function planOrder($id = FALSE, $condition = FALSE, $plan_id = FALSE)
+	{
+		$this->load->helper('notification');
+		$this->view_data['submenu'] = array(
+			$this->lang->line('application_back') => 'cprojects',
+			$this->lang->line('application_overview') => 'cprojects/view/'.$id,
+			$this->lang->line('application_tasks') => 'cprojects/tasks/'.$id,
+			$this->lang->line('application_media') => 'cprojects/media/'.$id,
+		);
+		switch ($condition) {
+			case 'create':
+				$plan = ProjectHasItem::find($plan_id);
+
+				if (!isset($plan_id) || empty($plan_id)) {
+					$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_item_empty'));
+					redirect('cprojects/view/' . $id);
+				}
+
+				$current_inventory = $plan->shipping_available_inventory;
+
+				if (!$current_inventory) {
+					$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_inventory_empty'));
+					redirect('cprojects/view/' . $id);
+				}
+
+				if(!$_POST){
+					$this->view_data['max_qty'] = $plan->shipping_available_inventory;
+					$this->theme_view = 'modal';
+					$this->view_data['title'] = $this->lang->line('application_create_shipping_plan');
+					$this->view_data['form_action'] = 'cprojects/planOrder/'.$id.'/create/'.$plan_id;
+					$this->content_view = 'projects/client_views/_create_plan';
+				}else {
+					$quantity = $_POST['amount'];
+
+					$current_inventory_available = $current_inventory - $quantity;
+
+					if (!$quantity) {
+						$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_qty_empty'));
+						redirect('cprojects/view/' . $id);
+					}
+
+					if ($current_inventory_available < 0) {
+						$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_qty_empty'));
+						redirect('cprojects/view/' . $id);
+					}
+
+
+					unset($_POST['send']);
+					unset($_POST['files']);
+					unset($_POST['amount']);
+
+					$_POST['shipping_lebel'] = '';
+
+					$config['upload_path'] = './files/media';
+					$config['encrypt_name'] = TRUE;
+					$config['allowed_types'] = '*';
+
+					$this->load->library('upload', $config);
+
+					if ($this->upload->do_upload())
+					{
+						$data = array('upload_data' => $this->upload->data());
+						$_POST['shipping_lebel'] = $data['upload_data']['file_name'];
+					}
+
+					unset($_POST['userfile']);
+					unset($_POST['dummy']);
+
+					$_POST = array_map('htmlspecialchars', $_POST);
+
+					$shipping_address = array(
+						'shipping_name'=>$_POST['shipping_name'],
+						'shipping_company'=>$_POST['shipping_company'],
+						'shipping_address'=>$_POST['shipping_address'],
+						'shipping_city'=>$_POST['shipping_city'],
+						'shipping_state'=>$_POST['shipping_state'],
+						'shipping_zip'=>$_POST['shipping_zip'],
+						'shipping_country'=>$_POST['shipping_country'],
+						'shipping_phone'=>$_POST['shipping_phone'],
+						'shipping_email'=>$_POST['shipping_email'],
+						'shipping_website'=>$_POST['shipping_website'],
+					);
+
+					unset($_POST['shipping_name']);
+					unset($_POST['shipping_company']);
+					unset($_POST['shipping_address']);
+					unset($_POST['shipping_city']);
+					unset($_POST['shipping_state']);
+					unset($_POST['shipping_zip']);
+					unset($_POST['shipping_country']);
+					unset($_POST['shipping_phone']);
+					unset($_POST['shipping_email']);
+					unset($_POST['shipping_website']);
+
+					$core_settings = Setting::first();
+					$_POST['reference'] = $core_settings->invoice_reference;
+					$_POST['project_id'] = $id;
+					$_POST['company_id'] = $this->client->company->id;
+					$_POST['status'] = 'Sent';
+					$_POST['issue_date'] = date('Y-m-d');
+					$_POST['due_date'] = date('Y-m-d', strtotime('+1 day'));
+					$_POST['currency'] = $core_settings->currency;
+					$_POST['terms'] = $core_settings->invoice_terms;
+					$_POST['invoice_type'] = $this->invoice_shipment_type;
+
+					$invoice = Invoice::create($_POST);
+					$new_invoice_reference = $_POST['reference']+1;
+
+					$invoice_id = $invoice->id;
+					$this->projectlib->addInvoiceAddress($invoice_id, true, $shipping_address);
+
+					$invoice_reference = Setting::first();
+					$invoice_reference->update_attributes(array('invoice_reference' => $new_invoice_reference));
+
+					$invoice_item_data = array(
+						'invoice_id' => $invoice_id,
+						'item_id' => $plan->item_id,
+						'project_item_id' => $plan->id,
+						'photo' => $plan->photo,
+						'photo_type' => $plan->photo_type,
+						'photo_original_name' => $plan->photo_original_name,
+						'name' => $plan->name,
+						'amount' => $quantity,
+						'type' => $plan->type,
+						'description' => $plan->description,
+						'sku' => $plan->sku,
+						'value' => $plan->cost,
+						'original_cost' => $plan->original_cost,
+						'shipping_item' => '1',
+						'shipping_method' => $plan->shipping_method,
+						'shipping_box_size_length' => $plan->shipping_box_size_length,
+						'shipping_box_size_width' => $plan->shipping_box_size_width,
+						'shipping_box_size_height' => $plan->shipping_box_size_height,
+						'shipping_box_size_weight' => $plan->shipping_box_size_weight,
+						'shipping_pcs_in_carton' => $plan->shipping_pcs_in_carton
+					);
+
+					$item_add = InvoiceHasItem::create($invoice_item_data);
+
+					$plan->shipping_available_inventory = $current_inventory_available;
+					if(!$current_inventory_available){
+						$plan->payment_status = 'invoiced';
+					}
+					$plan->save();
+
+					$this->projectlib->updateInvoiceTotal($invoice);
+					$this->projectlib->sendInvoice($invoice_id, false);
+
+					if (!$invoice) {
+						$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_create_invoice_error'));
+					} else {
+						$this->session->set_flashdata('message', 'success:' . $this->lang->line('messages_create_invoice_success'));
+					}
+
+					redirect('cinvoices/view/' . $invoice_id);
+				}
 
 				break;
 
@@ -352,8 +518,9 @@ class cProjects extends MY_Controller {
 						 		$this->lang->line('application_media') => 'cprojects/media/'.$id,
 						 		);
 		$this->view_data['project'] = Project::find($id);
-		$this->view_data['project_has_invoices'] = Invoice::find('all',array('conditions' => array('project_id = ? AND company_id=? AND estimate != ? AND issue_date<=?',$id,$this->client->company->id,1,date('Y-m-d', time()))));
+		$this->view_data['project_has_invoices'] = Invoice::find('all',array('conditions' => array('project_id = ? AND company_id=? AND estimate != ? AND invoice_type != ? AND issue_date<=?',$id,$this->client->company->id,1,'Shipment', date('Y-m-d', time()))));
 		$this->view_data['project_has_estimates'] = Invoice::find('all',array('order' => 'id desc', 'conditions' => array('project_id = ? AND company_id=? AND estimate != ? AND issue_date<=?',$id,$this->client->company->id,0,date('Y-m-d', time()))));
+		$this->view_data['project_has_shippings'] = Invoice::find('all',array('conditions' => array('project_id = ? AND company_id=? AND estimate != ? AND invoice_type = ? AND shipping_method = ? AND issue_date<=?',$id,$this->client->company->id,1,'Shipment', '',date('Y-m-d', time()))));
 
 		$tasks = ProjectHasTask::count(array('conditions' => 'project_id = '.$id));
 		$tasks_done = ProjectHasTask::count(array('conditions' => array('status = ? AND project_id = ?', 'done', $id)));
@@ -386,6 +553,7 @@ class cProjects extends MY_Controller {
 		$this->view_data['time_spent_counter'] = sprintf("%02s", $tracking_hours).":".sprintf("%02s", $tracking_minutes);
 
 		if(!isset($this->view_data['project_has_invoices'])){$this->view_data['project_has_invoices'] = array();}
+		if(!isset($this->view_data['project_has_shippings'])){$this->view_data['project_has_shippings'] = array();}
 		if($this->view_data['project']->company_id != $this->client->company->id){ redirect('cprojects');}
 		$this->content_view = 'projects/client_views/view';
 

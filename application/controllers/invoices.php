@@ -156,7 +156,35 @@ class Invoices extends MY_Controller {
 			$this->view_data['form_action'] = 'invoices/create';
 			$this->content_view = 'invoices/_invoice';
 		}	
-	}	
+	}
+
+	function addTracking($id = FALSE)
+	{
+		if($_POST){
+			unset($_POST['send']);
+			unset($_POST['files']);
+
+			$_POST['created'] = date('Y-m-d');
+			$_POST['invoice_id'] = $id;
+
+			$tracking = InvoiceHasTracking::create($_POST);
+
+			if(!$tracking){
+				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_tracking_error'));
+			}
+			else{
+				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_tracking_success'));
+			}
+			redirect('invoices/view/'.$id);
+		}else
+		{
+			$this->view_data['invoice'] = Invoice::find($id);
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_create_tracking');
+			$this->view_data['form_action'] = 'invoices/addTracking/'.$id;
+			$this->content_view = 'invoices/_add_tracking';
+		}
+	}
 	function update($id = FALSE, $getview = FALSE)
 	{	
 		if($_POST){
@@ -195,56 +223,16 @@ class Invoices extends MY_Controller {
 				 		);	
 		
 		$this->view_data['invoice'] = Invoice::find($id);
+
 		$data["core_settings"] = Setting::first();
-		$invoice = $this->view_data['invoice'];
-		$this->view_data['items'] = $invoice->invoice_has_items;
 
-		//calculate sum
-		$i = 0; $sum = 0;
-		foreach ($this->view_data['items'] as $value){
-			$sum = $sum+$invoice->invoice_has_items[$i]->amount*$invoice->invoice_has_items[$i]->value; $i++;
-		}
-		if(substr($invoice->discount, -1) == "%"){ 
-			$discount = sprintf("%01.2f", round(($sum/100)*substr($invoice->discount, 0, -1), 2)); 
-		}
-		else{
-			$discount = $invoice->discount;
-		}
-		$sum = $sum-$discount;
+		$this->view_data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
 
-		if($invoice->tax != ""){
-			$tax_value = $invoice->tax;
-		}else{
-			$tax_value = $data["core_settings"]->tax;
-		}
-
-		if($invoice->second_tax != ""){
-	      $second_tax_value = $invoice->second_tax;
-	    }else{
-	      $second_tax_value = $data["core_settings"]->second_tax;
-	    }
-
-		$tax = sprintf("%01.2f", round(($sum/100)*$tax_value, 2));
-		$second_tax = sprintf("%01.2f", round(($sum/100)*$second_tax_value, 2));
-
-    	$sum = sprintf("%01.2f", round($sum+$tax+$second_tax, 2));
-
-    	$payment = 0;
-    	$i = 0;
-    	$payments = $invoice->invoice_has_payments;
-    	if(isset($payments)){
-    		foreach ($payments as $value) {
-    			$payment = sprintf("%01.2f", round($payment+$payments[$i]->amount, 2));
-    			$i++;
-    		}
-    	$invoice->paid = $payment;
-    	$invoice->outstanding = sprintf("%01.2f", round($sum-$payment, 2));
-		}
-
-		$invoice->sum = $sum;
-			$invoice->save();
+		$this->projectlib->updateInvoiceTotal($invoice);
 
 		$this->view_data['invoice_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
+
+		$this->view_data['trackings'] = InvoiceHasTracking::find('all',array('conditions' => array('invoice_id=?',$id)));
 
 		$this->content_view = 'invoices/view';
 	}
