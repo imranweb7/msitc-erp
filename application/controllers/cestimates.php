@@ -1,6 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class cEstimates extends MY_Controller {
+
+	private $invoice_shipment_type = 'Shipment';
                
 	function __construct()
 	{
@@ -19,7 +21,10 @@ class cEstimates extends MY_Controller {
 		}
 		$this->view_data['submenu'] = array(
 				 		$this->lang->line('application_all') => 'cestimates',
-				 		);	
+				 		);
+
+		$this->load->library('projectlib');
+		$this->view_data['projectlib'] = $this->projectlib;
 		
 	}	
 	function index()
@@ -106,36 +111,105 @@ class cEstimates extends MY_Controller {
 		$data["core_settings"] = Setting::first();
 		$estimate = $this->view_data['estimate'];
 		$this->view_data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
-		
 
-		//calculate sum
-		$i = 0; $sum = 0;
-		foreach ($this->view_data['items'] as $value){
-			$sum = $sum+$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value; $i++;
-		}
-		if(substr($estimate->discount, -1) == "%"){ 
-			$discount = sprintf("%01.2f", round(($sum/100)*substr($estimate->discount, 0, -1), 2)); 
-		}
-		else{
-			$discount = $estimate->discount;
-		}
-		$sum = $sum-$discount;
-
-		if($estimate->tax != ""){
-			$tax_value = $estimate->tax;
-		}else{
-			$tax_value = $data["core_settings"]->tax;
-		}
-
-		$tax = sprintf("%01.2f", round(($sum/100)*$tax_value, 2));
-		$sum = sprintf("%01.2f", round($sum+$tax, 2));
-
-		$estimate->sum = $sum;
-			$estimate->save();
+		$this->projectlib->updateInvoiceTotal($estimate);
 
 		$this->view_data['estimate_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
 
 		$this->content_view = 'estimates/client_views/view';
+	}
+
+	function createShippingEstimate()
+	{
+		$this->load->helper('notification');
+		$this->view_data['submenu'] = array();
+
+		if($_POST) {
+			unset($_POST['send']);
+			unset($_POST['files']);
+
+			$_POST['shipping_lebel'] = '';
+
+			$config['upload_path'] = './files/media';
+			$config['encrypt_name'] = TRUE;
+			$config['allowed_types'] = '*';
+
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload())
+			{
+				$data = array('upload_data' => $this->upload->data());
+				$_POST['shipping_lebel'] = $data['upload_data']['file_name'];
+			}
+
+			unset($_POST['userfile']);
+			unset($_POST['dummy']);
+
+			$_POST = array_map('htmlspecialchars', $_POST);
+
+			$shipping_address = array(
+				'shipping_name'=>$_POST['shipping_name'],
+				'shipping_company'=>$_POST['shipping_company'],
+				'shipping_address'=>$_POST['shipping_address'],
+				'shipping_city'=>$_POST['shipping_city'],
+				'shipping_state'=>$_POST['shipping_state'],
+				'shipping_zip'=>$_POST['shipping_zip'],
+				'shipping_country'=>$_POST['shipping_country'],
+				'shipping_phone'=>$_POST['shipping_phone'],
+				'shipping_email'=>$_POST['shipping_email'],
+				'shipping_website'=>$_POST['shipping_website'],
+			);
+
+			unset($_POST['shipping_name']);
+			unset($_POST['shipping_company']);
+			unset($_POST['shipping_address']);
+			unset($_POST['shipping_city']);
+			unset($_POST['shipping_state']);
+			unset($_POST['shipping_zip']);
+			unset($_POST['shipping_country']);
+			unset($_POST['shipping_phone']);
+			unset($_POST['shipping_email']);
+			unset($_POST['shipping_website']);
+
+			$core_settings = Setting::first();
+			$_POST['reference'] = $core_settings->invoice_reference;
+			$_POST['project_id'] = '0';
+			$_POST['company_id'] = $this->client->company->id;
+			$_POST['status'] = 'Sent';
+			$_POST['estimate_status'] = 'Sent';
+			$_POST['issue_date'] = date('Y-m-d');
+			$_POST['due_date'] = date('Y-m-d', strtotime('+7 days'));
+			$_POST['currency'] = $core_settings->currency;
+			$_POST['terms'] = $core_settings->invoice_terms;
+			$_POST['invoice_type'] = $this->invoice_shipment_type;
+			$_POST['estimate'] = 1;
+
+			$estimate = Invoice::create($_POST);
+			$new_estimate_reference = $_POST['reference']+1;
+
+			$estimate_id = $estimate->id;
+			$this->projectlib->addInvoiceAddress($estimate_id, true, $shipping_address);
+
+			$estimate_reference = Setting::first();
+			$estimate_reference->update_attributes(array('invoice_reference' => $new_estimate_reference));
+
+			if(!$estimate){
+				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_estimate_error'));
+			}
+			else{
+				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_estimate_success'));
+			}
+
+			redirect('cestimates');
+		}else{
+			$this->load->library('geolib');
+			$this->view_data['geolib'] = $this->geolib;
+			$this->view_data['shipping_methods'] = ShippingMethod::find('all', array('order' => 'name desc'));
+			$this->theme_view = 'modal';
+			$this->view_data['title'] = $this->lang->line('application_create_shipping_estimate');
+			$this->view_data['form_action'] = 'cestimates/createShippingEstimate';
+			$this->content_view = 'estimates/client_views/_cestimate';
+		}
 	}
 
 	function download($id = FALSE){

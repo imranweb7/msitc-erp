@@ -228,7 +228,7 @@ class Invoices extends MY_Controller {
 
 		$this->view_data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
 
-		$this->projectlib->updateInvoiceTotal($invoice);
+		$this->projectlib->updateInvoiceTotal($this->view_data['invoice']);
 
 		$this->view_data['invoice_addresses'] = InvoiceHasAddress::find('all',array('conditions' => array('invoice_id=?',$id)));
 

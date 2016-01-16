@@ -136,6 +136,7 @@
 					  <div class="table-head"><?php echo $this->lang->line('application_shipping_details_label');?></div>
 
 					  <ul class="details col-md-12 subcont">
+						  <li><span><?php echo $this->lang->line('application_select_shipping_method');?>:</span> <?php echo $estimate->shipping_method;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_goods_description');?>:</span> <?php echo $estimate->shipping_goods_description;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_total_boxes');?>:</span> <?php echo $estimate->shipping_total_boxes;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_qty_per_box');?>:</span> <?php echo $estimate->shipping_qty_per_box;?></li>
@@ -191,26 +192,36 @@
 			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
 		</thead>
 		<?php $i = 0; $sum = 0;?>
-		<?php foreach ($items as $value):?>
+		<?php
+
+		if($estimate->invoice_type == 'Shipment'){
+			$item_type = 'invoice_has_shipping_items';
+		}else{
+			$item_type = 'invoice_has_items';
+		}
+
+		$invoice_item = $estimate->$item_type;
+
+		foreach ($items as $value):?>
 		<tr id="<?php echo $value->id;?>" >
 		
 		<td class="option" style="text-align:left;" width="8%">
 				        <?php if($estimate->estimate_status != "Accepted" && $estimate->estimate_status != "Invoiced"){ ?>
-				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>estimates/item_delete/<?php echo $estimate->invoice_has_items[$i]->id;?>/<?php echo $estimate->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
-				        <a href="<?php echo base_url()?>estimates/item_update/<?php echo $estimate->invoice_has_items[$i]->id;?>" title="<?php echo $this->lang->line('application_edit');?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
+				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>estimates/item_delete/<?php echo $invoice_item[$i]->id;?>/<?php echo $estimate->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
+				        <a href="<?php echo base_url()?>estimates/item_update/<?php echo $invoice_item[$i]->id;?>" title="<?php echo $this->lang->line('application_edit');?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
 						<?php } else{ echo '<i class="btn-option fa fa-lock"></i>';}?>
 			</td>
 	
-			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></td>
-			<td class="hidden-xs"><?php echo $estimate->invoice_has_items[$i]->description;?></td>
-			<td class="hidden-xs"><?php echo $estimate->invoice_has_items[$i]->sku;?></td>
-			<td class="hidden-xs" align="center"><?php echo $estimate->invoice_has_items[$i]->amount;?></td>
-			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->value));?></td>
-			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value));?></td>
+			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice_item[$i]->name; }?></td>
+			<td class="hidden-xs"><?php echo $invoice_item[$i]->description;?></td>
+			<td class="hidden-xs"><?php echo $invoice_item[$i]->sku;?></td>
+			<td class="hidden-xs" align="center"><?php echo $invoice_item[$i]->amount;?></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->value));?></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->amount*$invoice_item[$i]->value));?></td>
 
 		</tr>
 		
-		<?php $sum = $sum+$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value; $i++;?>
+		<?php $sum = $sum+$invoice_item[$i]->amount*$invoice_item[$i]->value; $i++;?>
 		
 		<?php endforeach;
 		if(empty($items)){ echo "<tr><td colspan='7'>".$this->lang->line('application_no_items_yet')."</td></tr>";}

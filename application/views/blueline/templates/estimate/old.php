@@ -228,13 +228,13 @@ table.tablesorter tbody tr.even td {
   <?php $i = 0; $sum = 0; $row=false; ?>
     <?php
 
-    if($invoice->invoice_type == 'Shipment'){
+    if($estimate->invoice_type == 'Shipment'){
       $item_type = 'invoice_has_shipping_items';
     }else{
       $item_type = 'invoice_has_items';
     }
 
-    $invoice_item = $invoice->$item_type;
+    $invoice_item = $estimate->$item_type;
 
     foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>

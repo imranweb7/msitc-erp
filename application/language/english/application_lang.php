@@ -203,10 +203,12 @@ $lang['application_shipping_email'] = "Shipping Email";
 $lang['application_shipping_website'] = "Shipping Website";
 $lang['application_shipping_lebel'] = "Shipping Label";
 $lang['application_create_shipping_estimate'] = "Create Shipping Plan";
-
+$lang['application_edit_shipping_estimate'] = "Edit Shipping Plan";
+$lang['application_shipping_address_fieldset'] = "Shipping Address";
+$lang['application_shipping_estimate_fieldset'] = "Shipping Estimte Details";
+$lang['application_shipping_estimate_settings_fieldset'] = "Shipping Estimte Settings";
 $lang['application_billing_address_label'] = "Billing Address";
 $lang['application_shipping_address_label'] = "Shipping Address";
-
 $lang['application_project_type_details'] = "Project Type Details";
 $lang['application_quantity_hours'] = "Quantity/Hours";
 $lang['application_quick_access'] = "Quick Access";
