@@ -1,8 +1,8 @@
 <?php
 if($max_qty <= 0){
     echo '<p class="btn btn-danger">Sorry, item out of stock!!!</p>';
-    return;
-}
+
+}else{
 
 $attributes = array('class' => 'dynamic-pre-form', 'id' => '_create_plan');
 echo form_open_multipart($form_action, $attributes);
@@ -49,7 +49,13 @@ echo form_open_multipart($form_action, $attributes);
 
 <div class="form-group">
     <label for="shipping_country"><?php echo $this->lang->line('application_shipping_country');?> *</label>
-    <input type="text" name="shipping_country" class="form-control" id="shipping_country"  value="<?php if(isset($plan)){echo $plan->shipping_country;} ?>" required/>
+
+    <?php
+    $options = $geolib->getCountryAssociativeArray();
+    if(isset($item)){$country_selected = $item->shipping_country;}else{$country_selected = "";}
+    echo form_dropdown('shipping_country', $options, $country_selected, 'style="width:100%" class="chosen-select"');?>
+
+
 </div>
 
 <div class="form-group">
@@ -94,4 +100,4 @@ echo form_open_multipart($form_action, $attributes);
     <a class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
 </div>
 
-<?php echo form_close(); ?>
+<?php echo form_close(); } ?>

@@ -228,17 +228,27 @@ p{
   </thead> 
   <tbody> 
   <?php $i = 0; $sum = 0; $row=false; ?>
-    <?php foreach ($items as $value):?>
+    <?php
+
+    if($invoice->invoice_type == 'Shipment'){
+        $item_type = 'invoice_has_shipping_items';
+    }else{
+        $item_type = 'invoice_has_items';
+    }
+
+    $invoice_item = $invoice->$item_type;
+
+    foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>
       <td>
-        <span class="item-name"><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></span><br/>
-        <span class="description"><?php echo  str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?><span class="item-name">
+        <span class="item-name"><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice_item[$i]->name; }?></span><br/>
+        <span class="description"><?php echo  str_replace("&lt;br&gt;", "<br>", $invoice_item[$i]->description);?><span class="item-name">
       </td>
-      <td class="center"><?php echo $estimate->invoice_has_items[$i]->amount;?></td>
-      <td class="right"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->value));?></td>
-      <td class="right"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value));?></td>
+      <td class="center"><?php echo $invoice_item[$i]->amount;?></td>
+      <td class="right"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->value));?></td>
+      <td class="right"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->amount*$invoice_item[$i]->value));?></td>
     </tr>
-    <?php $sum = $sum+$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value; $i++; if($row){$row=false;}else{$row=true;}?>
+    <?php $sum = $sum+$invoice_item[$i]->amount*$invoice_item[$i]->value; $i++; if($row){$row=false;}else{$row=true;}?>
     
     <?php endforeach;
     if(empty($items)){ echo "<tr><td colspan='4'>".$this->lang->line('application_no_items_yet')."</td></tr>";}

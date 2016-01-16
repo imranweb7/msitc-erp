@@ -1000,6 +1000,7 @@ class Projects extends MY_Controller {
 					redirect('projects/view/'.$id);
 				}else
 				{
+					$this->view_data['shipping_methods'] = ShippingMethod::find('all', array('order' => 'name desc'));
 					$this->theme_view = 'modal';
 					$this->view_data['title'] = $this->lang->line('application_edit_shipping_item');
 					$this->view_data['form_action'] = 'projects/item/'.$id.'/shippingItemUpdate/'.$item_id;

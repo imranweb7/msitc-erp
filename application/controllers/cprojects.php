@@ -143,26 +143,19 @@ class cProjects extends MY_Controller {
 		switch ($condition) {
 			case 'create':
 				$plan = ProjectHasItem::find($plan_id);
-
-				if (!isset($plan_id) || empty($plan_id)) {
-					$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_item_empty'));
-					redirect('cprojects/view/' . $id);
-				}
-
 				$current_inventory = $plan->shipping_available_inventory;
 
-				if (!$current_inventory) {
-					$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_inventory_empty'));
-					redirect('cprojects/view/' . $id);
-				}
+				if($_POST){
+					if (!isset($plan_id) || empty($plan_id)) {
+						$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_item_empty'));
+						redirect('cprojects/view/' . $id);
+					}
 
-				if(!$_POST){
-					$this->view_data['max_qty'] = $plan->shipping_available_inventory;
-					$this->theme_view = 'modal';
-					$this->view_data['title'] = $this->lang->line('application_create_shipping_plan');
-					$this->view_data['form_action'] = 'cprojects/planOrder/'.$id.'/create/'.$plan_id;
-					$this->content_view = 'projects/client_views/_create_plan';
-				}else {
+					if (!$current_inventory) {
+						$this->session->set_flashdata('message', 'error:' . $this->lang->line('messages_project_make_plan_inventory_empty'));
+						redirect('cprojects/view/' . $id);
+					}
+
 					$quantity = $_POST['amount'];
 
 					$current_inventory_available = $current_inventory - $quantity;
@@ -286,6 +279,16 @@ class cProjects extends MY_Controller {
 					}
 
 					redirect('cinvoices/view/' . $invoice_id);
+
+				}else {
+					$this->load->library('geolib');
+					$this->view_data['geolib'] = $this->geolib;
+
+					$this->view_data['max_qty'] = $plan->shipping_available_inventory;
+					$this->theme_view = 'modal';
+					$this->view_data['title'] = $this->lang->line('application_create_shipping_plan');
+					$this->view_data['form_action'] = 'cprojects/planOrder/' . $id . '/create/' . $plan_id;
+					$this->content_view = 'projects/client_views/_create_plan';
 				}
 
 				break;
