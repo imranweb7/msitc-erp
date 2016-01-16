@@ -226,15 +226,25 @@ table.tablesorter tbody tr.even td {
   </thead> 
   <tbody> 
   <?php $i = 0; $sum = 0; $row=false; ?>
-    <?php foreach ($items as $value):?>
+    <?php
+
+    if($invoice->invoice_type == 'Shipment'){
+      $item_type = 'invoice_has_shipping_items';
+    }else{
+      $item_type = 'invoice_has_items';
+    }
+
+    $invoice_item = $invoice->$item_type;
+
+    foreach ($items as $value):?>
     <tr <?php if($row){?>class="even"<?php } ?>>
-      <td><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></td>
-      <td><?php echo  str_replace("&lt;br&gt;", "<br>", $estimate->invoice_has_items[$i]->description);?></td>
-      <td align="center"><?php echo $estimate->invoice_has_items[$i]->amount;?></td>
-      <td><?php echo sprintf("%01.2f",$estimate->invoice_has_items[$i]->value);?></td>
-      <td><?php echo sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value);?></td>
+      <td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice_item[$i]->name; }?></td>
+      <td><?php echo  str_replace("&lt;br&gt;", "<br>", $invoice_item[$i]->description);?></td>
+      <td align="center"><?php echo $invoice_item[$i]->amount;?></td>
+      <td><?php echo sprintf("%01.2f",$invoice_item[$i]->value);?></td>
+      <td><?php echo sprintf("%01.2f",$invoice_item[$i]->amount*$invoice_item[$i]->value);?></td>
     </tr>
-    <?php $sum = $sum+$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value; $i++; if($row){$row=false;}else{$row=true;}?>
+    <?php $sum = $sum+$invoice_item[$i]->amount*$invoice_item[$i]->value; $i++; if($row){$row=false;}else{$row=true;}?>
     
     <?php endforeach;
     if(empty($items)){ echo "<tr><td colspan='5'>".$this->lang->line('application_no_items_yet')."</td></tr>";}
