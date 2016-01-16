@@ -1,11 +1,18 @@
 <?php
+if($max_qty <= 0){
+    echo '<p class="btn btn-danger">Sorry, item out of stock!!!</p>';
+    return;
+}
+
 $attributes = array('class' => 'dynamic-pre-form', 'id' => '_create_plan');
 echo form_open_multipart($form_action, $attributes);
 ?>
 
 <div class="form-group">
     <label for="shipping_qty"><?php echo $this->lang->line('application_shipping_qty_require');?> *</label>
-    <input type="number" name="amount" class="form-control" id="amount"  value="<?php if(isset($plan)){echo $plan->amount;} ?>" max="<?php echo $max_qty; ?>" required/>
+    <input type="number" name="amount" class="form-control" id="amount"  value="<?php if(isset($plan)){echo $plan->amount;} ?>" max="<?php echo $max_qty; ?>" data-error=
+    "Please enter quantity between 1 to <?php echo $max_qty; ?>" required/>
+    <div class="help-block with-errors"></div>
 </div>
 
 <div class="form-group">

@@ -244,7 +244,7 @@
            <div class="col-xs-12 col-sm-12">
                <div class="table-head"><?php echo $this->lang->line('application_shipping_item_tab_title');?> <span class=" pull-right"><a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/addShippingItem" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_shipping_item');?></a></span></div>
                <div class="table-div min-height-410">
-                   <table id="shipping-item-list" class="table data-shipping-item-list" rel="<?php echo base_url()?>projects/item/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
+                   <table id="shipping-item-list" class="table data-shipping-item-list" rel="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemView/<?php echo $value->id;?>" cellspacing="0" cellpadding="0">
                        <thead>
                        <tr>
                            <th><?php echo $this->lang->line('shipping_item_application_name');?></th>

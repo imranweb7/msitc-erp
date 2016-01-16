@@ -328,7 +328,7 @@
             </div>
 
             <div class="table-div min-height-410">
-                <table id="shipping-plan-list" class="table data-shipping-plan-list" rel="<?php echo base_url()?>projects/item/<?php echo $project->id;?>" cellspacing="0" cellpadding="0">
+                <table id="shipping-plan-list" class="table data-shipping-plan-list" rel="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>/shippingItemView/<?php echo $value->id;?>" cellspacing="0" cellpadding="0">
                     <thead>
                     <tr>
                         <th style="width: 10px;">##</th>
@@ -353,9 +353,7 @@
                             <td class="hidden-xs"><?php echo $value->shipping_box_size_weight;?></td>
                             <td class="hidden-xs"><?php echo $core_settings->currency.$value->cost;?></td>
                             <td class="option action-td" width="10%">
-                                <button type="button" class="btn-option btn-xs po" data-toggle="popover" data-placement="left" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemDelete/<?php echo $value->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>
-                                <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemUpdate/<?php echo $value->id;?>" class="btn-option" data-toggle="mainmodal"><i class="fa fa-cog"></i></a>
-                                <a href="<?php echo base_url()?>projects/item/<?php echo $project->id;?>/shippingItemView/<?php echo $value->id;?>" class="btn-option view_project_item_<?php echo $value->id;?>" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
+                                <a href="<?php echo base_url()?>cprojects/item/<?php echo $project->id;?>/shippingItemView/<?php echo $value->id;?>" class="btn-option view_project_item_<?php echo $value->id;?>" data-toggle="mainmodal"><i class="fa fa-file-o"></i></a>
                             </td>
 
                         </tr>

@@ -503,6 +503,18 @@ class cProjects extends MY_Controller {
 				}
 				break;
 
+			case 'shippingItemView':
+				$this->theme_view = 'modal';
+				$this->content_view = 'projects/view_shipping_item';
+				$this->view_data['title'] = $this->lang->line('application_shipping_item_details');
+				$this->view_data['project'] = Project::find($id);
+				$this->view_data['project_id'] = $id;
+				$this->view_data['item'] = ProjectHasItem::find($item_id);
+				$this->view_data['form_action'] = 'cprojects/item/'.$id.'/shippingItemView/'.$item_id;
+				$this->view_data['backlink'] = 'cprojects/view/'.$id;
+				break;
+
+
 			default:
 				$this->view_data['project'] = Project::find($id);
 				$this->content_view = 'projects/view/'.$id;
