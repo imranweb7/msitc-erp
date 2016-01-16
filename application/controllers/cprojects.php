@@ -300,7 +300,7 @@ class cProjects extends MY_Controller {
 		}
 	}
 
-	function estimate($id = FALSE, $condition = FALSE, $estimate_id = FALSE)
+	/*function estimate($id = FALSE, $condition = FALSE, $estimate_id = FALSE)
 	{
 		$this->load->helper('notification');
 		$this->view_data['submenu'] = array(
@@ -405,7 +405,7 @@ class cProjects extends MY_Controller {
 				$this->content_view = 'cprojects/view/'.$id;
 				break;
 		}
-	}
+	}*/
 
 	function create()
 	{

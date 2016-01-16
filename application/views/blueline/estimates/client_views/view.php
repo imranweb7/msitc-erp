@@ -139,6 +139,7 @@
 					  <div class="table-head"><?php echo $this->lang->line('application_shipping_details_label');?></div>
 
 					  <ul class="details col-md-12 subcont">
+						  <li><span><?php echo $this->lang->line('application_select_shipping_method');?>:</span> <?php echo $estimate->shipping_method;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_goods_description');?>:</span> <?php echo $estimate->shipping_goods_description;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_total_boxes');?>:</span> <?php echo $estimate->shipping_total_boxes;?></li>
 						  <li><span><?php echo $this->lang->line('application_shipping_qty_per_box');?>:</span> <?php echo $estimate->shipping_qty_per_box;?></li>
@@ -193,19 +194,29 @@
 			<th class="hidden-xs" width="12%"><?php echo $this->lang->line('application_sub_total');?></th>
 		</thead>
 		<?php $i = 0; $sum = 0;?>
-		<?php foreach ($items as $value):?>
+		<?php
+
+		if($estimate->invoice_type == 'Shipment'){
+			$item_type = 'invoice_has_shipping_items';
+		}else{
+			$item_type = 'invoice_has_items';
+		}
+
+		$invoice_item = $estimate->$item_type;
+
+		foreach ($items as $value):?>
 		<tr id="<?php echo $value->id;?>" >
 
-			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $estimate->invoice_has_items[$i]->item->name; }?></td>
-			<td class="hidden-xs"><?php echo $estimate->invoice_has_items[$i]->description;?></td>
-			<td class="hidden-xs"><?php echo $estimate->invoice_has_items[$i]->sku;?></td>
-			<td class="hidden-xs" align="center"><?php echo $estimate->invoice_has_items[$i]->amount;?></td>
-			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->value));?></td>
-			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value));?></td>
+			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice_item[$i]->name; }?></td>
+			<td class="hidden-xs"><?php echo $invoice_item[$i]->description;?></td>
+			<td class="hidden-xs"><?php echo $invoice_item[$i]->sku;?></td>
+			<td class="hidden-xs" align="center"><?php echo $invoice_item[$i]->amount;?></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->value));?></td>
+			<td class="hidden-xs"><?php echo display_money(sprintf("%01.2f",$invoice_item[$i]->amount*$invoice_item[$i]->value));?></td>
 
 		</tr>
 		
-		<?php $sum = $sum+$estimate->invoice_has_items[$i]->amount*$estimate->invoice_has_items[$i]->value; $i++;?>
+		<?php $sum = $sum+$invoice_item[$i]->amount*$invoice_item[$i]->value; $i++;?>
 		
 		<?php endforeach;
 		if(empty($items)){ echo "<tr><td colspan='6'>".$this->lang->line('application_no_items_yet')."</td></tr>";}

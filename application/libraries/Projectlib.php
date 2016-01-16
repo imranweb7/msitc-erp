@@ -353,4 +353,83 @@ class Projectlib
 
 		return $invoice_address;
 	}
+
+	/*
+	 * Update billing and shipping address to invoice
+	 *
+	 * @param int $invoice_id the invoice id
+	 * @param int $company_id the company id
+	 * @param bool $update_shipping add shipping address
+	 * @param array $shipping_address the shipping address.
+	 * 		default billing and shipping address is same
+	 *
+	 * @return InvoiceHasAddress
+	 */
+	public function updateInvoiceAddress($invoice_id = FALSE, $update_shipping = FALSE, $shipping_address=array()){
+		if(empty($invoice_id)){
+			return;
+		}
+
+		$invoice = Invoice::find($invoice_id);
+		$company_id = $invoice->company_id;
+
+		if(empty($company_id)){
+			return;
+		}
+
+		$company = Company::find($company_id);
+		$primary_contact_id = $company->client_id;
+
+		$primary_contact = Client::find($primary_contact_id);
+
+		$address = array(
+			'company_id'=>$company_id,
+			'invoice_id'=>$invoice_id,
+			'billing_name'=>$primary_contact->firstname.' '.$primary_contact->lastname,
+			'billing_company'=>$company->name,
+			'billing_address'=>$company->address,
+			'billing_city'=>$company->city,
+			'billing_state'=>$company->province,
+			'billing_zip'=>$company->zipcode,
+			'billing_country'=>$company->country,
+			'billing_phone'=>$company->phone,
+			'billing_email'=>$primary_contact->email,
+			'billing_website'=>$company->website
+		);
+
+		$shipping = array();
+
+		if($update_shipping){
+			if(!count($shipping_address)){
+				$shipping = array(
+					'shipping_name'=>$primary_contact->firstname.' '.$primary_contact->lastname,
+					'shipping_company'=>$company->name,
+					'shipping_address'=>$company->address,
+					'shipping_city'=>$company->city,
+					'shipping_state'=>$company->province,
+					'shipping_zip'=>$company->zipcode,
+					'shipping_country'=>$company->country,
+					'shipping_phone'=>$company->phone,
+					'shipping_email'=>$primary_contact->email,
+					'shipping_website'=>$company->website
+				);
+			}else{
+				foreach($shipping_address as $key=>$val){
+					$shipping[$key] = $val;
+				}
+			}
+		}
+
+		$address = $address+$shipping;
+
+		$invoice_addresses = InvoiceHasAddress::find('all', array('conditions' => array('invoice_id=?',$invoice_id), 'limit' => 1));
+
+		if(count($invoice_addresses)){
+			foreach($invoice_addresses as $iaddress){
+				return $iaddress->update_attributes($address);
+			}
+		}else{
+			return $invoice_address = InvoiceHasAddress::create($address);
+		}
+	}
 }

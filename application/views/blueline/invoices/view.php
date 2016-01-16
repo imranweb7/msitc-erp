@@ -122,6 +122,7 @@
 
 			<ul class="details col-md-12 subcont">
 				<?php if($invoice->shipping_method != ''){?>
+					<li><span><?php echo $this->lang->line('application_select_shipping_method');?>:</span> <?php echo $invoice->shipping_method;?></li>
 					<li><span><?php echo $this->lang->line('application_shipping_goods_description');?>:</span> <?php echo $invoice->shipping_goods_description;?></li>
 					<li><span><?php echo $this->lang->line('application_shipping_total_boxes');?>:</span> <?php echo $invoice->shipping_total_boxes;?></li>
 					<li><span><?php echo $this->lang->line('application_shipping_qty_per_box');?>:</span> <?php echo $invoice->shipping_qty_per_box;?></li>

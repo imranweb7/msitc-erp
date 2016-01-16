@@ -1,6 +1,7 @@
 	<div class="col-sm-12  col-md-12 main">  
  
      <div class="row">
+         <a href="<?php echo base_url()?>cestimates/createShippingEstimate" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_create_estimate');?></a>
          <div class="btn-group pull-right-responsive margin-right-3">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             <?php $last_uri = $this->uri->segment($this->uri->total_segments()); if($last_uri != "cestimates"){echo $this->lang->line('application_'.$last_uri);}else{echo $this->lang->line('application_all');} ?> <span class="caret"></span>

@@ -55,7 +55,6 @@ echo form_open_multipart($form_action, $attributes);
     if(isset($item)){$country_selected = $item->shipping_country;}else{$country_selected = "";}
     echo form_dropdown('shipping_country', $options, $country_selected, 'style="width:100%" class="chosen-select"');?>
 
-
 </div>
 
 <div class="form-group">
