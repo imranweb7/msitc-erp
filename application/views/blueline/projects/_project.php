@@ -125,14 +125,9 @@ if(isset($project)){ ?>
 </div>
 
 
-<div class="form-group">
-                          <label for="start"><?php echo $this->lang->line('application_start_date');?> *</label>
-                          <input class="form-control datepicker" name="start" id="start" type="text" value="<?php if(isset($project)){echo $project->start;} ?>" data-date-format="yyyy-mm-dd" required/>
-</div>
-<div class="form-group">
-                          <label for="end"><?php echo $this->lang->line('application_deadline');?> *</label>
-                          <input class="form-control datepicker" name="end" id="end" type="text" value="<?php if(isset($project)){echo $project->end;} ?>" data-date-format="yyyy-mm-dd" required/>
-</div>
+<input type="hidden" name="start" id="start" value="<?php if(isset($project)){echo $project->start;} else{ echo date('Y-m-d');} ?>" required/>
+<input type="hidden" name="end" id="end" value="<?php if(isset($project)){echo $project->end;} else{ echo date('Y-m-d',strtotime('+1 year'));} ?>" required/>
+
 
 <input type="hidden" name="phases" id="phases"  value="<?php if(isset($project)){echo $project->phases;}else{echo "Planning, Developing, Testing";} ?>" required/>
 <input type="hidden" name="category" class="form-control typeahead" id="category"  value="<?php if(isset($project)){echo $project->category;} ?>"/>

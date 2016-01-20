@@ -3,6 +3,8 @@
 class Estimates extends MY_Controller {
 
 	private $invoice_shipment_type = 'Shipment';
+
+	const ITEM_UPLOAD_PATH = './files/media/';
                
 	function __construct()
 	{
@@ -386,44 +388,133 @@ class Estimates extends MY_Controller {
 			unset($_POST['send']);
 			$_POST = array_map('htmlspecialchars', $_POST);
 
-			$invoice = Invoice::find($_POST['invoice_id']);
+			$id = $_POST['invoice_id'];
 
-			if($_POST['name'] != ""){
-				$_POST['name'] = $_POST['name'];
-				$_POST['value'] = $_POST['value'];
-				$_POST['type'] = $_POST['type'];
+			$invoice = Invoice::find($id);
 
-				$item = InvoiceHasItem::create($_POST);
-			}else{
-				if($_POST['item_id'] == "-"){
-					$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_add_item_error'));
-					redirect('estimates/view/'.$_POST['invoice_id']);
+			$item_type = 'regular';
+			if($invoice->invoice_type == $this->invoice_shipment_type){
+				$item_type = 'shipping';
+			}
 
-				}else{
-					$itemvalue = Item::find_by_id($_POST['item_id']);
+			$is_new_item = false;
+			if(isset($_POST['new_item']) && htmlspecialchars($_POST['new_item']) == "1") {
+				$is_new_item = true;
 
-					$invoice_item_data = array(
-						'invoice_id' => $_POST['invoice_id'],
-						'item_id' => $_POST['item_id'],
-						'project_item_id' => '0',
-						'photo' => $itemvalue->photo,
-						'photo_type' =>$itemvalue->photo_type,
-						'photo_original_name' => $itemvalue->photo_original_name,
-						'name' => $itemvalue->name,
-						'amount' => $_POST['amount'],
-						'description' => $itemvalue->description,
-						'sku' => $itemvalue->sku,
-						'value' => (empty($_POST['value'])) ? $itemvalue->value : $_POST['value'],
-						'original_cost' => $itemvalue->value,
-						'shipping_item' => ($invoice->invoice_type == 'Shipment') ? '1' : '0'
-					);
+				$filename = $savename = $type = '';
 
-					$item = InvoiceHasItem::create($invoice_item_data);
+				if($invoice->invoice_type != $this->invoice_shipment_type) {
+					$config['upload_path'] = self::ITEM_UPLOAD_PATH;
+					$config['encrypt_name'] = TRUE;
+					$config['allowed_types'] = '*';
+
+					$this->load->library('upload', $config);
+
+					if (!$this->upload->do_upload()) {
+						$error = $this->upload->display_errors('', ' ');
+						$this->session->set_flashdata('message', 'error:' . $error);
+						redirect('estimates/view/' . $id);
+					} else {
+						$data = array('upload_data' => $this->upload->data());
+
+						$filename = $data['upload_data']['orig_name'];
+						$savename = $data['upload_data']['file_name'];
+						$type = $data['upload_data']['file_type'];
+					}
 				}
+
+				unset($_POST['send']);
+				unset($_POST['userfile']);
+				unset($_POST['new_item']);
+				unset($_POST['file-name']);
+				unset($_POST['files']);
+
+				$item_name = $item_description = $_POST['name'];
+
+				$cost = $original_cost = $_POST['value'];
+				$sku = $_POST['sku'];
+				$inactive = $_POST['inactive'];
+
+				$item_data = array(
+					'photo' => $savename,
+					'photo_type' => $type,
+					'photo_original_name' => $filename,
+					'type' => $item_type,
+					'name' => $item_name,
+					'value' => $original_cost,
+					'description' => $item_description,
+					'sku' => $sku,
+					'inactive' => $inactive
+				);
+
+				$item = Item::create($item_data);
+
+				$item_id = $_POST['item_id'] = $item->id;
+
+
+			}else{
+				unset($_POST['send']);
+				unset($_POST['userfile']);
+				unset($_POST['file-name']);
+				unset($_POST['files']);
+				unset($_POST['new_item']);
+				unset($_POST['name']);
+				unset($_POST['sku']);
+				unset($_POST['inactive']);
+
+				$_POST = array_map('htmlspecialchars', $_POST);
+
+				if($_POST['item_id'] == "-" || $_POST['item_id'] == "0"){
+					$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_add_item_error'));
+					redirect('estimates/view/'.$id);
+				}
+
+				$item_id = $_POST['item_id'];
+
+				$item_details = Item::find($item_id);
+				$item_name = $item_details->name;
+				$item_description = $item_details->description;
+				$cost = (empty($_POST['value'])) ? $item_details->value : $_POST['value'];
+				$original_cost = $item_details->value;
+				$savename = $item_details->photo;
+				$type = $item_details->photo_type;
+				$filename = $item_details->photo_original_name;
+				$sku = $item_details->sku;
+				$item_type = $item_details->type;
+				$inactive = $item_details->inactive;
+			}
+
+			$estimate_item_exist = InvoiceHasItem::count(array('conditions' => array('invoice_id=? AND item_id=?',$id, $item_id)));
+			if($estimate_item_exist){
+				$estimate_item = false;
+
+				$error = $this->lang->line('messages_project_save_item_exist');
+				$this->session->set_flashdata('message', 'error:'.$error);
+				redirect('estimates/view/'.$id);
+
+			}else{
+				$invoice_item_data = array(
+					'invoice_id' => $id,
+					'item_id' => $item_id,
+					'project_item_id' => '0',
+					'photo' => $savename,
+					'photo_type' => $type,
+					'photo_original_name' => $filename,
+					'name' => $item_name,
+					'amount' => $_POST['amount'],
+					'description' => $item_description,
+					'sku' => $sku,
+					'value' => $cost,
+					'type' => $item_type,
+					'original_cost' => $original_cost,
+					'shipping_item' => ($invoice->invoice_type == 'Shipment') ? '1' : '0'
+				);
+
+				$estimate_item = InvoiceHasItem::create($invoice_item_data);
 			}
 
 
-       		if(!$item){
+       		if(!$estimate_item){
 				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_add_item_error'));
 			}
        		else{
@@ -435,6 +526,7 @@ class Estimates extends MY_Controller {
 		}else
 		{
 			$this->view_data['estimate'] = Invoice::find($id);
+			$this->view_data['estimate_type'] = $this->view_data['estimate']->invoice_type;
 			$this->view_data['items'] = Item::find('all',array('conditions' => array('inactive=?','0')));
 			$this->theme_view = 'modal';
 			$this->view_data['title'] = $this->lang->line('application_add_item');
@@ -448,6 +540,7 @@ class Estimates extends MY_Controller {
 			unset($_POST['send']);
 			$_POST = array_map('htmlspecialchars', $_POST);
 			$item = InvoiceHasItem::find($_POST['id']);
+
 			$item = $item->update_attributes($_POST);
        		if(!$item){
 				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_save_item_error'));
@@ -462,6 +555,8 @@ class Estimates extends MY_Controller {
 		}else
 		{
 			$this->view_data['estimate_has_items'] = InvoiceHasItem::find($id);
+			$invoice = Invoice::find($this->view_data['estimate_has_items']->invoice_id);
+			$this->view_data['estimate_type'] = $invoice->invoice_type;
 			$this->theme_view = 'modal';
 			$this->view_data['title'] = $this->lang->line('application_edit_item');
 			$this->view_data['form_action'] = 'estimates/item_update';

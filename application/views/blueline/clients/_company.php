@@ -60,10 +60,17 @@ echo form_open_multipart($form_action, $attributes);
         <label for="city"><?php echo $this->lang->line('application_city');?></label>
         <input id="city" type="text" name="city" class="form-control" value="<?php if(isset($company)){echo $company->city;}?>" />
 </div>
+
 <div class="form-group">
-        <label for="country"><?php echo $this->lang->line('application_country');?></label>
-        <input id="country" type="text" name="country" class="form-control" value="<?php if(isset($company)){echo $company->country;}?>" />
+        <label for="shipping_country"><?php echo $this->lang->line('application_shipping_country');?> *</label>
+
+        <?php
+        $options = $geolib->getCountryAssociativeArray();
+        if(isset($company)){$country_selected = $company->country;}else{$country_selected = "";}
+        echo form_dropdown('country', $options, $country_selected, 'style="width:100%" class="chosen-select"');?>
 </div>
+
+
 <div class="form-group">
         <label for="province"><?php echo $this->lang->line('application_province');?></label>
         <input id="province" type="text" name="province" class="form-control" value="<?php if(isset($company)){echo $company->province;}?>" />

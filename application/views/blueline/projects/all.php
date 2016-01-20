@@ -41,8 +41,6 @@
                       <th class="hidden-xs"><?php echo $this->lang->line('application_qty');?></th>
                       <th class="hidden-xs"><?php echo $this->lang->line('application_budget');?></th>
 
-
-                      <th class="hidden-xs"><?php echo $this->lang->line('application_deadline');?></th>
                       <th class="hidden-xs"><?php echo $this->lang->line('application_assign_to');?></th>
                       <th><?php echo $this->lang->line('application_action');?></th>
                   </tr></thead>
@@ -68,8 +66,6 @@
                     <td class="hidden-xs"><span class="hidden-xs label label-chilled"><?php echo $value->product_qty; ?></span></td>
                     <td class="hidden-xs"><span class="hidden-xs label label-important"><?php echo $core_settings->currency.$value->project_budget;?></span></td>
 
-
-                    <td class="hidden-xs"><span class="hidden-xs label label-success <?php if($value->end <= date('Y-m-d') && $value->progress != 100){ echo 'label-important tt" title="'.$this->lang->line('application_overdue'); } ?>"><?php $unix = human_to_unix($value->end.' 00:00');echo '<span class="hidden">'.$unix.'</span> '; echo date($core_settings->date_format, $unix);?></span></td>
                   <td class="hidden-xs">
                     <?php 
                           $workerImages = array();

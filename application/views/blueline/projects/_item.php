@@ -44,7 +44,7 @@ $public = "0";
 
         <div class="form-group">
         <label for="userfile"><?php echo $this->lang->line('item_application_file');?> *</label><div>
-            <input id="uploadFile" class="form-control uploadFile" placeholder="<?php if(isset($items)){ echo $items->photo; }else{ echo "Choose File";} ?>" disabled="disabled" />
+            <input id="uploadFile" class="form-control uploadFile" placeholder="<?php if(isset($item)){ echo $item->photo; }else{ echo "Choose File";} ?>" disabled="disabled" />
             <div class="fileUpload btn btn-primary">
                 <span><i class="fa fa-upload"></i><span class="hidden-xs"> <?php echo $this->lang->line('application_select');?></span></span>
                 <input id="uploadBtn" type="file" name="userfile" class="upload item-new" />

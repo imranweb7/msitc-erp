@@ -177,7 +177,7 @@
 		<div class="col-md-12">
 		<div class="table-head"><?php echo $this->lang->line('application_invoice_items');?> </div>
 		<div class="table-div min-height-200">
-		<table class="table" id="items" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="table" id="items" rel="<?php echo base_url()?>cinvoices/item" cellspacing="0" cellpadding="0">
 		<thead>
 			<th><?php echo $this->lang->line('item_application_name');?></th>
 			<th class="hidden-xs"><?php echo $this->lang->line('item_application_description');?></th>
@@ -198,7 +198,7 @@
 		$invoice_item = $invoice->$item_type;
 
 		foreach ($items as $value):?>
-		<tr id="<?php echo $value->id;?>" >
+		<tr id="<?php echo $value->item_id;?>" >
 	
 			<td><?php if(!empty($value->name)){echo $value->name;}else{ echo $invoice_item[$i]->name; }?></td>
 			<td class="hidden-xs"><?php echo $invoice_item[$i]->description;?></td>

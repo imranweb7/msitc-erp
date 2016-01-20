@@ -707,6 +707,7 @@ class Projects extends MY_Controller {
 						unset($_POST['userfile']);
 						unset($_POST['file-name']);
 						unset($_POST['files']);
+						unset($_POST['new_item']);
 						$_POST = array_map('htmlspecialchars', $_POST);
 
 						$item_name = $item_description = $_POST['name'];

@@ -265,9 +265,15 @@ class Invoices extends MY_Controller {
 			}
 			
 			$invoice->update_attributes(array('status' => $new_status));
-			if(isset($payment_date)){ $invoice->update_attributes(array('paid_date' => $payment_date)); }
-       		if(!$invoiceHasPayment){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_payment_error'));}
-       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_payment_success'));}
+			if(isset($payment_date)){
+				$invoice->update_attributes(array('paid_date' => $payment_date));
+			}
+
+       		if(!$invoiceHasPayment){
+				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_payment_error'));
+			}else{
+				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_payment_success'));
+			}
 			redirect('invoices/view/'.$_POST['invoice_id']);
 		}else
 		{
@@ -549,9 +555,23 @@ class Invoices extends MY_Controller {
 			$this->view_data['form_action'] = 'invoices/authorizenet';
 			$this->content_view = 'invoices/_authorizenet';
 		}
+	}
+	function downloadLabel($id = FALSE){
 
+		$this->load->helper('download');
+		$invoice = Invoice::find($id);
 
+		if(!$invoice){
+			redirect('cinvoices/view/'.$id);
+		}
 
+		$data = file_get_contents('./files/media/'.$invoice->shipping_lebel);
+
+		$type = array_reverse(explode('.', $invoice->shipping_lebel));
+		$type = strtolower($type[0]);
+
+		$name = 'shipping_label_'.$invoice->reference.'.'.$type;
+		force_download($name, $data);
 	}
 	function delete($id = FALSE)
 	{	

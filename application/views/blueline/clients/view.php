@@ -46,7 +46,7 @@
 		<table id="contacts" class="data-no-search table" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
 		<thead>
 			<th style="width:10px"></th>
-			<th><?php echo $this->lang->line('application_name');?></th>
+			<th><?php echo $this->lang->line('application_contact_name');?></th>
 			<th class="hidden-xs"><?php echo $this->lang->line('application_email');?></th>
 			<th class="hidden-xs"><?php echo $this->lang->line('application_phone');?></th>
 			<th class="hidden-xs"><?php echo $this->lang->line('application_mobile');?></th>

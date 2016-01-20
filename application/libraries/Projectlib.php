@@ -203,11 +203,11 @@ class Projectlib
 		}
 
 		if($invoice->invoice_type == $this->invoice_shipment_type){
-			$item_type = 'invoice_has_shipping_items';
-		}else{
-			$item_type = 'invoice_has_items';
+			return;
+			//$item_type = 'invoice_has_shipping_items';
 		}
 
+		$item_type = 'invoice_has_items';
 		$items = $invoice->$item_type;
 
 		$i = 0;

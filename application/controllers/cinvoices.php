@@ -82,6 +82,19 @@ class cInvoices extends MY_Controller {
 		 $filename = 'Invoice_'.$data["invoice"]->reference;
 		 pdf_create($html, $filename, TRUE);
 	}
+	function item($condition=FALSE, $item_id = FALSE)
+	{
+		switch ($condition) {
+			case 'view':
+			default:
+				//$this->theme_view = 'modal';
+				$this->content_view = 'invoices/client_views/item_view';
+				$this->view_data['title'] = $this->lang->line('application_item_details');
+				$this->view_data['item'] = InvoiceHasItem::find($item_id);
+				break;
+		}
+
+	}
 	function banktransfer($id = FALSE, $sum = FALSE){
 
 		$this->theme_view = 'modal';

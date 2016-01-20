@@ -157,6 +157,8 @@ class Clients extends MY_Controller {
 			redirect('clients/view/'.$companyid->id);
 		}else
 		{
+			$this->load->library('geolib');
+			$this->view_data['geolib'] = $this->geolib;
 			$this->view_data['clients'] = Company::find('all',array('conditions' => array('inactive=?','0')));
 			$this->view_data['next_reference'] = Company::last();
 			$this->theme_view = 'modal';
