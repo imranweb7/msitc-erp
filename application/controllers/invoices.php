@@ -549,9 +549,23 @@ class Invoices extends MY_Controller {
 			$this->view_data['form_action'] = 'invoices/authorizenet';
 			$this->content_view = 'invoices/_authorizenet';
 		}
+	}
+	function downloadLabel($id = FALSE){
 
+		$this->load->helper('download');
+		$invoice = Invoice::find($id);
 
+		if(!$invoice){
+			redirect('cinvoices/view/'.$id);
+		}
 
+		$data = file_get_contents('./files/media/'.$invoice->shipping_lebel);
+
+		$type = array_reverse(explode('.', $invoice->shipping_lebel));
+		$type = strtolower($type[0]);
+
+		$name = 'shipping_label_'.$invoice->reference.'.'.$type;
+		force_download($name, $data);
 	}
 	function delete($id = FALSE)
 	{	

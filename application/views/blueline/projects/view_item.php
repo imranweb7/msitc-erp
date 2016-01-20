@@ -19,6 +19,8 @@
 
 	<div class="details col-md-6 col-xs-12">
 		<div class="table-head"><?php echo $this->lang->line('item_application_file');?></div>
-		<img class="img-responsive" src="<?php echo base_url().'files/media/'.$item->photo;?>" />
+		<?php if(!empty($item->photo)){?>
+			<img class="img-responsive" src="<?php echo base_url().'files/media/'.$item->photo;?>" />
+		<?php } ?>
 	</div>
 </div>

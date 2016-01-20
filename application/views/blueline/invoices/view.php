@@ -172,7 +172,7 @@
 					}
 					?>
 					<br />
-					<a href="<?php echo base_url()?>cinvoices/downloadLabel/<?php echo $invoice->id;?>" class="btn btn-xs btn-success"><i class="icon-download icon-white"></i> <?php echo $this->lang->line('application_download');?></a>
+					<a href="<?php echo base_url()?>invoices/downloadLabel/<?php echo $invoice->id;?>" class="btn btn-xs btn-success"><i class="icon-download icon-white"></i> <?php echo $this->lang->line('application_download');?></a>
 
 					<?php
 				}
@@ -186,7 +186,7 @@
 		<div class="col-md-12">
 		<div class="table-head"><?php echo $this->lang->line('application_invoice_items');?> <?php if($invoice->estimate_status != "Invoiced" && $invoice->invoice_type != 'Shipment'){ ?><span class=" pull-right"><a href="<?php echo base_url()?>invoices/item/<?php echo $invoice->id;?>" class="btn btn-md btn-primary" data-toggle="mainmodal"><i class="fa fa fa-plus visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_add_item');?></span></a></span><?php } ?></div>
 		<div class="table-div min-height-200">
-		<table class="table noclick" id="items" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="table noclick" id="items" rel="<?php echo base_url()?>cprojects/items" cellspacing="0" cellpadding="0">
 		<thead>
 		<th width="4%"><?php echo $this->lang->line('application_action');?></th>
 			<th><?php echo $this->lang->line('application_name');?></th>
@@ -207,7 +207,7 @@
 		$invoice_item = $invoice->$item_type;
 
 		foreach ($items as $value):?>
-		<tr id="<?php echo $value->id;?>" >
+		<tr id="<?php echo $value->item_id;?>" >
 		<td class="option" style="text-align:left;" width="8%">
 		<?php if($invoice->estimate_status != "Invoiced"){ ?>
 				        <button type="button" class="btn-option delete po" data-toggle="popover" data-placement="right" data-content="<a class='btn btn-danger po-delete ajax-silent' href='<?php echo base_url()?>invoices/item_delete/<?php echo $invoice->invoice_has_items[$i]->id;?>/<?php echo $invoice->id;?>'><?php echo $this->lang->line('application_yes_im_sure');?></a> <button class='btn po-close'><?php echo $this->lang->line('application_no');?></button> <input type='hidden' name='td-id' class='id' value='<?php echo $value->id;?>'>" data-original-title="<b><?php echo $this->lang->line('application_really_delete');?></b>"><i class="fa fa-times"></i></button>

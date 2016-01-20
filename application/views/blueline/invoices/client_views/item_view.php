@@ -6,7 +6,7 @@
 </div>
 <div class="row">
 	<div class="col-md-12 marginbottom20">
-		<div class="table-head"><?php echo $this->lang->line('application_item_details');?> <span class="pull-right"><a href="<?php echo base_url()?>items/update_items/<?php echo $item->id;?>/view" class="btn btn-primary" data-toggle="mainmodal"><i class="icon-edit"></i> <?php echo $this->lang->line('application_edit');?></a></div>
+		<div class="table-head"><?php echo $this->lang->line('application_item_details');?></div>
 		<div class="subcont">
 			<div class="row">
 				<div class="details col-md-6 col-xs-12">

@@ -181,7 +181,7 @@
 		<div class="col-md-12">
 		<div class="table-head"><?php echo $this->lang->line('application_items');?> <?php if($estimate->estimate_status != "Accepted" && $estimate->estimate_status != "Invoiced"){ ?><span class=" pull-right"><a href="<?php echo base_url()?>estimates/item/<?php echo $estimate->id;?>" class="btn btn-md btn-primary" data-toggle="mainmodal"><i class="fa fa fa-plus visible-xs"></i><span class="hidden-xs"><?php echo $this->lang->line('application_add_item');?></span></a></span> <?php } ?></div>
 		<div class="table-div min-height-200">
-		<table class="table noclick" id="items" rel="<?php echo base_url()?>" cellspacing="0" cellpadding="0">
+		<table class="table noclick" id="items" rel="<?php echo base_url()?>items" cellspacing="0" cellpadding="0">
 		<thead>
 			<th width="4%"><?php echo $this->lang->line('application_action');?></th>
 			<th><?php echo $this->lang->line('item_application_name');?></th>
@@ -203,7 +203,7 @@
 		$invoice_item = $estimate->$item_type;
 
 		foreach ($items as $value):?>
-		<tr id="<?php echo $value->id;?>" >
+		<tr id="<?php echo $value->item_id;?>" >
 		
 		<td class="option" style="text-align:left;" width="8%">
 				        <?php if($estimate->estimate_status != "Accepted" && $estimate->estimate_status != "Invoiced"){ ?>
