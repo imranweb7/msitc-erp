@@ -25,7 +25,6 @@
                       <th><?php echo $this->lang->line('application_name');?></th>
                       <th class="hidden-xs"><?php echo $this->lang->line('application_qty');?></th>
                       <th class="hidden-xs"><?php echo $this->lang->line('application_budget');?></th>
-                      <th class="hidden-xs"><?php echo $this->lang->line('application_start_date');?></th>
                       <th class="hidden-xs"><?php echo $this->lang->line('application_assign_to');?></th>
                   </tr></thead>
                 
@@ -46,7 +45,6 @@
                   <td onclick=""><?php echo $value->name;?></td>
                     <td class="hidden-xs"><span class="hidden-xs label label-chilled"><?php echo $value->product_qty; ?></span></td>
                     <td class="hidden-xs"><span class="hidden-xs label label-important"><?php echo $core_settings->currency.$value->project_budget;?></span></td>
-                    <td class="hidden-xs"><span class="hidden-xs label label-success"><?php $unix = human_to_unix($value->start.' 00:00'); echo date($core_settings->date_format, $unix); ?></span></td>
                   <td class="hidden-xs">
                     <?php foreach ($value->project_has_workers as $workers): if(!empty($workers->user_id)):?>
                     <?php

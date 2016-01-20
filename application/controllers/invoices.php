@@ -265,9 +265,15 @@ class Invoices extends MY_Controller {
 			}
 			
 			$invoice->update_attributes(array('status' => $new_status));
-			if(isset($payment_date)){ $invoice->update_attributes(array('paid_date' => $payment_date)); }
-       		if(!$invoiceHasPayment){$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_payment_error'));}
-       		else{$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_payment_success'));}
+			if(isset($payment_date)){
+				$invoice->update_attributes(array('paid_date' => $payment_date));
+			}
+
+       		if(!$invoiceHasPayment){
+				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_payment_error'));
+			}else{
+				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_payment_success'));
+			}
 			redirect('invoices/view/'.$_POST['invoice_id']);
 		}else
 		{

@@ -15,7 +15,6 @@
 						<li><span><?php echo $this->lang->line('item_application_name');?>:</span> <?php echo $item->name = empty($item->name) ? "-" : $item->name; ?></li>
 						<li><span><?php echo $this->lang->line('item_application_sku');?>:</span> <?php if(isset($item->sku)){ echo $item->sku;}else{echo "-";} ?></li>
 						<li><span><?php echo $this->lang->line('application_value');?>:</span> <?php echo $core_settings->currency.display_money($item->value);?></li>
-						<li><span><?php echo $this->lang->line('item_application_description');?>:</span> <?php echo $item->description;?></li>
 					</ul>
 				</div>
 

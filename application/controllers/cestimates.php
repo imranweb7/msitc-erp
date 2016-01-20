@@ -197,6 +197,42 @@ class cEstimates extends MY_Controller {
 				$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_create_estimate_error'));
 			}
 			else{
+				$this->load->library('userlib');
+				$this->load->library('parser');
+				$this->load->helper(array('dompdf', 'file'));
+
+				$module_estimate = Module::find_by_link('estimates');
+
+				$admins = $this->userlib->getAdmins($module_estimate->id);
+				$admin_list = array_keys($admins);
+
+				$parse_data = array(
+					'client_contact' => $estimate->company->client->firstname.' '.$estimate->company->client->lastname,
+					'client_company' => $estimate->company->name,
+					'estimate_id' => $core_settings->estimate_prefix.$estimate->reference,
+					'estimate_link' => base_url().'estimates/view/32'.$estimate->id,
+					'company' => $core_settings->company,
+					'logo' => '<img src="'.base_url().''.$core_settings->logo.'" alt="'.$core_settings->company.'"/>',
+					'invoice_logo' => '<img src="'.base_url().''.$core_settings->invoice_logo.'" alt="'.$core_settings->company.'"/>'
+				);
+
+				$subject = $this->parser->parse_string($core_settings->estimate_mail_subject, $parse_data);
+				$this->email->from($core_settings->email, $core_settings->company);
+
+				$this->email->to($admin_list);
+				$this->email->subject($subject);
+
+				$email_estimate = read_file('./application/views/'.$core_settings->template.'/templates/email_admin_estimate.html');
+				$message = $this->parser->parse_string($email_estimate, $parse_data);
+				$this->email->message($message);
+
+				if($this->email->send()){
+					log_message('error', 'Estimate #'.$core_settings->estimate_prefix.$estimate->reference.' has been send to admins who has access to estimate');
+				}
+				else{
+					log_message('error', 'ERROR: Estimate #'.$core_settings->estimate_prefix.$estimate->reference.' has not been send to admins who has access to estimate. Please check your servers email settings.');
+				}
+
 				$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_create_estimate_success'));
 			}
 
@@ -210,6 +246,69 @@ class cEstimates extends MY_Controller {
 			$this->view_data['form_action'] = 'cestimates/createShippingEstimate';
 			$this->content_view = 'estimates/client_views/_cestimate';
 		}
+	}
+
+	function sendestimate($id = FALSE){
+		$this->load->helper(array('dompdf', 'file'));
+		$this->load->library('parser');
+		$data["estimate"] = Invoice::find($id);
+		//check if client contact has permissions for estimates and grant if not
+		if(isset($data["estimate"]->company->client->id)){
+			$access = explode(",", $data["estimate"]->company->client->access);
+			if(!in_array("107", $access)){
+				$client_estimate_permission = Client::find_by_id($data["estimate"]->company->client->id);
+				$client_estimate_permission->access = $client_estimate_permission->access.",107";
+				$client_estimate_permission->save();
+			}
+
+		}
+		$data["estimate"]->estimate_sent = date("Y-m-d");
+		$data["estimate"]->estimate_status = "Sent";
+
+		$data['items'] = InvoiceHasItem::find('all',array('conditions' => array('invoice_id=?',$id)));
+		$data["core_settings"] = Setting::first();
+		$due_date = date($data["core_settings"]->date_format, human_to_unix($data["estimate"]->due_date.' 00:00:00'));
+		//Set parse values
+		$parse_data = array(
+			'client_contact' => $data["estimate"]->company->client->firstname.' '.$data["estimate"]->company->client->lastname,
+			'client_company' => $data["estimate"]->company->name,
+			'due_date' => $due_date,
+			'estimate_id' => $data["core_settings"]->estimate_prefix.$data["estimate"]->reference,
+			'client_link' => $data["core_settings"]->domain,
+			'company' => $data["core_settings"]->company,
+			'logo' => '<img src="'.base_url().''.$data["core_settings"]->logo.'" alt="'.$data["core_settings"]->company.'"/>',
+			'invoice_logo' => '<img src="'.base_url().''.$data["core_settings"]->invoice_logo.'" alt="'.$data["core_settings"]->company.'"/>'
+		);
+		// Generate PDF
+		$html = $this->load->view($data["core_settings"]->template. '/' .$data["core_settings"]->estimate_pdf_template, $data, true);
+		$html = $this->parser->parse_string($html, $parse_data);
+		$filename = $this->lang->line('application_estimate').'_'.$data["estimate"]->reference;
+		pdf_create($html, $filename, FALSE);
+		//email
+		$subject = $this->parser->parse_string($data["core_settings"]->estimate_mail_subject, $parse_data);
+		$this->email->from($data["core_settings"]->email, $data["core_settings"]->company);
+		if(!isset($data["estimate"]->company->client->email)){
+			$this->session->set_flashdata('message', 'error:This client company has no primary contact! Just add a primary contact.');
+			redirect('estimates/view/'.$id);
+		}
+		$this->email->to($data["estimate"]->company->client->email);
+		$this->email->subject($subject);
+		$this->email->attach("files/temp/".$filename.".pdf");
+
+
+
+		$email_estimate = read_file('./application/views/'.$data["core_settings"]->template.'/templates/email_estimate.html');
+		$message = $this->parser->parse_string($email_estimate, $parse_data);
+		$this->email->message($message);
+		if($this->email->send()){$this->session->set_flashdata('message', 'success:'.$this->lang->line('messages_send_estimate_success'));
+			$data["estimate"]->update_attributes(array('status' => 'Sent', 'sent_date' => date("Y-m-d")));
+			log_message('error', 'Estimate #'.$data["core_settings"]->estimate_prefix.$data["estimate"]->reference.' has been send to '.$data["estimate"]->company->client->email);
+		}
+		else{$this->session->set_flashdata('message', 'error:'.$this->lang->line('messages_send_estimate_error'));
+			log_message('error', 'ERROR: Estimate #'.$data["core_settings"]->estimate_prefix.$data["estimate"]->reference.' has not been send to '.$data["estimate"]->company->client->email.'. Please check your servers email settings.');
+		}
+		unlink("files/temp/".$filename.".pdf");
+		redirect('estimates/view/'.$id);
 	}
 
 	function download($id = FALSE){

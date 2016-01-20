@@ -139,6 +139,7 @@ $message_icon = false;
                 <?php if(strtolower($value->name) == "messages" && $messages_new[0]->amount != "0"){ $message_icon = true; ?><span class="notification-badge"><?php echo $messages_new[0]->amount;?></span><?php } ?>
                 <?php if(strtolower($value->name) == "quotations" && $quotations_new[0]->amount != "0"){ ?><span class="notification-badge"><?php echo $quotations_new[0]->amount;?></span><?php } ?>
                 <?php if(strtolower($value->name) == "tickets" && $tickets_new[0]->amount != "0"){ ?><span class="notification-badge"><?php echo $tickets_new[0]->amount;?></span><?php } ?>
+                <?php if(strtolower($value->name) == "estimates" && $estimates_new[0]->amount != "0"){ ?><span class="notification-badge"><?php echo $estimates_new[0]->amount;?></span><?php } ?>
                </a> </li>
               <?php } ?>
           </ul>

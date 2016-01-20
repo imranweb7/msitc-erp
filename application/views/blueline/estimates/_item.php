@@ -85,3 +85,9 @@ if(isset($estimate_has_items)){ ?>
         <a class="btn" data-dismiss="modal"><?php echo $this->lang->line('application_close');?></a>
         </div>
 <?php echo form_close(); ?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.addNewitem').trigger('click');
+    });
+</script>

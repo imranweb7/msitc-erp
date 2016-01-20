@@ -42,7 +42,7 @@ class My_Controller extends CI_Controller
 				$this->view_data['quotations_new'] = Quote::find_by_sql("select count(id) as amount from quotations where status='New'");
 				$this->view_data['sticky'] = Project::find_by_sql("select distinct(projects.name), projects.id, projects.tracking, projects.progress from projects, project_has_workers where projects.sticky = 1 AND projects.id = project_has_workers.project_id AND project_has_workers.user_id=".$this->user->id);
 				$this->view_data['tickets_new'] = Ticket::find_by_sql("select count(id) as amount from tickets where `status`='New'");
-			
+				$this->view_data['estimates_new'] = Invoice::find_by_sql("select count(id) as amount from invoices where (`estimate_status`='Open' or `estimate_status`='Sent' or `estimate_status`='Revised')");
 
 			}else{
 				$this->theme_view = 'application_client';

@@ -8,13 +8,13 @@
       </div>
       <div class="col-md-11 col-xs-9 smallscreen"> 
         <h1><span class="nobold">#<?php echo $core_settings->project_prefix;?><?php echo $project->reference;?></span> - <?php echo $project->name;?></h1>
-         <p class="truncate description"><?php echo $project->description;?></p>
+         <p class="truncate description"></p>
       </div>
     
       <ul class="nav nav-tabs project-tabs" role="tablist">
         <li role="presentation" class="active hidden-xs"><a href="#projectdetails-tab" aria-controls="projectdetails-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_project_details');?></a></li>
           <li role="presentation" class="hidden-xs"><a href="#items-tab" aria-controls="items-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_items');?></a></li>
-          <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_media');?></a></li>
+          <li role="presentation" class="hidden-xs"><a href="#media-tab" aria-controls="media-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_phases');?></a></li>
 
        <?php if($invoice_access) { ?>
         <li role="presentation" class="hidden-xs"><a href="#invoices-tab" aria-controls="invoices-tab" role="tab" data-toggle="tab"><?php echo $this->lang->line('application_invoices');?></a></li>
@@ -58,21 +58,14 @@
             <div class="table-head"><?php echo $this->lang->line('application_project_details');?></div>
 
                 <div class="subcont">
-                  <ul class="details col-xs-12 col-sm-12 col-md-4">
-                    <li><span><?php echo $this->lang->line('application_project_id');?>:</span> <?php echo $core_settings->project_prefix;?><?php echo $project->reference;?></li>
+                  <ul class="details col-xs-12 col-sm-12 col-md-6">
                     <li><span><?php echo $this->lang->line('application_project_type_id_select');?>:</span> <?php echo $project->project_type->name;?></li>
                     <li><span><?php echo $this->lang->line('application_client');?>:</span> <?php if(!isset($project->company->name)){ ?> <a href="#" class="label label-default"><?php echo $this->lang->line('application_no_client_assigned'); }else{ ?><a class="label label-success" href="#"><?php echo $project->company->name;} ?></a></li>
                     <li><span><?php echo $this->lang->line('application_assigned_to');?>:</span> <?php foreach ($project->project_has_workers as $workers):?> <a class="label label-info" style="padding: 2px 5px 3px;"><?php echo $workers->user->firstname." ".$workers->user->lastname;?></a><?php endforeach;?> </li>
-        
-                  </ul>
-                  <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
-                    <li><span><?php echo $this->lang->line('application_start_date');?>:</span> <?php  $unix = human_to_unix($project->start.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-                    <li><span><?php echo $this->lang->line('application_deadline');?>:</span> <?php  $unix = human_to_unix($project->end.' 00:00'); echo date($core_settings->date_format, $unix);?></li>
-                    <li><span><?php echo $this->lang->line('application_time_spent');?>:</span> <?php echo $time_spent;?> </li>
-                    <li><span><?php echo $this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
+                      <li><span><?php echo $this->lang->line('application_created_on');?>:</span> <?php  echo date($core_settings->date_format.' '.$core_settings->date_time_format, $project->datetime); ?></li>
                   </ul>
 
-                    <ul class="details col-xs-12 col-sm-12 col-md-4"><span class="visible-xs divider"></span>
+                    <ul class="details col-xs-12 col-sm-12 col-md-6"><span class="visible-xs divider"></span>
                         <li><span><?php echo $this->lang->line('application_qty');?>:</span> <?php echo $project->product_qty;?></li>
                         <li><span><?php echo $this->lang->line('application_budget');?>:</span> <?php echo $core_settings->currency.$project->project_budget;?></li>
                         <li><span><?php echo $this->lang->line('application_custom_logo');?>:</span> <?php if($project->custom_logo == "1") echo 'Yes'; else echo 'No'; ?></li>
@@ -84,33 +77,46 @@
                 </div>
 
 
+           <div class="row">
+
+               <div class="col-xs-12 col-sm-9">
+                   <div class="row">
+                       <div class="col-xs-12 col-sm-12">
+                           <div class="table-head"><?php echo $this->lang->line('application_description');?></div>
+                           <div class="subcont">
+                               <ul class="details col-xs-12 col-sm-12 col-md-12">
+                                   <li><?php echo $project->description;?></li>
+                               </ul>
+                               <br clear="both">
+                           </div>
+                       </div>
+
+                       <div class="col-xs-12 col-sm-12">
+                           <div class="table-head"><?php echo $this->lang->line('application_link');?></div>
+                           <div class="subcont">
+                               <ul class="details col-xs-12 col-sm-12 col-md-12">
+                                   <li><?php echo $project->product_link;?></li>
+                               </ul>
+                               <br clear="both">
+                           </div>
+                       </div>
+                   </div>
                </div>
 
-
-    <div class="col-xs-12 col-sm-9">
-        <div class="table-head"><?php echo $this->lang->line('application_link');?></div>
-        <div class="subcont">
-            <ul class="details col-xs-12 col-sm-12 col-md-12">
-                <li><?php echo $project->product_link;?></li>
-            </ul>
-            <br clear="both">
-        </div>
-    </div>
-
-
-
-   <div class="col-xs-12 col-sm-3">
-        <div class="table-head"><?php echo $this->lang->line('application_reference_photo');?></div>
-        <div class="subcont" >
-            <?php
-            if(!empty($project->reference_photo)){
-                ?>
-                <img class="img-responsive" src="<?php echo base_url().'files/media/projects/references/'.$project->reference_photo;?>" />
-                <?php
-            }
-            ?>
-        </div>
-    </div>
+               <div class="col-xs-12 col-sm-3">
+                   <div class="table-head"><?php echo $this->lang->line('application_reference_photo');?></div>
+                   <div class="subcont" >
+                       <?php
+                       if(!empty($project->reference_photo)){
+                           ?>
+                           <img class="img-responsive" src="<?php echo base_url().'files/media/projects/references/'.$project->reference_photo;?>" />
+                           <?php
+                       }
+                       ?>
+                   </div>
+               </div>
+           </div>
+       </div>
 
 </div>
 
@@ -167,10 +173,11 @@
 <div class="row tab-pane fade" role="tabpanel" id="media-tab">
 
     <div class="col-xs-12 col-sm-12">
-        <div class="table-head"><?php echo $this->lang->line('application_media');?> <span class=" pull-right"><a href="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
 
         <div class="table-head sub-table-head">
-                <ul class="nav nav-tabs media-tabs" role="tablist" data-rel="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/load">
+            <div class="table-head"><?php echo $this->lang->line('application_phases');?> <span class=" pull-right"><a href="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/add" class="btn btn-primary" data-toggle="mainmodal"><?php echo $this->lang->line('application_add_media');?></a></span></div>
+
+                <ul class="nav nav-tabs media-tabs inner-tabs" role="tablist" data-rel="<?php echo base_url()?>cprojects/media/<?php echo $project->id;?>/load">
                     <?php
                     $tab_options = explode(',', $project->media_phases);
                     $media_tab_count = 1;
@@ -188,7 +195,7 @@
                 </ul>
             </div>
 
-        <div class="tab-content sub-tab-content"><?php echo $tab_content; ?></div>
+        <div class="tab-content sub-tab-content inner-tab-pane"><?php echo $tab_content; ?></div>
 
     </div>
 </div>
